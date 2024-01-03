@@ -4,10 +4,10 @@ namespace Docket.Server.Services.Contracts
 {
     public interface IUserService
     {
-        List<User> Get();
-        User Get(string id);
-        User Create(User user);
-        void Update(string id, User user);
-        void Remove(string id);
+        Task<List<User>> Get();
+        Task<User> Get(string id);
+        Task<User> Create(User user);
+        Task Update(string id, User user);
+        Task Remove(string id);
     }
 }

@@ -1,33 +1,44 @@
-﻿using Docket.Server.Models;
+﻿using Docket.Server.Data;
+using Docket.Server.Models;
 using Docket.Server.Services.Contracts;
+using MongoDB.Driver;
 
 namespace Docket.Server.Services
 {
     public class UserService : IUserService
     {
-        public User Create(User user)
+        private readonly IMongoCollection<User> users;
+
+        public UserService(IDocketDatabaseSettings settings, IMongoClient mongoClient)
         {
-            throw new NotImplementedException();
+            var database = mongoClient.GetDatabase(settings.DatabaseName);
+            users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        public List<User> Get()
+        public async Task<User> Create(User user)
         {
-            throw new NotImplementedException();
+            await users.InsertOneAsync(user);
+            return user;
         }
 
-        public User Get(string id)
+        public async Task<List<User>> Get()
         {
-            throw new NotImplementedException();
+            return await users.Find(user => true).ToListAsync();
         }
 
-        public void Remove(string id)
+        public async Task<User> Get(string id)
         {
-            throw new NotImplementedException();
+            return await users.Find(user => user.id == id).FirstOrDefaultAsync();
         }
 
-        public void Update(string id, User user)
+        public async Task Remove(string id)
         {
-            throw new NotImplementedException();
+            await users.DeleteOneAsync(user => user.id == id);
+        }
+
+        public async Task Update(string id, User user)
+        {
+            await users.ReplaceOneAsync(user => user.id == id, user);
         }
     }
 }

@@ -1,4 +1,21 @@
+using Docket.Server.Data;
+using Docket.Server.Services;
+using Docket.Server.Services.Contracts;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<DocketDatabaseSettings>(
+    builder.Configuration.GetSection(nameof(DocketDatabaseSettings)));
+
+builder.Services.AddSingleton<IDocketDatabaseSettings>(
+    sp => sp.GetRequiredService<IOptions<DocketDatabaseSettings>>().Value );
+
+builder.Services.AddSingleton<IMongoClient>(s =>
+new MongoClient(builder.Configuration.GetValue<string>("DocketDatabaseSettings:ConnectionString")));
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add services to the container.
 
