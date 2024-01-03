@@ -6,7 +6,7 @@ namespace Docket.Server.Services.Contracts
     {
         Task<List<User>> Get();
         Task<User> Get(string id);
-        Task<User> Create(User user);
+        Task Create(User user);
         Task Update(string id, User user);
         Task Remove(string id);
     }

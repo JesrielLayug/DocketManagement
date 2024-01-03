@@ -15,10 +15,9 @@ namespace Docket.Server.Services
             users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        public async Task<User> Create(User user)
+        public async Task Create(User user)
         {
             await users.InsertOneAsync(user);
-            return user;
         }
 
         public async Task<List<User>> Get()
