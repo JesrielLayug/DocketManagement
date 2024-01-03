@@ -10,14 +10,9 @@ namespace Docket.Shared
 {
     public class DTOUser
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
-        [BsonElement("name")]
+        public string id {  get; set; } = string.Empty;
         public string name { get; set; } = string.Empty;
-        [BsonElement("gender")]
         public string gender { get; set; } = string.Empty;
-        [BsonElement("age")]
         public int age { get; set; }
     }
 }

@@ -1,10 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 
 namespace Docket.Server.Models
 {
-    [BsonIgnoreExtraElements]
-    public class User 
+    public class User
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

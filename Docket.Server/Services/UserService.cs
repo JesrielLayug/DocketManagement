@@ -20,12 +20,12 @@ namespace Docket.Server.Services
             await users.InsertOneAsync(user);
         }
 
-        public async Task<List<User>> Get()
+        public async Task<List<User>> GetAll()
         {
             return await users.Find(user => true).ToListAsync();
         }
 
-        public async Task<User> Get(string id)
+        public async Task<User> GetById(string id)
         {
             return await users.Find(user => user.id == id).FirstOrDefaultAsync();
         }
