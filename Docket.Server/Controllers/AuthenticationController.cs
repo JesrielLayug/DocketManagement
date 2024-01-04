@@ -38,5 +38,27 @@ namespace Docket.Server.Controllers
                 return BadRequest(ex.StackTrace);
             }
         }
+
+        [HttpPost("login/{id}")]
+        public async Task<IActionResult> Login(string id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingUser = await authenticationService.Login(id);
+                    if(existingUser != null)
+                    {
+                        return Ok("Successfully login");
+                    }
+                    return NotFound("User is not registered yet.");
+                }
+                return BadRequest($"Failed to login {id}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.StackTrace);
+            }
+        }
     }
 }

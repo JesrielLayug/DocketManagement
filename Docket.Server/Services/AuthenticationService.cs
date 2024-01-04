@@ -15,6 +15,11 @@ namespace Docket.Server.Services
             users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
+        public async Task<User> Login(string id)
+        {
+            return await users.Find(user => user.id == id).FirstOrDefaultAsync();
+        }
+
         public async Task Register(User user)
         {
             await users.InsertOneAsync(user);
