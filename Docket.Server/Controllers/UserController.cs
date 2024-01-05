@@ -1,6 +1,7 @@
 ﻿using Docket.Server.Models;
 using Docket.Server.Services.Contracts;
 using Docket.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Docket.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "user")]
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
