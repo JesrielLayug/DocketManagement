@@ -30,6 +30,11 @@ namespace Docket.Server.Services
             return await users.Find(user => user.id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<User> GetByName(string name)
+        {
+            return await users.Find(user => user.name == name).FirstOrDefaultAsync();
+        }
+
         public async Task Remove(string id)
         {
             await users.DeleteOneAsync(user => user.id == id);

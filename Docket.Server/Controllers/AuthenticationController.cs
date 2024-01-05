@@ -1,4 +1,5 @@
-﻿using Docket.Server.Services.Contracts;
+﻿using Docket.Server.Models;
+using Docket.Server.Services.Contracts;
 using Docket.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,54 +11,66 @@ namespace Docket.Server.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService authenticationService;
+        private readonly IUserService userService;
 
-        public AuthenticationController(IAuthenticationService authenticationService)
+        public AuthenticationController(IAuthenticationService authenticationService, IUserService userService)
         {
             this.authenticationService = authenticationService;
+            this.userService = userService;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] DTOUser user)
+        public async Task<IActionResult> Register([FromBody] DTOUser request)
         {
             try
             {
-                if (ModelState.IsValid)
+                if(ModelState.IsValid)
                 {
-                    await authenticationService.Register(new Models.User
+                    authenticationService.CreatePasswordHash(request.password, out byte[] hash, out byte[] salt);
+
+                    var newUser = new User
                     {
-                        name = user.name,
-                        gender = user.gender,
-                        age = user.age,
-                    });
-                    return Ok("Successfully register a user.");
+                        name = request.name,
+                        gender = request.gender,
+                        age = request.age,
+                        PasswordHash = hash,
+                        PasswordSalt = salt
+                    };
+
+                    await authenticationService.Register(newUser);
+                    return Ok(newUser);
                 }
                 return BadRequest(ModelState);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return BadRequest(ex.StackTrace);
+                return BadRequest($"Failed to register {ex.StackTrace}");
             }
         }
 
-        [HttpPost("login/{id}")]
-        public async Task<IActionResult> Login(string id)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(string username, string password)
         {
             try
             {
-                if (ModelState.IsValid)
+                var existingUser = await userService.GetByName(username);
+                if (existingUser.name != username)
                 {
-                    var existingUser = await authenticationService.Login(id);
-                    if(existingUser != null)
-                    {
-                        return Ok("Successfully login");
-                    }
-                    return NotFound("User is not registered yet.");
+                    return NotFound("Username does not exits.");
                 }
-                return BadRequest($"Failed to login {id}");
+
+                var isUserPasswordCorrect = authenticationService.VerifyPasswordHash(password, existingUser.PasswordHash, existingUser.PasswordSalt);
+                if(isUserPasswordCorrect)
+                {
+                    string token = authenticationService.CreateToken(existingUser);
+                    return Ok(token);
+                }
+                return BadRequest("Incorrect password");
+                
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return BadRequest(ex.StackTrace);
+                return BadRequest($"Failed to register {ex.StackTrace}");
             }
         }
     }

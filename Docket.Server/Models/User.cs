@@ -17,5 +17,11 @@ namespace Docket.Server.Models
 
         [BsonElement("age")]
         public int age { get; set; }
+
+        [BsonElement("password_hash")]
+        public byte[] PasswordHash { get; set; }
+
+        [BsonElement("password_salt")]
+        public byte[] PasswordSalt {  get; set; }
     }
 }
