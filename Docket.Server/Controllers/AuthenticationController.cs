@@ -3,6 +3,7 @@ using Docket.Server.Services.Contracts;
 using Docket.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Docket.Server.Controllers
 {
@@ -34,11 +35,12 @@ namespace Docket.Server.Controllers
                         gender = request.gender,
                         age = request.age,
                         PasswordHash = hash,
-                        PasswordSalt = salt
+                        PasswordSalt = salt,
+                        Role = "user"
                     };
 
                     await authenticationService.Register(newUser);
-                    return Ok(newUser);
+                    return Ok("Successfully register.");
                 }
                 return BadRequest(ModelState);
             }
@@ -54,7 +56,7 @@ namespace Docket.Server.Controllers
             try
             {
                 var existingUser = await userService.GetByName(username);
-                if (existingUser.name != username)
+                if (existingUser == null)
                 {
                     return NotFound("Username does not exits.");
                 }
@@ -70,6 +72,7 @@ namespace Docket.Server.Controllers
             }
             catch(Exception ex)
             {
+                Console.WriteLine($"Exception details: {ex}");
                 return BadRequest($"Failed to register {ex.StackTrace}");
             }
         }

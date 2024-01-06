@@ -3,10 +3,12 @@ using MongoDB.Bson;
 
 namespace Docket.Server.Models
 {
+    [BsonIgnoreExtraElements]
     public class User
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string id { get; set; }
 
         [BsonElement("name")]
@@ -23,5 +25,8 @@ namespace Docket.Server.Models
 
         [BsonElement("password_salt")]
         public byte[] PasswordSalt {  get; set; }
+
+        [BsonElement("role")]
+        public string Role { get; set; }
     }
 }

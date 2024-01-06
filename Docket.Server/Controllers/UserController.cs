@@ -49,7 +49,6 @@ namespace Docket.Server.Controllers
             {
                 return BadRequest(ex.StackTrace);
             }
-
         }
 
         [HttpPost("Create")]

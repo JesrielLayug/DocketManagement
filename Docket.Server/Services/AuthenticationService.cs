@@ -53,7 +53,7 @@ namespace Docket.Server.Services
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, "user"),
+                new Claim(ClaimTypes.Role, user.Role),
                 new Claim(ClaimTypes.Name, user.name),
                 new Claim(ClaimTypes.Gender, user.gender)
             };

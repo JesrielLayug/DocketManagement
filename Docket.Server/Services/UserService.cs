@@ -32,7 +32,8 @@ namespace Docket.Server.Services
 
         public async Task<User> GetByName(string name)
         {
-            return await users.Find(user => user.name == name).FirstOrDefaultAsync();
+            var filter = Builders<User>.Filter.Eq(u => u.name, name);
+            return await users.Find(filter).FirstOrDefaultAsync();
         }
 
         public async Task Remove(string id)
