@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docket.Server", "Docket.Server\Docket.Server.csproj", "{D053AFBC-5AA1-4E6B-96C2-975F608D64EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docket.Server", "Docket.Server\Docket.Server.csproj", "{D053AFBC-5AA1-4E6B-96C2-975F608D64EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docket.Client", "Docket.Client\Docket.Client.csproj", "{DB0BEBEC-40FE-48D6-A041-62D410F871B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docket.Client", "Docket.Client\Docket.Client.csproj", "{DB0BEBEC-40FE-48D6-A041-62D410F871B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docket.Shared", "Docket.Shared\Docket.Shared.csproj", "{64BC3FBF-4C2D-4DE8-90DD-8FB1C71002A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docket.Shared", "Docket.Shared\Docket.Shared.csproj", "{64BC3FBF-4C2D-4DE8-90DD-8FB1C71002A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

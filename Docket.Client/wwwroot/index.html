@@ -8,12 +8,33 @@
     <base href="/" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet" />
         <link href="manifest.json" rel="manifest" />
         <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="loader">
+            <div class="loader__balls">
+                <div class="loader__balls__group">
+                    <div class="ball item1"></div>
+                    <div class="ball item1"></div>
+                    <div class="ball item1"></div>
+                </div>
+                <div class="loader__balls__group">
+                    <div class="ball item2"></div>
+                    <div class="ball item2"></div>
+                    <div class="ball item2"></div>
+                </div>
+                <div class="loader__balls__group">
+                    <div class="ball item3"></div>
+                    <div class="ball item3"></div>
+                    <div class="ball item3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
