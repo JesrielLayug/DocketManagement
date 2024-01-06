@@ -12,6 +12,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
 		<PackageReference Include="MudBlazor" Version="6.0.6" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Docket.Shared\Docket.Shared.csproj" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

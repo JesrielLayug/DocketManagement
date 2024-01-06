@@ -21,7 +21,7 @@ namespace Docket.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] DTOUser request)
+        public async Task<IActionResult> Register([FromBody] DTOUserRegister request)
         {
             try
             {
@@ -51,17 +51,17 @@ namespace Docket.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login([FromBody] DTOUserLogin request)
         {
             try
             {
-                var existingUser = await userService.GetByName(username);
+                var existingUser = await userService.GetByName(request.username);
                 if (existingUser == null)
                 {
                     return NotFound("Username does not exits.");
                 }
 
-                var isUserPasswordCorrect = authenticationService.VerifyPasswordHash(password, existingUser.PasswordHash, existingUser.PasswordSalt);
+                var isUserPasswordCorrect = authenticationService.VerifyPasswordHash(request.password, existingUser.PasswordHash, existingUser.PasswordSalt);
                 if(isUserPasswordCorrect)
                 {
                     string token = authenticationService.CreateToken(existingUser);
