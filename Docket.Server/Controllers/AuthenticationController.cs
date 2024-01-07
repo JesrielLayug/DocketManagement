@@ -21,7 +21,7 @@ namespace Docket.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] DTOUserRegister request)
+        public async Task<ActionResult<Response>> Register([FromBody] DTOUserRegister request)
         {
             try
             {
@@ -40,40 +40,76 @@ namespace Docket.Server.Controllers
                     };
 
                     await authenticationService.Register(newUser);
-                    return Ok("Successfully register.");
+                    return Ok(new Response
+                    {
+                        isSuccess = true,
+                        message = "Successfully register user.",
+                        statusCode = System.Net.HttpStatusCode.OK
+                    });
                 }
-                return BadRequest(ModelState);
+                return BadRequest(new Response
+                {
+                    isSuccess = false,
+                    message = ModelState.ToString(),
+                    statusCode = System.Net.HttpStatusCode.BadRequest
+                });
             }
             catch(Exception ex)
             {
-                return BadRequest($"Failed to register {ex.StackTrace}");
+                return BadRequest(new Response
+                {
+                    isSuccess = false,
+                    message = ex.StackTrace,
+                    statusCode = System.Net.HttpStatusCode.BadRequest
+                });
             }
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] DTOUserLogin request)
+        public async Task<ActionResult<string>> Login([FromBody] DTOUserLogin request)
         {
             try
             {
                 var existingUser = await userService.GetByName(request.username);
                 if (existingUser == null)
                 {
-                    return NotFound("Username does not exits.");
+                    return BadRequest(new Response
+                    {
+                        isSuccess = false,
+                        message = "User does not exist",
+                        statusCode = System.Net.HttpStatusCode.NotFound
+                    });
                 }
 
                 var isUserPasswordCorrect = authenticationService.VerifyPasswordHash(request.password, existingUser.PasswordHash, existingUser.PasswordSalt);
                 if(isUserPasswordCorrect)
                 {
                     string token = authenticationService.CreateToken(existingUser);
-                    return Ok(token);
+                    return Ok(new Response
+                    {
+                        isSuccess = true,
+                        message = "Successfully logged in.",
+                        statusCode = System.Net.HttpStatusCode.OK,
+                        token = token
+                    });
                 }
-                return BadRequest("Incorrect password");
+                return BadRequest(new Response
+                {
+                    isSuccess = false,
+                    message = "Incorrect password",
+                    statusCode = System.Net.HttpStatusCode.BadRequest
+                });
                 
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Exception details: {ex}");
-                return BadRequest($"Failed to register {ex.StackTrace}");
+                return BadRequest(new Response
+                {
+                    isSuccess = false,
+                    message = ex.StackTrace,
+                    statusCode = System.Net.HttpStatusCode.BadRequest
+                });
             }
         }
     }
