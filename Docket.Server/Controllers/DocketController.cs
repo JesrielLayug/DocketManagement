@@ -96,7 +96,7 @@ namespace Docket.Server.Controllers
             }
         }
 
-        [HttpPut("Update/{docketId")]
+        [HttpPut("Update/{docketId}")]
         public async Task<IActionResult> Update(string docketId, [FromBody] DTODocket request)
         {
             try
@@ -130,7 +130,7 @@ namespace Docket.Server.Controllers
             }
         }
 
-        [HttpDelete("Delete/{docketId")]
+        [HttpDelete("Delete/{docketId}")]
         public async Task<IActionResult> Delete([FromRoute] string docketId)
         {
             try
