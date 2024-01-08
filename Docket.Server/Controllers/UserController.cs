@@ -117,7 +117,7 @@ namespace Docket.Server.Controllers
                     await userService.Remove(userId);
                     return Ok("Successfully deleted user.");
                 }
-                return NotFound("User does not exist.");
+                return NotFound($"User with id of {userId} does not exist.");
             }
             catch (Exception ex) 
             {

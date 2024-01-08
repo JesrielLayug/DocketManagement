@@ -1,41 +1,49 @@
 ﻿@page "/login"
 @inherits LoginBase
 
-<MudGrid Justify="Justify.Center" Class="d-sm-flex align-center justify-center">
-    <MudItem xs="12" sm="6">
-        <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column my-4">
-            <MudText Typo="Typo.h2" Align="Align.Center" Class="mb-4" Color="Color.Primary"><b>DOCKETS</b></MudText>
-            <MudText Typo="Typo.h6" Align="Align.Center"> Your Digital Whiteboard for Dynamic Text Collaboration!</MudText>
-        </MudContainer>
-    </MudItem>
-    <MudItem xs="12" sm="5">
-        <MudContainer MaxWidth="MaxWidth.ExtraSmall">
-            <MudPaper Class="pa-5 ma-2 d-flex flex-column justify-center" Elevation="3">
-                <EditForm Model="@user" OnValidSubmit="LoginOnClick">
-                    <DataAnnotationsValidator />
-                    <MudText Typo="Typo.h4" Align="Align.Center" Class="mt-4" Color="Color.Primary"><b>Login</b></MudText>
-                    <MudText Align="Align.Center" class="mb-4 mt-1" Typo="Typo.subtitle2">Unleash Creativity, Collaborate with Clarity</MudText>
+@if (isLoading)
+{
+    <Docket.Client.Components.Loader />
+}
+else
+{
+    <MudGrid Justify="Justify.Center" Class="d-sm-flex align-center justify-center">
+        <MudItem xs="12" sm="6">
+            <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column my-4">
+                <MudText Typo="Typo.h2" Align="Align.Center" Class="mb-4" Color="Color.Primary"><b>DOCKETS</b></MudText>
+                <MudText Typo="Typo.h6" Align="Align.Center"> Your Digital Whiteboard for Dynamic Text Collaboration!</MudText>
+            </MudContainer>
+        </MudItem>
+        <MudItem xs="12" sm="5">
+            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                <MudPaper Class="pa-5 ma-2 d-flex flex-column justify-center" Elevation="3">
+                    <EditForm Model="@user" OnValidSubmit="LoginOnClick">
+                        <DataAnnotationsValidator />
+                        <MudText Typo="Typo.h4" Align="Align.Center" Class="mt-4" Color="Color.Primary"><b>Login</b></MudText>
+                        <MudText Align="Align.Center" class="mb-4 mt-1" Typo="Typo.subtitle2">Unleash Creativity, Collaborate with Clarity</MudText>
 
-                    <MudTextField @bind-Value="user.username" Label="username" Variant="Variant.Outlined"
-                                  Class="mb-4" For="@(() => user.username)" InputType="InputType.Text"></MudTextField>
-                    <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
-                                  InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" OnAdornmentClick="ShowPasswordClick"
-                                  AdornmentAriaLabel="Show Password" Class="mb-2" For="@(() => user.password)"></MudTextField>
+                        <MudTextField @bind-Value="user.username" Label="username" Variant="Variant.Outlined"
+                                      Class="mb-4" For="@(() => user.username)" InputType="InputType.Text"></MudTextField>
+                        <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
+                                      InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" OnAdornmentClick="ShowPasswordClick"
+                                      AdornmentAriaLabel="Show Password" Class="mb-2" For="@(() => user.password)"></MudTextField>
 
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="mb-4 mt-3"
-                               Size="Size.Large" ButtonType="ButtonType.Submit">Login</MudButton>
-                </EditForm>
-                <MudLink Align="center">Forgot password?</MudLink>
-                <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="mb-4 mt-3"
+                                   Size="Size.Large" ButtonType="ButtonType.Submit">Login</MudButton>
+                    </EditForm>
+                    <MudLink Align="center">Forgot password?</MudLink>
+                    <MudDivider DividerType="DividerType.Middle" Class="my-4" />
 
-                <MudContainer MaxWidth="MaxWidth.ExtraSmall" Align="center">
-                    <MudButton Variant="Variant.Outlined" @onclick="OpenRegisterForm" Color="Color.Secondary"
-                               Class="mt-1" Size="Size.Large" ButtonType="ButtonType.Button">Create new account</MudButton>
-                </MudContainer>
-            </MudPaper>
-        </MudContainer>
+                    <MudContainer MaxWidth="MaxWidth.ExtraSmall" Align="center">
+                        <MudButton Variant="Variant.Outlined" @onclick="OpenRegisterForm" Color="Color.Secondary"
+                                   Class="mt-1" Size="Size.Large" ButtonType="ButtonType.Button">Create new account</MudButton>
+                    </MudContainer>
+                </MudPaper>
+            </MudContainer>
 
-    </MudItem>
-</MudGrid>
+        </MudItem>
+    </MudGrid>
+}
+
 
 

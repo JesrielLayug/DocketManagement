@@ -7,11 +7,11 @@ namespace Docket.Server.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
+        public string Id { get; set; }
         [BsonElement("title")]
-        public string title { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
         [BsonElement("body")]
-        public string body { get; set; } = string.Empty;
+        public string Body { get; set; } = string.Empty;
         [BsonElement("date_created")]
         public DateTime DateCreated { get; set; }
         [BsonElement("date_modified")]

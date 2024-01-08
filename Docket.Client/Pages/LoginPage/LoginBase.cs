@@ -18,11 +18,16 @@ namespace Docket.Client.Pages.LoginPage
 
         public UtilityShowPassword showPassword = new UtilityShowPassword();
 
+        public bool isLoading = false;
+
         public async Task LoginOnClick(EditContext context)
         {
+            isLoading = true;
+
             var response = await authService.Login(user);
             if (response.isSuccess)
             {
+                isLoading = false;
                 navigationManager.NavigateTo("/");
             }
             else
