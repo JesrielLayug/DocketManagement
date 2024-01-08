@@ -21,7 +21,7 @@ namespace Docket.Server.Services
 
         public async Task Delete(string id)
         {
-            await dockets.DeleteOneAsync(docket => docket.id == id);
+            await dockets.DeleteOneAsync(docket => docket.Id == id);
         }
 
         public async Task<IEnumerable<Models.Docket>> GetAll()
@@ -31,7 +31,7 @@ namespace Docket.Server.Services
 
         public async Task<Models.Docket> GetById(string id)
         {
-            return await dockets.Find(docket => docket.id == id).FirstOrDefaultAsync();
+            return await dockets.Find(docket => docket.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Models.Docket>> GetByUserId(string userId)
@@ -41,7 +41,7 @@ namespace Docket.Server.Services
 
         public async Task Update(string id, Models.Docket docket)
         {
-            await dockets.ReplaceOneAsync(docket => docket.id == id, docket);
+            await dockets.ReplaceOneAsync(docket => docket.Id == id, docket);
         }
     }
 }
