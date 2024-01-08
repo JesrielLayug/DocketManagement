@@ -1,0 +1,26 @@
+﻿@inject NavigationManager NavigationManager 
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@attribute [AllowAnonymous]
+
+<AuthorizeView Roles="user">
+    <Authorized>
+        <MudButton Variant="Variant.Text" style="color: white" OnClick="Logout">Logout</MudButton>
+    </Authorized>
+    <NotAuthorized>
+        <MudButton Variant="Variant.Text" style="color: white" OnClick="Login">Login</MudButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+    }
+}

@@ -11,29 +11,27 @@
     <MudItem xs="12" sm="5">
         <MudContainer MaxWidth="MaxWidth.ExtraSmall">
             <MudPaper Class="pa-5 ma-2 d-flex flex-column justify-center" Elevation="3">
-                <EditForm Model="@user" OnInvalidSubmit="Login">
+                <EditForm Model="@user" OnValidSubmit="LoginOnClick">
                     <DataAnnotationsValidator />
                     <MudText Typo="Typo.h4" Align="Align.Center" Class="mt-4" Color="Color.Primary"><b>Login</b></MudText>
                     <MudText Align="Align.Center" class="mb-4 mt-1" Typo="Typo.subtitle2">Unleash Creativity, Collaborate with Clarity</MudText>
 
-                    <MudTextField @bind-Value="user.username" Label="Email" Variant="Variant.Outlined"
-                                  Class="mb-4" For="@(() => user.username)" InputType="InputType.Email"></MudTextField>
+                    <MudTextField @bind-Value="user.username" Label="username" Variant="Variant.Outlined"
+                                  Class="mb-4" For="@(() => user.username)" InputType="InputType.Text"></MudTextField>
                     <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
                                   InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" OnAdornmentClick="ShowPasswordClick"
                                   AdornmentAriaLabel="Show Password" Class="mb-2" For="@(() => user.password)"></MudTextField>
 
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Class="mb-4 mt-3"
                                Size="Size.Large" ButtonType="ButtonType.Submit">Login</MudButton>
-
-                    <MudLink Align="center">Forgot password?</MudLink>
-                    <MudDivider DividerType="DividerType.Middle" Class="my-4" />
-
-                    <MudContainer MaxWidth="MaxWidth.ExtraSmall" Align="center">
-                        <MudButton Variant="Variant.Outlined" @onclick="OpenRegisterForm" Color="Color.Secondary"
-                                   Class="mt-1" Size="Size.Large" ButtonType="ButtonType.Button">Create new account</MudButton>
-                    </MudContainer>
-
                 </EditForm>
+                <MudLink Align="center">Forgot password?</MudLink>
+                <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+
+                <MudContainer MaxWidth="MaxWidth.ExtraSmall" Align="center">
+                    <MudButton Variant="Variant.Outlined" @onclick="OpenRegisterForm" Color="Color.Secondary"
+                               Class="mt-1" Size="Size.Large" ButtonType="ButtonType.Button">Create new account</MudButton>
+                </MudContainer>
             </MudPaper>
         </MudContainer>
 

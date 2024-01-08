@@ -11,7 +11,7 @@ namespace Docket.Client.Pages.RegisterPage
     {
         [Inject] private IDialogService dialogService { get; set; }
         [CascadingParameter] MudDialogInstance dialog { get; set; }
-        [Inject] public IRegisterService registerService { get; set; }
+        [Inject] public IAuthenticationService authService { get; set; }
 
         public static DTOUserRegister user = new DTOUserRegister();
         public UtilityShowPassword showPassword = new UtilityShowPassword();
@@ -19,7 +19,7 @@ namespace Docket.Client.Pages.RegisterPage
 
         public async Task RegisterOnClick(EditContext context)
         {
-            var response = await registerService.Register(user);
+            var response = await authService.Register(user);
             if(response.isSuccess)
             {
                 await dialogService.ShowMessageBox(

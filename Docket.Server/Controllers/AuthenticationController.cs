@@ -40,28 +40,13 @@ namespace Docket.Server.Controllers
                     };
 
                     await authenticationService.Register(newUser);
-                    return Ok(new Response
-                    {
-                        isSuccess = true,
-                        message = "Successfully register user.",
-                        statusCode = System.Net.HttpStatusCode.OK
-                    });
+                    return Ok("Successfully register user.");
                 }
-                return BadRequest(new Response
-                {
-                    isSuccess = false,
-                    message = ModelState.ToString(),
-                    statusCode = System.Net.HttpStatusCode.BadRequest
-                });
+                return BadRequest(ModelState);
             }
             catch(Exception ex)
             {
-                return BadRequest(new Response
-                {
-                    isSuccess = false,
-                    message = ex.StackTrace,
-                    statusCode = System.Net.HttpStatusCode.BadRequest
-                });
+                return BadRequest(ex.StackTrace);
             }
         }
 
@@ -73,43 +58,22 @@ namespace Docket.Server.Controllers
                 var existingUser = await userService.GetByName(request.username);
                 if (existingUser == null)
                 {
-                    return BadRequest(new Response
-                    {
-                        isSuccess = false,
-                        message = "User does not exist",
-                        statusCode = System.Net.HttpStatusCode.NotFound
-                    });
+                    return BadRequest("User does not exist");
                 }
 
                 var isUserPasswordCorrect = authenticationService.VerifyPasswordHash(request.password, existingUser.PasswordHash, existingUser.PasswordSalt);
                 if(isUserPasswordCorrect)
                 {
                     string token = authenticationService.CreateToken(existingUser);
-                    return Ok(new Response
-                    {
-                        isSuccess = true,
-                        message = "Successfully logged in.",
-                        statusCode = System.Net.HttpStatusCode.OK,
-                        token = token
-                    });
+                    return Ok(token);
                 }
-                return BadRequest(new Response
-                {
-                    isSuccess = false,
-                    message = "Incorrect password",
-                    statusCode = System.Net.HttpStatusCode.BadRequest
-                });
+                return BadRequest("Incorrect password");
                 
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Exception details: {ex}");
-                return BadRequest(new Response
-                {
-                    isSuccess = false,
-                    message = ex.StackTrace,
-                    statusCode = System.Net.HttpStatusCode.BadRequest
-                });
+                return BadRequest(ex.StackTrace);
             }
         }
     }
