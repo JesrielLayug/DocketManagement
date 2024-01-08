@@ -1,33 +1,41 @@
 ﻿@inherits RegisterBase
 
-<MudDialog DisableSidePadding="true">
-    <DialogContent>
-        <EditForm Model="user" OnValidSubmit="RegisterOnClick">
-            <DataAnnotationsValidator />
-            <MudText Typo="Typo.h4" Class="ms-5"><b>Registration</b></MudText>
-            <MudText Typo="Typo.subtitle2" Class="ms-5">It's quick and easy.</MudText>
-            <MudDivider DividerType="DividerType.FullWidth" Class="mt-3 mb-3" />
-            <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="p-0 m-0">
-                <div class="d-flex mb-3">
-                    <MudSelect T="string" @bind-Value="user.gender" Class="me-3" Label="Gender" AnchorOrigin="Origin.BottomCenter">
-                        <MudSelectItem Value="@("Male")" />
-                        <MudSelectItem Value="@("Female")" />
-                        <MudSelectItem Value="@("Prepare not to say")" />
-                    </MudSelect>
-                    <MudTextField @bind-Value="user.age" Label="Age" Variant="Variant.Text"
-                                  For="@(() => user.age)"></MudTextField>
-                </div>
-                 <MudTextField @bind-Value="user.name" Label="Username" For="@(() => user.name)" Class="my-5"
-                               Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
-                <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
-                              InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" For="@(() => user.password)"
-                              OnAdornmentClick="showPassword.Toggle" AdornmentAriaLabel="Show Password" Class="mb-3">
-                </MudTextField>
-            </MudContainer>
-            <MudContainer Class="mb-4 mt-3">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
-                           Size="Size.Large" ButtonType="ButtonType.Submit">Register</MudButton>
-            </MudContainer>
-        </EditForm>
-    </DialogContent>
-</MudDialog>
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <MudDialog DisableSidePadding="true">
+        <DialogContent>
+            <EditForm Model="user" OnValidSubmit="RegisterOnClick">
+                <DataAnnotationsValidator />
+                <MudText Typo="Typo.h4" Class="ms-5"><b>Registration</b></MudText>
+                <MudText Typo="Typo.subtitle2" Class="ms-5">It's quick and easy.</MudText>
+                <MudDivider DividerType="DividerType.FullWidth" Class="mt-3 mb-3" />
+                <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="p-0 m-0">
+                    <div class="d-flex mb-3">
+                        <MudSelect T="string" @bind-Value="user.gender" Class="me-3" Label="Gender" AnchorOrigin="Origin.BottomCenter">
+                            <MudSelectItem Value="@("Male")" />
+                            <MudSelectItem Value="@("Female")" />
+                            <MudSelectItem Value="@("Prepare not to say")" />
+                        </MudSelect>
+                        <MudTextField @bind-Value="user.age" Label="Age" Variant="Variant.Text"
+                                      For="@(() => user.age)"></MudTextField>
+                    </div>
+                    <MudTextField @bind-Value="user.name" Label="Username" For="@(() => user.name)" Class="my-5"
+                                  Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
+                    <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
+                                  InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" For="@(() => user.password)"
+                                  OnAdornmentClick="showPassword.Toggle" AdornmentAriaLabel="Show Password" Class="mb-3">
+                    </MudTextField>
+                </MudContainer>
+                <MudContainer Class="mb-4 mt-3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                               Size="Size.Large" ButtonType="ButtonType.Submit">Register</MudButton>
+                </MudContainer>
+            </EditForm>
+        </DialogContent>
+    </MudDialog>
+}
+

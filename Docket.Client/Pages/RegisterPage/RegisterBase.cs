@@ -15,13 +15,18 @@ namespace Docket.Client.Pages.RegisterPage
 
         public static DTOUserRegister user = new DTOUserRegister();
         public UtilityShowPassword showPassword = new UtilityShowPassword();
+        public bool isLoading = false;
+
+
         public void ShowPasswordOnClick() =>  showPassword.Toggle();
 
         public async Task RegisterOnClick(EditContext context)
         {
+            isLoading = true;
             var response = await authService.Register(user);
             if(response.isSuccess)
             {
+                isLoading = false;
                 await dialogService.ShowMessageBox(
                     "Success",
                     (MarkupString)response.message,
