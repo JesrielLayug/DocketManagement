@@ -1,14 +1,56 @@
 ﻿@page "/"
+@using Docket.Shared;
+@inherits PublicBase
 @attribute [AllowAnonymous]
 
-<AuthorizeView Roles="user">
-    <Authorized>
-        <MudText Typo="Typo.h3" GutterBottom="true">Hello, @context.User.Identity.Name!</MudText>
-    </Authorized>
-    <NotAuthorized>
-        <MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-    </NotAuthorized>
-</AuthorizeView>
+@if(Dockets == null)
+{
+    <Loader />
+}
+else
+{
+    <AuthorizeView Roles="user">
+        <Authorized>
+            <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Dockets</MudText>
 
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
-<MudAlert Severity="Severity.Normal">You can find documentation and examples on our website here: <MudLink Href="https://mudblazor.com" Typo="Typo.body2" Color="Color.Inherit"><b>www.mudblazor.com</b></MudLink></MudAlert>
+            @if(Dockets.Count() > 0)
+            {
+                const int itemsPerRow = 4;
+                var docketsRowList = new List<DTODocket>();
+                
+                for(int i = 0; i < Dockets.Count(); i++)
+                {
+                    docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+
+                    <div class="d-flex flex-wrap mt-3">
+                        @foreach(var item in docketsRowList)
+                        {
+                            <div class="my-3 mr-4 ml-1">
+                                <MudCard Style="height: 250px; width: 375px" Elevation="1">
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h6">@item.Title</MudText>
+                                        </CardHeaderContent>
+                                        <CardHeaderActions>
+                                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                                        </CardHeaderActions>
+                                    </MudCardHeader>
+                                    <MudCardContent>
+                                        <MudText>@item.Body</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Variant="Variant.Text" Color="Color.Primary">@item.DateCreated</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </Authorized>
+        <NotAuthorized>
+            <MudText Typo="Typo.h4" GutterBottom="true" Style="font-weight: 600">Dockets</MudText>
+        </NotAuthorized>
+    </AuthorizeView>
+}
+

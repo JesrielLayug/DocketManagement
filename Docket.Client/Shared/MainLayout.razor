@@ -11,6 +11,7 @@
     <Authorized>
         <MudLayout>
             <MudAppBar Elevation="1">
+                
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="mr-3" />
                 <MudIconButton Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Edge="Edge.Start"/>
                 <MudText Typo="Typo.h6">Dockets</MudText>
@@ -30,7 +31,7 @@
                 </MudCard>
             </MudDrawer>
             <MudMainContent>
-                <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+                <MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
                     @Body
                 </MudContainer>
             </MudMainContent>
@@ -47,7 +48,7 @@
                 <LoginLogoutButton />
             </MudAppBar>
             <MudMainContent>
-                <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+                <MudContainer MaxWidth="MaxWidth.Large" Class="mb-16 pb-16 mt-5">
                     @Body
                 </MudContainer>
             </MudMainContent>

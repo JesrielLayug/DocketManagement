@@ -20,7 +20,8 @@ namespace Docket.Server.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<Models.Docket>> GetAll()
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Models.Docket>>> GetAll()
         {
             try
             {

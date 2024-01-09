@@ -16,9 +16,11 @@ builder.Services.AddOptions();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7185/") });
 builder.Services.AddMudServices();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<IDocketService, DocketService>();
+
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
