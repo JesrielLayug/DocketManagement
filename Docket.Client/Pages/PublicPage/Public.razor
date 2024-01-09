@@ -1,8 +1,6 @@
 ﻿@page "/"
 @attribute [AllowAnonymous]
 
-<PageTitle>Index</PageTitle>
-
 <AuthorizeView Roles="user">
     <Authorized>
         <MudText Typo="Typo.h3" GutterBottom="true">Hello, @context.User.Identity.Name!</MudText>
