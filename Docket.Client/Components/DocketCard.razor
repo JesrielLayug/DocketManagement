@@ -1,0 +1,24 @@
+﻿@inherits DocketCardBase
+
+@foreach (var item in Dockets)
+{
+    <div class="col-lg-3 mb-2 mx-2">
+        <MudCard Style="min-width: 325px;">
+           <MudCardHeader>
+               <CardHeaderContent>
+                   <MudText Typo="Typo.h6">@item.Title</MudText>
+               </CardHeaderContent>
+               <CardHeaderActions>
+                    <MudIconButton Icon="@Icons.Material.Filled.Bookmark" Color="Color.Default" />
+               </CardHeaderActions>
+           </MudCardHeader>
+           <MudCardContent>
+               <MudText Typo="Typo.body2">@item.Body</MudText>
+           </MudCardContent>
+           <MudCardActions Class="d-flex justify-space-between pb-3 pe-5">
+               <MudButton Variant="Variant.Text" Color="Color.Primary">View</MudButton>
+               <MudAvatar Color="Color.Primary" Size="Size.Small">M</MudAvatar>
+           </MudCardActions>
+       </MudCard>
+    </div>
+}

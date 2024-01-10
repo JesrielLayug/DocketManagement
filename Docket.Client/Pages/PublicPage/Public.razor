@@ -11,8 +11,12 @@ else
 {
     <AuthorizeView Roles="user">
         <Authorized>
-            <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Dockets</MudText>
-
+            <div class="row d-flex justify-space-between px-2">
+                <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Dockets</MudText>
+                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
+                Color="Color.Primary" Size="Size.Medium" Style="height: 3em">Add</MudButton>
+            </div>
+            
             @if(Dockets.Count() > 0)
             {
                 const int itemsPerRow = 4;
@@ -22,28 +26,8 @@ else
                 {
                     docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
 
-                    <div class="d-flex flex-wrap mt-3">
-                        @foreach(var item in docketsRowList)
-                        {
-                            <div class="my-3 mr-4 ml-1">
-                                <MudCard Style="height: 250px; width: 375px" Elevation="1">
-                                    <MudCardHeader>
-                                        <CardHeaderContent>
-                                            <MudText Typo="Typo.h6">@item.Title</MudText>
-                                        </CardHeaderContent>
-                                        <CardHeaderActions>
-                                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                                        </CardHeaderActions>
-                                    </MudCardHeader>
-                                    <MudCardContent>
-                                        <MudText>@item.Body</MudText>
-                                    </MudCardContent>
-                                    <MudCardActions>
-                                        <MudButton Variant="Variant.Text" Color="Color.Primary">@item.DateCreated</MudButton>
-                                    </MudCardActions>
-                                </MudCard>
-                            </div>
-                        }
+                    <div class="row mt-3 d-flex flex-wrap docketcard-container">
+                        <DocketCard Dockets="@docketsRowList" />
                     </div>
                 }
             }

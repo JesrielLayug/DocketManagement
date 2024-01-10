@@ -10,9 +10,16 @@ namespace Docket.Client.Pages.PublicPage
 
         public IEnumerable<DTODocket> Dockets { get; set; }
 
+        private string searchString = null;
+
         protected override async Task OnInitializedAsync()
         {
             Dockets = await DocketService.GetAll();
+        }
+
+        public void OnSearch(string text)
+        {
+            searchString = text;
         }
     }
 }
