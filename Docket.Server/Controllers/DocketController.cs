@@ -43,6 +43,26 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [HttpGet("GetAllPublic")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<DTODocket>>> GetAllPublics()
+        {
+            try
+            {
+                var public_dockets = await docketService.GetAllPublic();
+
+                var users = await userService.GetAll();
+
+                var dto_public_dockets = public_dockets.Convert(users);
+
+                return Ok(dto_public_dockets);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetById/{docketId}")]
         public async Task<ActionResult<DTODocket>> GetById([FromRoute] string docketId)
         {
@@ -136,20 +156,19 @@ namespace Docket.Server.Controllers
                 var existingDocket = await docketService.GetById(docketId);
                 if(existingDocket != null)
                 {
-                    await docketService.Update(docketId, new Models.Docket
-                    {
-                        Title = request.Title,
-                        Body = request.Body,
-                        DateCreated = request.DateCreated,
-                        DateModified = request.DateModified,
-                        UserId = request.UserId,
-                        IsPublic = request.IsPublic,
-                        IsHidden = request.IsHidden
-                    });
+                    existingDocket.Title = request.Title;
+                    existingDocket.Body = request.Body;
+                    existingDocket.DateCreated = request.DateCreated;
+                    existingDocket.DateModified = request.DateModified;
+                    existingDocket.UserId = request.UserId;
+                    existingDocket.IsPublic = request.IsPublic;
+                    existingDocket.IsHidden = request.IsHidden;
+
+                    await docketService.Update(docketId, existingDocket);
                     return Ok();
                 }
 
-                return NotFound($"Dcoket with id of {docketId} does not exist.");
+                return NotFound($"Docket with id of {docketId} does not exist.");
             }
             catch(Exception ex)
             {

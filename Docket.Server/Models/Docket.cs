@@ -8,6 +8,7 @@ namespace Docket.Server.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("_id")]
         public string Id { get; set; }
         [BsonElement("title")]
         public string Title { get; set; } = string.Empty;
