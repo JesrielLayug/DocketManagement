@@ -14,8 +14,8 @@ namespace Docket.Shared
         public string Body {  get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified {  get; set; }
-        public bool IsHidden { get; set; }
-        public bool IsPublic { get; set; }
+        public bool IsHidden { get; set; } = false;
+        public bool IsPublic { get; set; } = false;
         public string UserId { get; set; }
         public string Username {  get; set; }
     }

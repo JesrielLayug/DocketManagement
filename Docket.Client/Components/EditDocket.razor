@@ -1,0 +1,21 @@
+﻿@inherits EditDocketBase
+
+<MudDialog DisableSidePadding="true">
+    <DialogContent>
+         <EditForm Model="Docket" OnValidSubmit="SaveOnClick">
+            <DataAnnotationsValidator />
+            <MudText Typo="Typo.h4" Class="mt-4" Align="Align.Center"><b>Add Docket</b></MudText>
+            <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="p-0 m-0">
+                <MudTextField @bind-Value="Docket.Title" Label="Title" For="@(() => Docket.Title)" Class="my-5"
+                              Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
+                <MudTextField Label="Description" Variant="Variant.Outlined" Text="@Docket.Body" For="@(() => Docket.Body)" Lines="3" />
+                <MudSwitch For="@(() => Docket.IsPublic)" Color="Color.Primary" Label="Public" Class="mt-2" />
+            </MudContainer>
+            <MudContainer Class="mb-4 mt-3">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                           Size="Size.Large" ButtonType="ButtonType.Submit">Add</MudButton>
+            </MudContainer>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+

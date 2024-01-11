@@ -1,7 +1,6 @@
 ﻿@page "/"
 @using Docket.Shared;
 @inherits PublicBase
-@attribute [AllowAnonymous]
 
 @if(Dockets == null)
 {
@@ -9,32 +8,25 @@
 }
 else
 {
-    <AuthorizeView Roles="user">
-        <Authorized>
-            <div class="row d-flex justify-space-between px-2">
-                <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Dockets</MudText>
-                <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
-                Color="Color.Primary" Size="Size.Medium" Style="height: 3em">Add</MudButton>
-            </div>
-            
-            @if(Dockets.Count() > 0)
-            {
-                const int itemsPerRow = 4;
-                var docketsRowList = new List<DTODocket>();
-                
-                for(int i = 0; i < Dockets.Count(); i++)
-                {
-                    docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+    <div class="row d-flex justify-space-between px-2">
+        <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Dockets</MudText>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
+        Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
+    </div>
+    
+    @if(Dockets.Count() > 0)
+    {
+        const int itemsPerRow = 4;
+        var docketsRowList = new List<DTODocket>();
+        
+        for(int i = 0; i < Dockets.Count(); i++)
+        {
+            docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
 
-                    <div class="row mt-3 d-flex flex-wrap docketcard-container">
-                        <DocketCard Dockets="@docketsRowList" />
-                    </div>
-                }
-            }
-        </Authorized>
-        <NotAuthorized>
-            <MudText Typo="Typo.h4" GutterBottom="true" Style="font-weight: 600">Dockets</MudText>
-        </NotAuthorized>
-    </AuthorizeView>
+            <div class="row mt-3 d-flex flex-wrap docketcard-container">
+                <DocketCard Dockets="@docketsRowList" />
+            </div>
+        }
+    }
 }
 
