@@ -29,6 +29,11 @@ namespace Docket.Server.Services
             return await dockets.Find(docket => true).ToListAsync();
         }
 
+        public async Task<IEnumerable<Models.Docket>> GetAllPublic()
+        {
+            return await dockets.Find(docket => docket.IsPublic == true).ToListAsync();
+        }
+
         public async Task<Models.Docket> GetById(string id)
         {
             return await dockets.Find(docket => docket.Id == id).FirstOrDefaultAsync();

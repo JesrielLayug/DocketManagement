@@ -3,7 +3,7 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @attribute [AllowAnonymous]
 
-<MudThemeProvider Theme="MyCustomTheme"/>
+<MudThemeProvider Theme="MyCustomTheme" IsDarkMode="true"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -12,14 +12,12 @@
         <MudLayout>
             <MudAppBar Elevation="1">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="mr-3" />
-                <MudIconButton Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Edge="Edge.Start"/>
+                <MudIconButton Icon="@Icons.Material.Filled.AutoAwesomeMotion" Edge="Edge.Start" />
                 <MudText Typo="Typo.h6">Dockets</MudText>
                 <MudSpacer />
-                <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
                 <LoginLogoutButton />
             </MudAppBar>
-            <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Variant="@DrawerVariant.Responsive" Class="d-flex flex-column">
+            <MudDrawer @bind-Open="_drawerOpen" Color="Color.Dark" Variant="@DrawerVariant.Responsive" Class="d-flex flex-column">
                 <MudCard Elevation="0" Class="ma-0 pa-0">
                     <MudText Typo="Typo.h6" Class="px-4 mt-1">@context.User.Identity.Name</MudText>
                     <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">System Management</MudText>

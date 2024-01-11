@@ -1,4 +1,5 @@
-﻿using Docket.Server.Models;
+﻿using Docket.Server.Extensions;
+using Docket.Server.Models;
 using Docket.Server.Services.Contracts;
 using Docket.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -13,20 +14,28 @@ namespace Docket.Server.Controllers
     public class DocketController : ControllerBase
     {
         private readonly IDocketService docketService;
+        private readonly IUserService userService;
 
-        public DocketController(IDocketService docketService)
+        public DocketController(IDocketService docketService, IUserService userService)
         {
             this.docketService = docketService;
+            this.userService = userService;
         }
 
         [HttpGet("GetAll")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<Models.Docket>>> GetAll()
+        public async Task<ActionResult<IEnumerable<DTODocket>>> GetAll()
         {
             try
             {
                 var dockets = await docketService.GetAll();
-                return Ok(dockets);
+
+                var users = await userService.GetAll();
+
+                var dto_dockets = dockets.Convert(users);
+                
+
+                return Ok(dto_dockets);
             }
             catch(Exception ex)
             {
@@ -35,14 +44,24 @@ namespace Docket.Server.Controllers
         }
 
         [HttpGet("GetById/{docketId}")]
-        public async Task<ActionResult<Models.Docket>> GetById([FromRoute] string docketId)
+        public async Task<ActionResult<DTODocket>> GetById([FromRoute] string docketId)
         {
             try
             {
                 var docket = await docketService.GetById(docketId);
                 if (docket != null)
                 {
-                    return Ok(docket);
+                    return Ok(new DTODocket
+                    {
+                        Id = docket.Id,
+                        Title = docket.Title,
+                        Body = docket.Body,
+                        DateCreated = docket.DateCreated,
+                        DateModified = docket.DateModified,
+                        IsHidden = docket.IsHidden,
+                        IsPublic = docket.IsPublic,
+                        UserId = docket.UserId,
+                    });
                 }
                 return NotFound("Docket does not exist");
             }
@@ -53,13 +72,20 @@ namespace Docket.Server.Controllers
         }
 
         [HttpGet("GetByUser/{userId}")]
-        public async Task<ActionResult<IEnumerable<Models.Docket>>> GetByUserId([FromRoute] string userId)
+        public async Task<ActionResult<IEnumerable<DTODocket>>> GetByUserId([FromRoute] string userId)
         {
             try
             {
                 var dockets = await docketService.GetByUserId(userId);
                 if (dockets != null)
-                    return Ok(dockets);
+                {
+
+                    var users = await userService.GetAll();
+
+                    var dto_dockets = dockets.Convert(users);
+
+                    return Ok(dto_dockets);
+                }
 
                 return NotFound("User does not have any dockets yet");
             }
@@ -86,7 +112,7 @@ namespace Docket.Server.Controllers
                     DateCreated = request.DateCreated,
                     DateModified = request.DateModified,
                     UserId = request.UserId,
-                    Color = request.Color,
+                    IsPublic = request.IsPublic,
                     IsHidden = request.IsHidden
                 });
                 return Ok();
@@ -117,7 +143,7 @@ namespace Docket.Server.Controllers
                         DateCreated = request.DateCreated,
                         DateModified = request.DateModified,
                         UserId = request.UserId,
-                        Color = request.Color,
+                        IsPublic = request.IsPublic,
                         IsHidden = request.IsHidden
                     });
                     return Ok();

@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Docket.Server.Models
 {
+    [BsonIgnoreExtraElements]
     public class Docket
     {
         [BsonId]
@@ -16,10 +17,10 @@ namespace Docket.Server.Models
         public DateTime DateCreated { get; set; }
         [BsonElement("date_modified")]
         public DateTime DateModified { get; set; }
-        [BsonElement("isHidden")]
+        [BsonElement("is_hidden")]
         public bool IsHidden { get; set; }
-        [BsonElement("color")]
-        public string Color { get; set; } = string.Empty;
+        [BsonElement("is_public")]
+        public bool IsPublic { get; set; }
         [BsonElement("user_id")]
         public string UserId { get; set; } = string.Empty;
     }
