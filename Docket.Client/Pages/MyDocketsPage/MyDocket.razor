@@ -1,4 +1,8 @@
-﻿<h3>MyDocket</h3>
+﻿@page "/my-docket"
+@inherits MyDocketBase
+@attribute [Authorize(Roles = "user")]
+
+<h3>MyDocket</h3>
 
 @code {
 

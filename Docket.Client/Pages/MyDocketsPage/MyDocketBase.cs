@@ -1,6 +1,9 @@
-﻿namespace Docket.Client.Pages.MyDocketsPage
+﻿using Microsoft.AspNetCore.Components;
+
+namespace Docket.Client.Pages.MyDocketsPage
 {
-    public class MyDocketBase
+    public class MyDocketBase : ComponentBase
     {
+
     }
 }

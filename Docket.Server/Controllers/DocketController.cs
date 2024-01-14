@@ -118,6 +118,45 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [HttpGet("GetUserDockets")]
+        public async Task<ActionResult<IEnumerable<DTODocket>>> GetUserDockets()
+        {
+            try
+            {
+                var userId = string.Empty;
+                if (httpContextAccessor.HttpContext != null)
+                {
+                    userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                }
+
+                var dtoDockets = new List<DTODocket>();
+                var domainDockets = await docketService.GetByUserId(userId);
+
+                foreach (var item in domainDockets)
+                {
+                    dtoDockets.Add(new DTODocket
+                    {
+                        Id = item.Id,
+                        Title = item.Title,
+                        Body = item.Body,
+                        DateCreated = item.DateCreated,
+                        DateModified = item.DateModified,
+                        UserId = item.UserId,
+                        IsHidden = item.IsHidden,
+                        IsPublic = item.IsPublic,
+                        Username = httpContextAccessor.HttpContext.User.Identity.Name
+                    });
+                }
+
+                return Ok(dtoDockets);
+            }
+            catch(HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] DTODocket request)
         {
