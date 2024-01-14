@@ -7,6 +7,7 @@ namespace Docket.Server.Services.Contracts
         Task<List<User>> GetAll();
         Task<User> GetById(string id);
         Task<User> GetByName(string name);
+        Task<string> GetId();
         Task Create(User user);
         Task Update(string id, User user);
         Task Remove(string id);

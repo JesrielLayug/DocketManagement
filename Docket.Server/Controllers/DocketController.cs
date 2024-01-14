@@ -5,6 +5,7 @@ using Docket.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Docket.Server.Controllers
 {
@@ -15,11 +16,13 @@ namespace Docket.Server.Controllers
     {
         private readonly IDocketService docketService;
         private readonly IUserService userService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DocketController(IDocketService docketService, IUserService userService)
+        public DocketController(IDocketService docketService, IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             this.docketService = docketService;
             this.userService = userService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet("GetAll")]
@@ -33,11 +36,11 @@ namespace Docket.Server.Controllers
                 var users = await userService.GetAll();
 
                 var dto_dockets = dockets.Convert(users);
-                
+
 
                 return Ok(dto_dockets);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -57,7 +60,7 @@ namespace Docket.Server.Controllers
 
                 return Ok(dto_public_dockets);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -125,13 +128,20 @@ namespace Docket.Server.Controllers
                     return BadRequest(ModelState);
                 }
 
+                var userId = string.Empty;
+
+                if (httpContextAccessor.HttpContext != null)
+                {
+                    userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                }
+
                 await docketService.Add(new Models.Docket
                 {
                     Title = request.Title,
                     Body = request.Body,
                     DateCreated = request.DateCreated,
                     DateModified = request.DateModified,
-                    UserId = request.UserId,
+                    UserId = userId,
                     IsPublic = request.IsPublic,
                     IsHidden = request.IsHidden
                 });

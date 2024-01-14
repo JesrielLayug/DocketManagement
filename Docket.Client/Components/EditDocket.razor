@@ -1,11 +1,13 @@
 ﻿@inherits EditDocketBase
+@attribute [Authorize(Roles = "user")]
+
 
 <MudDialog DisableSidePadding="true">
     <DialogContent>
          <EditForm Model="Docket" OnValidSubmit="SaveOnClick">
             <DataAnnotationsValidator />
             <MudText Typo="Typo.h4" Class="mt-4" Align="Align.Center"><b>Add Docket</b></MudText>
-            <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="p-0 m-0">
+            <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="ml-1">
                 <MudTextField @bind-Value="Docket.Title" Label="Title" For="@(() => Docket.Title)" Class="my-5"
                               Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
                 <MudTextField Label="Description" Variant="Variant.Outlined" Text="@Docket.Body" For="@(() => Docket.Body)" Lines="3" />

@@ -22,8 +22,13 @@ else
                         <MudText Typo="Typo.h4" Align="Align.Center" Class="mt-4" Color="Color.Primary"><b>Login</b></MudText>
                         <MudText Align="Align.Center" class="mb-4 mt-1" Typo="Typo.subtitle2">Unleash Creativity, Collaborate with Clarity</MudText>
 
-                        <MudTextField @bind-Value="user.username" Label="username" Variant="Variant.Outlined"
-                                      Class="mb-4" For="@(() => user.username)" InputType="InputType.Text"></MudTextField>
+                        @if (showAlert)
+                        {
+                            <MudAlert Severity="Severity.Error" Dense="true" Class="my-3 mb-3" ContentAlignment="HorizontalAlignment.Center">@responseMessage</MudAlert>
+                        }
+
+                        <MudTextField @bind-Value="user.username" Label="Username" Variant="Variant.Outlined"
+                                      Class="mb-4 mt-3" For="@(() => user.username)" InputType="InputType.Text"></MudTextField>
                         <MudTextField @bind-Value="user.password" Label="Password" Variant="Variant.Outlined" Adornment="Adornment.End"
                                       InputType="@showPassword.InputType" AdornmentIcon="@showPassword.Icon" OnAdornmentClick="ShowPasswordClick"
                                       AdornmentAriaLabel="Show Password" Class="mb-2" For="@(() => user.password)"></MudTextField>

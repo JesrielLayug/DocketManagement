@@ -47,7 +47,7 @@ namespace Docket.Client.Services
                 return new Response
                 {
                     isSuccess = false,
-                    message = "Error logging the user."
+                    message = "Wrong email or password."
                 };
             }
             catch(HttpRequestException e)

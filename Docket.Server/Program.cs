@@ -25,6 +25,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IDocketService, DocketService>();
 
+builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
 
 builder.Services.AddControllers();

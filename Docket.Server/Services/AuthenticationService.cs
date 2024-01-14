@@ -1,6 +1,7 @@
 ﻿using Docket.Server.Data;
 using Docket.Server.Models;
 using Docket.Server.Services.Contracts;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
@@ -53,6 +54,7 @@ namespace Docket.Server.Services
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.id),
                 new Claim(ClaimTypes.Role, user.Role),
                 new Claim(ClaimTypes.Name, user.name),
                 new Claim(ClaimTypes.Gender, user.gender)

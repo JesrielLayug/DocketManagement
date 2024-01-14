@@ -1,4 +1,8 @@
 ﻿@media only screen and (max-width: 600px) {
+    .docket-header {
+        justify-content: center;
+    }
+
    .docketcard-container {
        justify-content: center;
    }

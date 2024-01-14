@@ -19,10 +19,10 @@ namespace Docket.Client.Pages.PublicPage
             Dockets = await DocketService.GetAll();
         }
 
-        public void OpenEditDocketForm()
-        {
-            var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
-            dialogService.Show<EditDocket>("EditDocket", options);
-        }
+        //public void OpenEditDocketForm()
+        //{
+        //    var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader=true };
+        //    dialogService.Show<EditDocket>("EditDocket", options);
+        //}
     }
 }

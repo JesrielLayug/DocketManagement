@@ -20,6 +20,9 @@ namespace Docket.Client.Pages.LoginPage
 
         public bool isLoading = false;
 
+        public string responseMessage = string.Empty;
+        public bool showAlert = false;
+
         public async Task LoginOnClick(EditContext context)
         {
             isLoading = true;
@@ -32,11 +35,9 @@ namespace Docket.Client.Pages.LoginPage
             }
             else
             {
-                await dialogService.ShowMessageBox(
-                    "Warning",
-                    (MarkupString)response.message,
-                    yesText: "Ok"
-                    );
+                isLoading = false;
+                showAlert = true;
+                responseMessage = response.message;
             }
         }
 
