@@ -1,4 +1,5 @@
 ﻿@page "/my-docket"
+@using Docket.Client.Utilities
 @using Docket.Shared
 @inherits MyDocketBase
 @attribute [Authorize(Roles = "user")]
@@ -10,12 +11,10 @@
 }
 else
 {
-    <div class="row d-flex justify-space-between px-2 docket-header">
+    <div class="row d-flex px-2 docket-header">
         <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">My Dockets</MudText>
-        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
-            Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
-    </div>
 
+    </div>
     @if (Dockets.Count() > 0)
     {
         const int itemsPerRow = 4;
@@ -26,10 +25,49 @@ else
             docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
 
             <div class="row mt-3 d-flex flex-wrap docketcard-container">
-                <DocketCard Dockets="@docketsRowList" />
+                <EditableDocketCard Dockets="@docketsRowList" />
             </div>
         }
     }
 }
 
 
+
+
+
+
+    
+
+@* <div class="row d-flex justify-space-between px-2 docket-header">
+        <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">My Dockets</MudText>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
+                   Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
+    </div>
+    <MudTable Items="@Dockets" Hover="true" Striped="true" Class="d-flex" Dense="false">
+        <HeaderContent>
+            <MudTh Class="pl-10">Docket</MudTh>
+            <MudTh>Public</MudTh>
+            <MudTh>Created</MudTh>
+            <MudTh>Modified</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Docket">
+                <MudContainer Class="d-flex flex-column">
+                    <MudText Style="font-size: 17px; font-weight: 600">@context.Title</MudText>
+                        <MudText Style="font-size: 15px">@context.Body</MudText>
+                </MudContainer>
+            </MudTd>
+            <MudTd DataLabel="Public">
+                <MudSwitch T="bool" @bind-Checked="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
+            </MudTd>
+            <MudTd DataLabel="Created">@context.DateCreated</MudTd>
+            <MudTd DataLabel="Modified">@context.DateModified</MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudContainer Class="pa-0 ma-0 d-flex">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" Size="Size.Small">Edit</MudButton>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Small" Class="me-1">Delete</MudButton>
+                    </MudContainer>
+                </MudTd>
+        </RowTemplate>
+    </MudTable> *@
