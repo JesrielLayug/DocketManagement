@@ -21,6 +21,12 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IDocketService, DocketService>();
 
+//builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
+
+//builder.Services.AddHttpClient("WebAPI",
+//    client => client.BaseAddress = new Uri("https://localhost:7185/"))
+//    .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 

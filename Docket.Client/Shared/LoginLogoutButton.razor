@@ -22,5 +22,6 @@
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/login");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Docket.Client.Services.Contracts;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -7,22 +8,26 @@ namespace Docket.Client.Securities
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService localStorageService;
+        private readonly HttpClient httpClient;
 
-        public CustomAuthStateProvider(ILocalStorageService localStorageService)
+        public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient httpClient)
         {
             this.localStorageService = localStorageService;
+            this.httpClient = httpClient;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             string token = await localStorageService.GetItemAsStringAsync("token");
-            Console.WriteLine(token);
 
             var identity = new ClaimsIdentity();
+            httpClient.DefaultRequestHeaders.Authorization = null;
 
             if(!string.IsNullOrEmpty(token) )
             {
                 identity = new ClaimsIdentity(ParseClaimsFromJwt(token));
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
             }
 
             var user = new ClaimsPrincipal(identity);

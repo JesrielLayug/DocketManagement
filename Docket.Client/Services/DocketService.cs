@@ -1,4 +1,5 @@
-﻿using Docket.Client.Services.Contracts;
+﻿using Blazored.LocalStorage;
+using Docket.Client.Services.Contracts;
 using Docket.Shared;
 using System.Net;
 using System.Net.Http.Json;
@@ -8,10 +9,14 @@ namespace Docket.Client.Services
     public class DocketService : IDocketService
     {
         private readonly HttpClient httpClient;
+        private readonly AuthenticationStateProvider authenticationStateProvider;
+        private readonly ILocalStorageService localStorageService;
 
-        public DocketService(HttpClient httpClient)
+        public DocketService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider, ILocalStorageService localStorageService)
         {
             this.httpClient = httpClient;
+            this.authenticationStateProvider = authenticationStateProvider;
+            this.localStorageService = localStorageService;
         }
 
         public async Task<Response> Add(DTODocket docket)
@@ -53,6 +58,19 @@ namespace Docket.Client.Services
             {
                 var dockets = await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
                 return dockets;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<DTODocket>> GetUserDocket()
+        {
+            try
+            {
+                 return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetUserDockets");
             }
             catch (Exception ex)
             {

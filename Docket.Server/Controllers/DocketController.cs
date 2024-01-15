@@ -11,7 +11,6 @@ namespace Docket.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "user")]
     public class DocketController : ControllerBase
     {
         private readonly IDocketService docketService;
@@ -66,6 +65,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetById/{docketId}")]
         public async Task<ActionResult<DTODocket>> GetById([FromRoute] string docketId)
         {
@@ -94,6 +94,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetByUser/{userId}")]
         public async Task<ActionResult<IEnumerable<DTODocket>>> GetByUserId([FromRoute] string userId)
         {
@@ -118,6 +119,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetUserDockets")]
         public async Task<ActionResult<IEnumerable<DTODocket>>> GetUserDockets()
         {
@@ -157,6 +159,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] DTODocket request)
         {
@@ -192,6 +195,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("Update/{docketId}")]
         public async Task<IActionResult> Update(string docketId, [FromBody] DTODocket request)
         {
@@ -225,6 +229,7 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("Delete/{docketId}")]
         public async Task<IActionResult> Delete([FromRoute] string docketId)
         {

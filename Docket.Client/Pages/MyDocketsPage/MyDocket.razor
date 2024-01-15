@@ -1,9 +1,35 @@
 ﻿@page "/my-docket"
+@using Docket.Shared
 @inherits MyDocketBase
 @attribute [Authorize(Roles = "user")]
 
-<h3>MyDocket</h3>
 
-@code {
-
+@if (Dockets == null)
+{
+    <Loader />
 }
+else
+{
+    <div class="row d-flex justify-space-between px-2 docket-header">
+        <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">My Dockets</MudText>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
+            Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
+    </div>
+
+    @if (Dockets.Count() > 0)
+    {
+        const int itemsPerRow = 4;
+        var docketsRowList = new List<DTODocket>();
+
+        for (int i = 0; i < Dockets.Count(); i++)
+        {
+            docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+
+            <div class="row mt-3 d-flex flex-wrap docketcard-container">
+                <DocketCard Dockets="@docketsRowList" />
+            </div>
+        }
+    }
+}
+
+
