@@ -10,8 +10,8 @@
             <MudContainer Fixed="true" Style="max-height: 550px; overflow-y: scroll" Class="ml-1">
                 <MudTextField @bind-Value="Docket.Title" Label="Title" For="@(() => Docket.Title)" Class="my-5"
                               Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
-                <MudTextField Label="Description" Variant="Variant.Outlined" Text="@Docket.Body" For="@(() => Docket.Body)" Lines="3" />
-                <MudSwitch For="@(() => Docket.IsPublic)" Color="Color.Primary" Label="Public" Class="mt-2" />
+                <MudTextField @bind-Value="Docket.Body" Label="Description" Variant="Variant.Outlined" Text="@Docket.Body" For="@(() => Docket.Body)" Lines="3" />
+                <MudSwitch @bind-Value="Docket.IsPublic" For="@(() => Docket.IsPublic)" Color="Color.Primary" Label="Public" Class="mt-2" />
             </MudContainer>
             <MudContainer Class="mb-4 mt-3">
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"

@@ -12,17 +12,17 @@ namespace Docket.Client.Pages.PublicPage
         [Inject] IDocketService DocketService { get; set; }
         [Inject] private IDialogService dialogService { get; set; }
 
-        public IEnumerable<DTODocket> Dockets { get; set; }
+        public IEnumerable<DTODocket> Dockets;
+        public bool isLoading = true;
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            Dockets = await DocketService.GetAll();
+            if (firstRender)
+            {
+                Dockets = await DocketService.GetAll();
+                isLoading = false;
+                StateHasChanged();
+            }
         }
-
-        //public void OpenEditDocketForm()
-        //{
-        //    var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader=true };
-        //    dialogService.Show<EditDocket>("EditDocket", options);
-        //}
     }
 }

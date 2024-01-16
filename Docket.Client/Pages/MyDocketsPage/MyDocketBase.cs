@@ -11,11 +11,17 @@ namespace Docket.Client.Pages.MyDocketsPage
         [Inject] IDocketService DocketService { get; set; }
         [Inject] private IDialogService dialogService { get; set; }
 
-        public IEnumerable<DTODocket> Dockets = new List<DTODocket>();
+        public IEnumerable<DTODocket> Dockets;
+        public bool isLoading = true;
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            Dockets = await DocketService.GetUserDocket();
+            if (firstRender)
+            {
+                Dockets = await DocketService.GetUserDocket();
+                isLoading = false;
+                StateHasChanged();
+            }
         }
 
         public void OpenEditDocketForm()

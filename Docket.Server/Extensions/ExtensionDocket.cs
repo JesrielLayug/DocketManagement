@@ -17,7 +17,6 @@ namespace Docket.Server.Extensions
                         Body = docket.Body,
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
-                        IsHidden = docket.IsHidden,
                         IsPublic = docket.IsPublic,
                         UserId = docket.UserId,
                         Username = user.name

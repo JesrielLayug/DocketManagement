@@ -18,8 +18,6 @@ namespace Docket.Server.Models
         public DateTime DateCreated { get; set; }
         [BsonElement("date_modified")]
         public DateTime DateModified { get; set; }
-        [BsonElement("is_hidden")]
-        public bool IsHidden { get; set; }
         [BsonElement("is_public")]
         public bool IsPublic { get; set; }
         [BsonElement("user_id")]

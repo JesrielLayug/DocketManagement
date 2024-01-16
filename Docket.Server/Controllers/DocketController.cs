@@ -81,7 +81,6 @@ namespace Docket.Server.Controllers
                         Body = docket.Body,
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
-                        IsHidden = docket.IsHidden,
                         IsPublic = docket.IsPublic,
                         UserId = docket.UserId,
                     });
@@ -144,7 +143,6 @@ namespace Docket.Server.Controllers
                         DateCreated = item.DateCreated,
                         DateModified = item.DateModified,
                         UserId = item.UserId,
-                        IsHidden = item.IsHidden,
                         IsPublic = item.IsPublic,
                         Username = httpContextAccessor.HttpContext.User.Identity.Name
                     });
@@ -161,12 +159,13 @@ namespace Docket.Server.Controllers
 
         [Authorize]
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] DTODocket request)
+        public async Task<IActionResult> Create([FromBody] DTODocketCreate request)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    Console.WriteLine(ModelState);
                     return BadRequest(ModelState);
                 }
 
@@ -181,23 +180,23 @@ namespace Docket.Server.Controllers
                 {
                     Title = request.Title,
                     Body = request.Body,
-                    DateCreated = request.DateCreated,
-                    DateModified = request.DateModified,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
                     UserId = userId,
-                    IsPublic = request.IsPublic,
-                    IsHidden = request.IsHidden
+                    IsPublic = request.IsPublic
                 });
                 return Ok();
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
         [Authorize]
         [HttpPut("Update/{docketId}")]
-        public async Task<IActionResult> Update(string docketId, [FromBody] DTODocket request)
+        public async Task<IActionResult> Update(string docketId, [FromBody] DTODocketUpdate request)
         {
             try
             {
@@ -211,11 +210,10 @@ namespace Docket.Server.Controllers
                 {
                     existingDocket.Title = request.Title;
                     existingDocket.Body = request.Body;
-                    existingDocket.DateCreated = request.DateCreated;
-                    existingDocket.DateModified = request.DateModified;
-                    existingDocket.UserId = request.UserId;
+                    existingDocket.DateCreated = existingDocket.DateCreated;
+                    existingDocket.DateModified = DateTime.Now;
+                    existingDocket.UserId = existingDocket.UserId;
                     existingDocket.IsPublic = request.IsPublic;
-                    existingDocket.IsHidden = request.IsHidden;
 
                     await docketService.Update(docketId, existingDocket);
                     return Ok();

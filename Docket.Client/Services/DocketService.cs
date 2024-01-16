@@ -19,11 +19,11 @@ namespace Docket.Client.Services
             this.localStorageService = localStorageService;
         }
 
-        public async Task<Response> Add(DTODocket docket)
+        public async Task<Response> Add(DTODocketCreate docket)
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync<DTODocket>("api/Docket/Create", docket);
+                var response = await httpClient.PostAsJsonAsync<DTODocketCreate>("api/Docket/Create", docket);
                 if(response.StatusCode == HttpStatusCode.OK)
                 {
                     return new Response

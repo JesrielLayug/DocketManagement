@@ -30,6 +30,7 @@ namespace Docket.Shared
         [BsonElement("is_public")]
         public bool IsPublic { get; set; } = false;
         [BsonElement("user_id")]
+        [BsonIgnore]
         public string UserId { get; set; }
         [BsonElement("user_name")]
         [BsonIgnore]

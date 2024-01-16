@@ -15,9 +15,11 @@
                 <MudCardContent>
                     <MudText Typo="Typo.body2">@item.Body</MudText>
                 </MudCardContent>
-                <MudCardActions Class="d-flex justify-space-between pb-3 pe-5">
+                <MudCardActions Class="d-flex justify-center pb-3 pe-5">
                     <MudButton Variant="Variant.Text" Color="Color.Primary">View</MudButton>
-                    <MudText Style="font-size: 12px">@item.DateCreated.ToString("mm/dd/yyyy")</MudText>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Edit</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Delete</MudButton>
+                    @* <MudText Style="font-size: 12px">@item.DateCreated.ToString("MM-dd-yyyy")</MudText> *@
                 </MudCardActions>
             </MudCard>
         </div>
