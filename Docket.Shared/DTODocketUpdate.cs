@@ -8,6 +8,7 @@ namespace Docket.Shared
 {
     public class DTODocketUpdate
     {
+        public string Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public bool IsPublic { get; set; }

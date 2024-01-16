@@ -7,5 +7,6 @@ namespace Docket.Client.Services.Contracts
         Task<IEnumerable<DTODocket>> GetAll();
         Task<IEnumerable<DTODocket>> GetUserDocket();
         Task<Response> Add(DTODocketCreate docket);
+        Task<Response> Update(DTODocketUpdate docket);
     }
 }

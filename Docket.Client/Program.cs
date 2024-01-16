@@ -7,6 +7,7 @@ using Docket.Client.Services.Contracts;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using Docket.Shared;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +21,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IDocketService, DocketService>();
+builder.Services.AddScoped<DTODocketUpdate>();
 
 //builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
 

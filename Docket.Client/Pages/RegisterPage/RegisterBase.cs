@@ -9,7 +9,7 @@ namespace Docket.Client.Pages.RegisterPage
 {
     public class RegisterBase : ComponentBase
     {
-        [Inject] private IDialogService dialogService { get; set; }
+        [Inject] private ISnackbar Snackbar { get; set; }
         [CascadingParameter] MudDialogInstance dialog { get; set; }
         [Inject] public IAuthenticationService authService { get; set; }
 
@@ -27,23 +27,18 @@ namespace Docket.Client.Pages.RegisterPage
             if(response.isSuccess)
             {
                 isLoading = false;
-                await dialogService.ShowMessageBox(
-                    "Success",
-                    (MarkupString)response.message,
-                    yesText: "Ok"
-                    );
 
                 dialog.Close(DialogResult.Ok(true));
+
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+                Snackbar.Add(response.message, Severity.Success);
+
                 StateHasChanged();
             }
             else
             {
-                await dialogService.ShowMessageBox(
-                    "Warning",
-                    (MarkupString)response.message,
-                    yesText: "Ok"
-                    );
-                StateHasChanged();
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+                Snackbar.Add(response.message, Severity.Error);
             }
         }
     }

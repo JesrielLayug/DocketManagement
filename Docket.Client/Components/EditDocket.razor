@@ -11,11 +11,19 @@
                 <MudTextField @bind-Value="Docket.Title" Label="Title" For="@(() => Docket.Title)" Class="my-5"
                               Variant="Variant.Outlined" InputType="InputType.Text"></MudTextField>
                 <MudTextField @bind-Value="Docket.Body" Label="Description" Variant="Variant.Outlined" Text="@Docket.Body" For="@(() => Docket.Body)" Lines="3" />
-                <MudSwitch @bind-Value="Docket.IsPublic" For="@(() => Docket.IsPublic)" Color="Color.Primary" Label="Public" Class="mt-2" />
+                <MudSwitch @bind-Value="Docket.IsPublic" @bind-Checked="Docket.IsPublic" For="@(() => Docket.IsPublic)" Color="Color.Primary" Label="Public" Class="mt-2" />
             </MudContainer>
             <MudContainer Class="mb-4 mt-3">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
-                           Size="Size.Large" ButtonType="ButtonType.Submit">Add</MudButton>
+                @if(Docket != null)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                               Size="Size.Large" ButtonType="ButtonType.Submit">Save</MudButton>
+                }
+                else
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
+                               Size="Size.Large" ButtonType="ButtonType.Submit">Add</MudButton>
+                }
             </MudContainer>
         </EditForm>
     </DialogContent>

@@ -27,7 +27,7 @@ else
             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
                        Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
         </div>
-        <MudTable Items="@Dockets" Hover="true" Striped="true" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false" Virtualize="true">
+        <MudTable Items="@Dockets" Hover="true" Striped="false" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false" Virtualize="true">
             <HeaderContent>
                 <MudTh>Title</MudTh>
                 <MudTh>Body</MudTh>
@@ -37,17 +37,17 @@ else
                 <MudTh>Actions</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title"><MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 10)</MudText></MudTd>
-                    <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 15)</MudTd>
+                <MudTd DataLabel="Title"><MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 20)</MudText></MudTd>
+                    <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 25)</MudTd>
                     <MudTd DataLabel="Public">
-                        <MudSwitch T="bool" @bind-Checked="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
+                        <MudSwitch T="bool" @bind-Value="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
                     </MudTd>
                     <MudTd DataLabel="Created">@context.DateCreated.ToString("MM-dd-yyyy")</MudTd>
                     <MudTd DataLabel="Modified">@context.DateModified.ToString("MM-dd-yyyy")</MudTd>
                     <MudTd DataLabel="Actions">
                         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
                             <MudButton Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
-                            <MudButton Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
+                            <MudButton @onclick="(async () => await UpdateDocket(context))" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
                             <MudButton Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
                         </MudButtonGroup>
                     </MudTd>
