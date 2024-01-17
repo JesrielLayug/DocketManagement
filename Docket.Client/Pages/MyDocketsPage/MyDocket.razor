@@ -17,7 +17,7 @@ else
             <MudImage Src="/Image/No-Item.png" Width="450" Height="450" ObjectFit="ObjectFit.Cover" Elevation="0" Class="rounded" />
             <MudText Typo="Typo.h4" Align="Align.Center"><strong>NO DOCKETS</strong></MudText>
             <MudText Typo="Typo.subtitle2" Align="Align.Center">You don't have any dockets yet. Tap the button below to add.</MudText>
-            <MudFab Color="Color.Primary" Label="Add Product" @onclick="OpenEditDocketForm" Class="mt-6" StartIcon="@Icons.Material.Filled.Add" Size="Size.Medium" />
+            <MudFab Color="Color.Primary" Label="Add Product" @onclick="AddDocket" Class="mt-6" StartIcon="@Icons.Material.Filled.Add" Size="Size.Medium" />
         </MudContainer>
     }
     else
@@ -25,9 +25,9 @@ else
         <div class="row d-flex justify-space-between px-2 docket-header">
             <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">My Dockets</MudText>
             <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send"
-                       Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="OpenEditDocketForm">Add</MudButton>
+                       Color="Color.Primary" Size="Size.Medium" Style="height: 3em" OnClick="AddDocket">Add</MudButton>
         </div>
-        <MudTable Items="@Dockets" Hover="true" Striped="false" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false" Virtualize="true">
+        <MudTable Items="Dockets" Hover="true" Striped="false" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false">
             <HeaderContent>
                 <MudTh>Title</MudTh>
                 <MudTh>Body</MudTh>
@@ -47,8 +47,8 @@ else
                     <MudTd DataLabel="Actions">
                         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
                             <MudButton Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
-                            <MudButton @onclick="(async () => await UpdateDocket(context))" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
-                            <MudButton Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
+                            <MudButton @onclick="async () => await UpdateDocket(context)" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
+                            <MudButton @onclick="async () => await DeleteDocket(context.Id)" Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
                         </MudButtonGroup>
                     </MudTd>
                 </RowTemplate>

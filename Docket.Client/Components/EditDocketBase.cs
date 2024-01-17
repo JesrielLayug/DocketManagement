@@ -11,7 +11,7 @@ namespace Docket.Client.Components
         [Inject] private ISnackbar Snackbar { get; set; }
         [CascadingParameter] MudDialogInstance Dialog { get; set; }
         [Inject] public IDocketService DocketService { get; set; }
-        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
         [Parameter] public DTODocketUpdate DocketUpdate { get; set; } = new DTODocketUpdate();
 
         public DTODocketCreate DocketCreate = new DTODocketCreate();
@@ -31,6 +31,49 @@ namespace Docket.Client.Components
             }
         }
 
+        private void Response(string message, Severity severity)
+        {
+            StateHasChanged();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(message, severity);
+        }
+
+        private async Task Create(DTODocketCreate docket)
+        {
+            var response = await DocketService.Add(docket);
+
+            if (response.isSuccess)
+            {
+                isLoading = false;
+
+                Dialog.Close(DialogResult.Ok(true));
+
+                Response(response.message, Severity.Success);
+            }
+            else
+            {
+                Response(response.message, Severity.Error);
+            }
+        }
+
+        private async Task Update(DTODocketUpdate docket)
+        {
+            var response = await DocketService.Update(docket);
+
+            if (response.isSuccess)
+            {
+                isLoading = false;
+
+                Dialog.Close(DialogResult.Ok(true));
+
+                Response(response.message, Severity.Success);
+            }
+            else
+            {
+                Response(response.message, Severity.Error);
+            }
+        }
+
         public async Task SaveOnClick()
         {
             isLoading = true;
@@ -44,7 +87,7 @@ namespace Docket.Client.Components
                 DocketUpdate.Body = Docket.Body;
                 DocketUpdate.IsPublic = Docket.IsPublic;
 
-                response = await DocketService.Update(DocketUpdate);
+                await Update(DocketUpdate);
             }
             else
             {
@@ -52,24 +95,7 @@ namespace Docket.Client.Components
                 DocketCreate.Body = Docket.Body;
                 DocketCreate.IsPublic = Docket.IsPublic;
 
-                response = await DocketService.Add(DocketCreate);
-            }
-
-            if (response.isSuccess)
-            {
-                isLoading = false;
-
-                Dialog.Close(DialogResult.Ok(true));
-
-                NavigationManager.NavigateTo(NavigationManager.Uri, true);
-
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
-                Snackbar.Add(response.message, Severity.Success);
-            }
-            else
-            {
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
-                Snackbar.Add(response.message, Severity.Error);
+                await Create(DocketCreate);
             }
         }
     }

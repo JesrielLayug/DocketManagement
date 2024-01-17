@@ -8,5 +8,6 @@ namespace Docket.Client.Services.Contracts
         Task<IEnumerable<DTODocket>> GetUserDocket();
         Task<Response> Add(DTODocketCreate docket);
         Task<Response> Update(DTODocketUpdate docket);
+        Task<Response> Delete(string docketId);
     }
 }
