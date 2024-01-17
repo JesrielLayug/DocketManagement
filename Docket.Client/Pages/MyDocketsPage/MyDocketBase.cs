@@ -11,7 +11,7 @@ namespace Docket.Client.Pages.MyDocketsPage
     {
         [Inject] IDocketService DocketService { get; set; }
         [Inject] IDialogService dialogService { get; set; }
-        [Inject] NavigationManager NavigationManager { get; set; }
+        [Inject] ISnackbar Snackbar { get; set; }
 
         public IEnumerable<DTODocket> Dockets;
 
@@ -51,8 +51,7 @@ namespace Docket.Client.Pages.MyDocketsPage
 
             if (!result.Canceled)
             {
-                Dockets = await DocketService.GetUserDocket();
-                StateHasChanged();
+               await RefreshTable();
             }
         }
 
@@ -67,9 +66,23 @@ namespace Docket.Client.Pages.MyDocketsPage
             if(result.Value == true)
             {
                 await DocketService.Delete(docketId);
-                Dockets = await DocketService.GetUserDocket();
-                StateHasChanged();
+
+                await RefreshTable();
+
+                Response("Docket Deleted", Severity.Error);
             }
+        }
+
+        private async Task RefreshTable()
+        {
+            Dockets = await DocketService.GetUserDocket();
+            StateHasChanged();
+        }
+
+        private void Response(string message, Severity severity)
+        {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(message, severity);
         }
     }
 }
