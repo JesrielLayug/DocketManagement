@@ -1,5 +1,4 @@
-﻿using Docket.Client.Pages.ViewDocketPage;
-using Docket.Shared;
+﻿using Docket.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -17,12 +16,6 @@ namespace Docket.Client.Components
                 .ToArray());
 
             return char.ToUpper(fiteredName[0]);
-        }
-
-        public void ViewDocket()
-        {
-            var options = new DialogOptions() { DisableBackdropClick=true, CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader=true };
-            DialogService.Show<ViewDocket>("Docket", options);
         }
     }
 }

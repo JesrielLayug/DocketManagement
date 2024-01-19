@@ -22,19 +22,11 @@ else
     {
         @if (Dockets.Count() > 0)
         {
-            const int itemsPerRow = 4;
-            var docketsRowList = new List<DTODocket>();
-
-            for (int i = 0; i < Dockets.Count(); i++)
-            {
-                docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
-
-                <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
-                    <div style="min-width: 70%">
-                        <DocketCard Dockets="@docketsRowList" />
-                    </div>
+            <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
+                <div style="min-width: 70%">
+                    <DocketCard Dockets="@Dockets" />
                 </div>
-            }
+            </div>
         }
     }
 }

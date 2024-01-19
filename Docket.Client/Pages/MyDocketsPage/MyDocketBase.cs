@@ -10,7 +10,7 @@ namespace Docket.Client.Pages.MyDocketsPage
     public class MyDocketBase : ComponentBase
     {
         [Inject] IDocketService DocketService { get; set; }
-        [Inject] IDialogService dialogService { get; set; }
+        [Inject] IDialogService DialogService { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
 
         public IEnumerable<DTODocket> Dockets;
@@ -31,7 +31,7 @@ namespace Docket.Client.Pages.MyDocketsPage
 
             var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
 
-            var dialog = dialogService.Show<EditDocket>("EditDocket", parameters, options);
+            var dialog = DialogService.Show<EditDocket>("EditDocket", parameters, options);
 
             var result = await dialog.Result;
 
@@ -56,7 +56,7 @@ namespace Docket.Client.Pages.MyDocketsPage
 
             var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
 
-            var dialog = dialogService.Show<EditDocket>("EditDocket", parameters, options);
+            var dialog = DialogService.Show<EditDocket>("EditDocket", parameters, options);
 
             var result = await dialog.Result;
 
@@ -68,7 +68,7 @@ namespace Docket.Client.Pages.MyDocketsPage
 
         public async Task DeleteDocket(string docketId)
         {
-            bool? result = await dialogService.ShowMessageBox(
+            bool? result = await DialogService.ShowMessageBox(
                 "Delete",
                 "Deleting docket cannot be undone!",
                 yesText: "Delete", cancelText: "Cancel"
@@ -94,6 +94,12 @@ namespace Docket.Client.Pages.MyDocketsPage
         {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
             Snackbar.Add(message, severity);
+        }
+
+        public void ViewDocket()
+        {
+            var options = new DialogOptions() { DisableBackdropClick = true, CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader = true };
+            DialogService.Show<ViewDocketDialog>("Docket", options);
         }
     }
 }
