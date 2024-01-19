@@ -17,7 +17,7 @@
                 <MudSpacer />
                 <LoginLogoutButton />
             </MudAppBar>
-            <MudDrawer @bind-Open="_drawerOpen" Color="Color.Dark" Variant="@DrawerVariant.Responsive" Class="d-flex flex-column">
+            <MudDrawer @bind-Open="_drawerOpen" Color="Color.Dark" Variant="@DrawerVariant.Responsive" Class="d-flex flex-column" OpenMiniOnHover="true">
                 <MudCard Elevation="0" Class="ma-0 pa-0">
                     <MudText Typo="Typo.h6" Class="px-4 mt-1">@context.User.Identity.Name</MudText>
                     <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">System Management</MudText>

@@ -17,7 +17,7 @@ else
             <MudImage Src="/Image/No-Item.png" Width="450" Height="450" ObjectFit="ObjectFit.Cover" Elevation="0" Class="rounded" />
             <MudText Typo="Typo.h4" Align="Align.Center"><strong>NO DOCKETS</strong></MudText>
             <MudText Typo="Typo.subtitle2" Align="Align.Center">You don't have any dockets yet. Tap the button below to add.</MudText>
-            <MudFab Color="Color.Primary" Label="Add Product" @onclick="AddDocket" Class="mt-6" StartIcon="@Icons.Material.Filled.Add" Size="Size.Medium" />
+            <MudFab Color="Color.Primary" Label="Add Product" @onclick="async () => await AddDocket()" Class="mt-6" StartIcon="@Icons.Material.Filled.Add" Size="Size.Medium" />
         </MudContainer>
     }
     else

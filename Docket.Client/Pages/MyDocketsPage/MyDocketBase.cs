@@ -24,10 +24,21 @@ namespace Docket.Client.Pages.MyDocketsPage
             StateHasChanged();
         }
 
-        public void AddDocket()
+        public async Task AddDocket()
         {
+            var parameters = new DialogParameters<EditDocket>();
+            parameters.Add(x => x.DocketUpdate, null);
+
             var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
-            dialogService.Show<EditDocket>("EditDocket", options);
+
+            var dialog = dialogService.Show<EditDocket>("EditDocket", parameters, options);
+
+            var result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                await RefreshTable();
+            }
         }
 
         public async Task UpdateDocket(DTODocket docket)

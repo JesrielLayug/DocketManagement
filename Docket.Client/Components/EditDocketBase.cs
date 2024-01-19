@@ -36,9 +36,22 @@ namespace Docket.Client.Components
             isLoading = true;
 
             if(DocketUpdate != null)
+            {
+                DocketUpdate.Id = Docket.Id;
+                DocketUpdate.Title = Docket.Title;
+                DocketUpdate.Body = Docket.Body;
+                DocketUpdate.IsPublic = Docket.IsPublic;
+
                 await Update(DocketUpdate);
+            }
             else
+            {
+                DocketCreate.Title = Docket.Title;
+                DocketCreate.Body = Docket.Body;
+                DocketCreate.IsPublic = Docket.IsPublic;
+
                 await Create(DocketCreate);
+            }
         }
 
         private void Response(string message, Severity severity)
@@ -50,10 +63,6 @@ namespace Docket.Client.Components
 
         private async Task Create(DTODocketCreate docket)
         {
-            DocketCreate.Title = Docket.Title;
-            DocketCreate.Body = Docket.Body;
-            DocketCreate.IsPublic = Docket.IsPublic;
-
             var response = await DocketService.Add(docket);
 
             if (response.isSuccess)
@@ -72,11 +81,6 @@ namespace Docket.Client.Components
 
         private async Task Update(DTODocketUpdate docket)
         {
-            DocketUpdate.Id = Docket.Id;
-            DocketUpdate.Title = Docket.Title;
-            DocketUpdate.Body = Docket.Body;
-            DocketUpdate.IsPublic = Docket.IsPublic;
-
             var response = await DocketService.Update(docket);
 
             if (response.isSuccess)

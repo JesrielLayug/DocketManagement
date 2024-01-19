@@ -20,11 +20,6 @@ else
     }
     else
     {
-        <div class="row d-flex px-2 docket-header">
-            <MudText Typo="Typo.h4" GutterBottom="true" Class="ml-1" Style="font-weight: 600">Public Dockets</MudText>
-
-        </div>
-
         @if (Dockets.Count() > 0)
         {
             const int itemsPerRow = 4;
@@ -34,8 +29,10 @@ else
             {
                 docketsRowList = Dockets.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
 
-                <div class="row mt-3 d-flex flex-wrap docketcard-container">
-                    <DocketCard Dockets="@docketsRowList" />
+                <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
+                    <div style="min-width: 70%">
+                        <DocketCard Dockets="@docketsRowList" />
+                    </div>
                 </div>
             }
         }

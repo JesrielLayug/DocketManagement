@@ -2,23 +2,54 @@
 
 @foreach (var item in Dockets)
 {
-    <div style="min-width: 272px" class="col-lg-3 mb-2 mx-2 docket">
+    <div style="min-width: 100%" class="col-lg-3 mb-2 mx-2 docket">
         <MudCard Elevation="3">
-           <MudCardHeader>
-               <CardHeaderContent>
-                   <MudText Typo="Typo.body2">@item.Title</MudText>
-               </CardHeaderContent>
-               <CardHeaderActions>
-                    <MudIconButton Icon="@Icons.Material.Filled.Bookmark" Color="Color.Default" />
-               </CardHeaderActions>
-           </MudCardHeader>
-           <MudCardContent>
-               <MudText Typo="Typo.caption">@item.Body</MudText>
-           </MudCardContent>
-           <MudCardActions Class="d-flex justify-space-between pb-3 pe-5">
-               <MudButton Variant="Variant.Text" Color="Color.Primary">View</MudButton>
-               <MudAvatar Color="Color.Primary" Size="Size.Small">M</MudAvatar>
-           </MudCardActions>
-       </MudCard>
+            <MudCardContent>
+                <MudGrid Class="pa-2">
+                    <MudItem xs="12" Class="d-flex">
+                        <MudAvatar Color="Color.Primary" Size="Size.Medium">@GetFirstLetterOFUser(item.Username)</MudAvatar>
+                        <div class="ms-2 d-flex flex-column">
+                            <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 14px">@item.Username</MudText>
+                            <MudText Typo="Typo.caption" Style="font-size: 11px">@item.DateCreated.ToString("MM-dd-yyyy")</MudText>
+                        </div>
+                        <MudSpacer />
+                        <MudFab Color="Color.Inherit" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.MoreHoriz" />
+                    </MudItem>
+
+                    <MudItem xs="12" Class="d-flex flex-column mt-0 mb-0">
+                        <MudText Typo="Typo.body1" Class="mb-1">@item.Title</MudText>
+                        <MudText Typo="Typo.caption">@item.Body</MudText>
+                    </MudItem>
+
+                    <MudItem xs="12" Class="d-flex align-center">
+                        <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 12px">Ratings</MudText>
+                        <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="5" Class="ms-2 pt-1" />
+                        <MudSpacer />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                            <MudText Typo="Typo.body1" Style="font-weight: 500; font-size: 12px">Add rating</MudText>
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+        
     </div>
 }
+
+@* <MudCard Elevation="3">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">@item.Title</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Bookmark" Color="Color.Default" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.caption">@item.Body</MudText>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-space-between pb-3 pe-5">
+            <MudButton OnClick="ViewDocket" Variant="Variant.Text" Color="Color.Primary">View</MudButton>
+            <MudAvatar Color="Color.Primary" Size="Size.Small">@GetFirstLetterOFUser(item.Username)</MudAvatar>
+        </MudCardActions>
+    </MudCard> *@

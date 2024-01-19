@@ -75,6 +75,18 @@ namespace Docket.Client.Services
             }
         }
 
+        public async Task<DTODocket> GetDocketById(string docketId)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<DTODocket>($"api/Docket/GetById/{docketId}");
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<Response> Update(DTODocketUpdate docket)
         {
             try
