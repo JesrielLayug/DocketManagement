@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Docket.Server.Extensions;
 
 namespace Docket.Server.Controllers
 {
@@ -14,39 +15,51 @@ namespace Docket.Server.Controllers
     public class DocketFeatureController : ControllerBase
     {
         private readonly IDocketFeatureService featureService;
+        private readonly IDocketService docketService;
+        private readonly IUserService userService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DocketFeatureController(IDocketFeatureService featureService, IHttpContextAccessor httpContextAccessor)
+        public DocketFeatureController
+            (
+                IDocketFeatureService featureService,
+                IDocketService docketService,
+                IUserService userService,
+                IHttpContextAccessor httpContextAccessor
+            )
         {
             this.featureService = featureService;
+            this.docketService = docketService;
+            this.userService = userService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpPost("RateDocket/{docketId}")]
-        public async Task<IActionResult> RateDocket([FromRoute] string docketId, [FromBody] DTOFeatureAddRate featureRate)
+        [HttpGet("GetDocketFavorites")]
+        public async Task<ActionResult<IEnumerable<DTODocketFeature>>> GetDocketFavorites()
         {
             try
             {
-                if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
+                if (ModelState.IsValid)
                 {
-                    await featureService.RateDocket(new DocketRate
-                    {
-                        Rate = featureRate.Rate,
-                        DocketId = docketId,
-                        UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                });
+                    var dockets = await docketService.GetAll();
 
-                    return Ok($"Docket rating is {featureRate.Rate}");
+                    var favorites = await featureService.GetAllFavorites();
+
+                    var users = await userService.GetAll();
+
+                    var favoriteDockets = dockets.ConvertWithFeatures(users, favorites);
+
+                    return Ok(favoriteDockets);
                 }
 
-                return BadRequest(ModelState);
+                return NotFound("No favorite dockets");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpPost("FavoriteDocket/{docketId}")]
         public async Task<IActionResult> AddDocketToFavorite([FromRoute] string docketId, [FromBody] DTOFeatureAddFavorite featureFavorite)
@@ -55,14 +68,21 @@ namespace Docket.Server.Controllers
             {
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
-                    await featureService.AddDocketToFavorite(new DocketFavorite
-                    {
-                        IsFavorite = featureFavorite.IsFavorite,
-                        DocketId = docketId,
-                        UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                    });
 
-                    return Ok("Successfully added the docket to favorites");
+                    var existingFavorite = await featureService.GetByDocketId(docketId);
+                    if(existingFavorite == null)
+                    {
+                        await featureService.AddDocketToFavorite(new DocketFavorite
+                        {
+                            IsFavorite = featureFavorite.IsFavorite,
+                            DocketId = docketId,
+                            UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                        });
+
+                        return Ok("Successfully added the docket to favorites");
+                    }
+
+                    return BadRequest("Docket is already in favorite.");
                 }
 
                 return BadRequest(ModelState);
@@ -73,5 +93,6 @@ namespace Docket.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

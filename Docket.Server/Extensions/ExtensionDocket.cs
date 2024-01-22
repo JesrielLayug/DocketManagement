@@ -8,13 +8,11 @@ namespace Docket.Server.Extensions
         public static IEnumerable<DTODocket> 
             Convert (
                 this IEnumerable<Models.Docket> dockets,
-                IEnumerable<User> users, 
-                IEnumerable<DocketRate> rates
+                IEnumerable<User> users
             )
         {
             return (from docket in dockets
                     join user in users on docket.UserId equals user.id
-                    join rate in rates on docket.UserId equals rate.UserId
                     select new DTODocket
                     {
                         Id = docket.Id,
@@ -23,7 +21,7 @@ namespace Docket.Server.Extensions
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,
-                        Rates = (rate.Rate != null) ? rate.Rate : 0,
+                        Rates = docket.Rate,
                         UserId = docket.UserId,
                         Username = user.name
                     }).ToList();

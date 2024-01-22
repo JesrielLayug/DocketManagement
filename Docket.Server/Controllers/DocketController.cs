@@ -42,9 +42,7 @@ namespace Docket.Server.Controllers
 
                 var users = await userService.GetAll();
 
-                var rates = await featureService.GetDocketRates();
-
-                var dto_dockets = dockets.Convert(users, rates);
+                var dto_dockets = dockets.Convert(users);
 
 
                 return Ok(dto_dockets);
@@ -65,9 +63,7 @@ namespace Docket.Server.Controllers
 
                 var users = await userService.GetAll();
 
-                var rates = await featureService.GetDocketRates();
-
-                var dto_public_dockets = public_dockets.Convert(users, rates);
+                var dto_public_dockets = public_dockets.Convert(users);
 
                 return Ok(dto_public_dockets);
             }
@@ -117,9 +113,7 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var rates = await featureService.GetDocketRates();
-
-                    var dto_dockets = dockets.Convert(users, rates);
+                    var dto_dockets = dockets.Convert(users);
 
                     return Ok(dto_dockets);
                 }
@@ -257,6 +251,27 @@ namespace Docket.Server.Controllers
             }
             catch (Exception ex)
             {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPut("Rate/{docketId}")]
+        public async Task<IActionResult> RateDocket([FromRoute] string docketId, [FromBody] int rate)
+        {
+            try
+            {
+                var existingDocket = await docketService.GetById(docketId);
+
+                existingDocket.Rate = rate;
+
+                await docketService.Update(docketId, existingDocket);
+
+                return Ok($"{existingDocket.Title} rate: {rate}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }

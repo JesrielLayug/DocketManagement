@@ -12,6 +12,8 @@ namespace Docket.Server.Models
         public string Id { get; set; }
         [BsonElement("title")]
         public string Title { get; set; } = string.Empty;
+        [BsonElement("rate")]
+        public int Rate {  get; set; }
         [BsonElement("body")]
         public string Body { get; set; } = string.Empty;
         [BsonElement("date_created")]

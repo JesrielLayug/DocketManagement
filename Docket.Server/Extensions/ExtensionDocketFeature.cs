@@ -6,17 +6,15 @@ namespace Docket.Server.Extensions
     public static class ExtensionDocketFeature
     {
         public static IEnumerable<DTODocketFeature>
-            Convert (
+            ConvertWithFeatures (
                 this IEnumerable<Models.Docket> dockets, 
                 IEnumerable<User> users, 
-                IEnumerable<DocketRate> rates, 
                 IEnumerable<DocketFavorite> favorites
             )
         {
             return (from docket in dockets
                     join user in users on docket.UserId equals user.id
-                    join rate in rates on docket.UserId equals rate.UserId
-                    join favorite in favorites on docket.UserId equals favorite.UserId
+                    join favorite in favorites on docket.Id equals favorite.DocketId
                     select new DTODocketFeature
                     {
                         Id = docket.Id,
@@ -25,7 +23,7 @@ namespace Docket.Server.Extensions
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,
-                        Rates = (rate.Rate != null) ? rate.Rate : 0,
+                        Rates = docket.Rate,
                         IsFavorite = favorite.IsFavorite,
                         UserId = docket.UserId,
                         Username = user.name
