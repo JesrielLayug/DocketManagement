@@ -34,7 +34,7 @@ namespace Docket.Server.Controllers
         }
 
         [HttpGet("GetDocketFavorites")]
-        public async Task<ActionResult<IEnumerable<DTODocketFeature>>> GetDocketFavorites()
+        public async Task<ActionResult<IEnumerable<DTODocketWithRateAndFavorite>>> GetDocketFavorites()
         {
             try
             {
@@ -46,14 +46,16 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var favoriteDockets = dockets.ConvertWithFeatures(users, favorites);
+                    var rates = await featureService.GetAllRates();
+
+                    var favoriteDockets = dockets.Favorite(users, favorites, rates);
 
                     return Ok(favoriteDockets);
                 }
 
                 return NotFound("No favorite dockets");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
@@ -69,8 +71,8 @@ namespace Docket.Server.Controllers
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
 
-                    var existingFavorite = await featureService.GetByDocketId(docketId);
-                    if(existingFavorite == null)
+                    var existingFavorite = await featureService.GetByDocketIdFromFavorite(docketId);
+                    if (existingFavorite == null)
                     {
                         await featureService.AddDocketToFavorite(new DocketFavorite
                         {
@@ -86,6 +88,31 @@ namespace Docket.Server.Controllers
                 }
 
                 return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("RateDocket")]
+        public async Task<IActionResult> AddRateToDocket([FromBody] DTOFeatureAddRate request)
+        {
+            try
+            {
+                if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
+                {
+
+                    var existingRate = await featureService.GetByDocketIdFromRate(request.DocketId);
+                    
+                    existingRate.Rate = request.Rate;
+                    existingRate.DocketId = request.DocketId;
+
+                    await featureService.UpdateRateToDocket(request.DocketId, existingRate);
+                    return Ok("Successfully rated the docket");
+                }
+                return BadRequest("Failed to rate the docket");
             }
             catch(Exception ex)
             {

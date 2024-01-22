@@ -2,31 +2,21 @@
 
 <MudDialog Class="pa-3">
     <DialogContent>
-        <MudGrid>
+
+        <MudGrid Class="pa-2">
             <MudItem xs="12" Class="d-flex">
-                <MudAvatar Color="Color.Primary" Size="Size.Medium">J</MudAvatar>
-                <div class="ms-2 d-flex flex-column">
-                    <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 14px">Jesriel</MudText>
-                    <MudText Typo="Typo.caption" Style="font-size: 11px">12-12-2024</MudText>
-                </div>
+                <MudAvatar Color="Color.Primary" Size="Size.Medium">@GetFirstLetterOFUser(Docket.Username)</MudAvatar>
+                    <div class="ms-2 d-flex flex-column">
+                        <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 14px">@Docket.Username</MudText>
+                        <MudText Typo="Typo.caption" Style="font-size: 11px">@Docket.DateCreated.ToString("MM-dd-yyyy")</MudText>
+                    </div>
                 <MudSpacer />
-                <MudFab Color="Color.Inherit" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Close" />
+                <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="Docket.Rates" Class="ms-2 pt-1" />
             </MudItem>
 
             <MudItem xs="12" Class="d-flex flex-column mt-0 mb-0">
-                <MudText Typo="Typo.body1" Class="mb-1">How's everybody doing?</MudText>
-                <MudText Typo="Typo.caption">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                </MudText>
-            </MudItem>
-
-            <MudItem xs="12" Class="d-flex align-center">
-                <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 12px">Ratings</MudText>
-                <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="5" Class="ms-2 pt-1" />
-                <MudSpacer />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">
-                    <MudText Typo="Typo.body1" Style="font-weight: 500; font-size: 12px">Add rating</MudText>
-                </MudButton>
+                <MudText Typo="Typo.body1" Class="mb-1">@Docket.Title</MudText>
+                <MudText Typo="Typo.caption">@Docket.Body</MudText>
             </MudItem>
         </MudGrid>
     </DialogContent>

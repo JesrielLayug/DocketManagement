@@ -1,0 +1,15 @@
+﻿@inherits RateDocketDialogBase
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Rate Dockets
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudRating @bind-SelectedValue="Rating" Class="mt-3" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Submit</MudButton>
+    </DialogActions>
+</MudDialog>

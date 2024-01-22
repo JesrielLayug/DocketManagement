@@ -147,5 +147,32 @@ namespace Docket.Client.Services
                 return new Response { isSuccess = false, message = "Internal server error" };
             }
         }
+
+        public async Task<Response> AddRating(string docketId, int rating)
+        {
+            try
+            {
+                var response = await httpClient.PutAsJsonAsync($"api/Docket/Update/{docketId}", rating);
+                if (response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        isSuccess = true,
+                        message = "Rate successfully added."
+                    };
+                }
+
+                return new Response
+                {
+                    isSuccess = false,
+                    message = "Failed to add rating to docket."
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+                return new Response { isSuccess = false, message = ex.Message };
+            }
+        }
     }
 }

@@ -31,6 +31,7 @@ else
             <HeaderContent>
                 <MudTh>Title</MudTh>
                 <MudTh>Body</MudTh>
+                <MudTh>Rates</MudTh>
                 <MudTh>Public</MudTh>
                 <MudTh>Date Created</MudTh>
                 <MudTh>Date Modified</MudTh>
@@ -39,6 +40,7 @@ else
             <RowTemplate>
                 <MudTd DataLabel="Title"><MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 20)</MudText></MudTd>
                     <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 25)</MudTd>
+                    <MudTd DataLabel="Rates"><MudRating ReadOnly="true" SelectedValue="context.Rates" /></MudTd>
                     <MudTd DataLabel="Public">
                         <MudSwitch T="bool" @bind-Value="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
                     </MudTd>
@@ -46,7 +48,7 @@ else
                     <MudTd DataLabel="Modified">@context.DateModified.ToString("MM-dd-yyyy")</MudTd>
                     <MudTd DataLabel="Actions">
                         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
-                            <MudButton OnClick="ViewDocket" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
+                            <MudButton @onclick="async () => await ViewDocket(context)" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
                             <MudButton @onclick="async () => await UpdateDocket(context)" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
                             <MudButton @onclick="async () => await DeleteDocket(context.Id)" Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
                         </MudButtonGroup>

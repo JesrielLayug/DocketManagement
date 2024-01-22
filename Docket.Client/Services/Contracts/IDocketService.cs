@@ -1,4 +1,5 @@
 ﻿using Docket.Shared;
+using System.Globalization;
 
 namespace Docket.Client.Services.Contracts
 {
@@ -10,5 +11,6 @@ namespace Docket.Client.Services.Contracts
         Task<Response> Add(DTODocketCreate docket);
         Task<Response> Update(DTODocketUpdate docket);
         Task<Response> Delete(string docketId);
+        Task<Response> AddRating(string docketId, int rating);
     }
 }

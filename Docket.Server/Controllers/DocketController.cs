@@ -5,6 +5,7 @@ using Docket.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Sockets;
 using System.Security.Claims;
 
 namespace Docket.Server.Controllers
@@ -42,10 +43,12 @@ namespace Docket.Server.Controllers
 
                 var users = await userService.GetAll();
 
-                var dto_dockets = dockets.Convert(users);
+                var rates = await featureService.GetAllRates();
+
+                var dtodockets = dockets.Docket(users, rates);
 
 
-                return Ok(dto_dockets);
+                return Ok(dtodockets);
             }
             catch (Exception ex)
             {
@@ -59,13 +62,16 @@ namespace Docket.Server.Controllers
         {
             try
             {
-                var public_dockets = await docketService.GetAllPublic();
+                var dockets = await docketService.GetAllPublic();
 
                 var users = await userService.GetAll();
 
-                var dto_public_dockets = public_dockets.Convert(users);
+                var rates = await featureService.GetAllRates();
 
-                return Ok(dto_public_dockets);
+                var dtodockets = dockets.Docket(users, rates);
+
+
+                return Ok(dtodockets);
             }
             catch (Exception ex)
             {
@@ -113,9 +119,12 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var dto_dockets = dockets.Convert(users);
+                    var rates = await featureService.GetAllRates();
 
-                    return Ok(dto_dockets);
+                    var dtodockets = dockets.Docket(users, rates);
+
+
+                    return Ok(dtodockets);
                 }
 
                 return NotFound("User does not have any dockets yet");
@@ -138,23 +147,30 @@ namespace Docket.Server.Controllers
                     userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 }
 
-                var dtoDockets = new List<DTODocket>();
+                //var dtoDockets = new List<DTODocket>();
+                var users = await userService.GetAll();
+
+                var rates = await featureService.GetAllRates(); 
+
                 var domainDockets = await docketService.GetByUserId(userId);
 
-                foreach (var item in domainDockets)
-                {
-                    dtoDockets.Add(new DTODocket
-                    {
-                        Id = item.Id,
-                        Title = item.Title,
-                        Body = item.Body,
-                        DateCreated = item.DateCreated,
-                        DateModified = item.DateModified,
-                        UserId = item.UserId,
-                        IsPublic = item.IsPublic,
-                        Username = httpContextAccessor.HttpContext.User.Identity.Name
-                    });
-                }
+                var dtoDockets = domainDockets.Docket(users, rates);
+
+                //foreach (var item in domainDockets)
+                //{
+                //    dtoDockets.Add(new DTODocket
+                //    {
+                //        Id = item.Id,
+                //        Title = item.Title,
+                //        Body = item.Body,
+                //        Rates = item.,
+                //        DateCreated = item.DateCreated,
+                //        DateModified = item.DateModified,
+                //        UserId = item.UserId,
+                //        IsPublic = item.IsPublic,
+                //        Username = httpContextAccessor.HttpContext.User.Identity.Name
+                //    });
+                //}
 
                 return Ok(dtoDockets);
             }
@@ -184,7 +200,7 @@ namespace Docket.Server.Controllers
                     userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 }
 
-                await docketService.Add(new Models.Docket
+                var docketId = await docketService.Add(new Models.Docket
                 {
                     Title = request.Title,
                     Body = request.Body,
@@ -193,6 +209,14 @@ namespace Docket.Server.Controllers
                     UserId = userId,
                     IsPublic = request.IsPublic
                 });
+
+                await featureService.AddRateToDocket(new DocketRate
+                {
+                    Rate = 0,
+                    DocketId = docketId,
+                    UserId = userId
+                });
+
                 return Ok();
             }
             catch (Exception ex)
@@ -255,25 +279,25 @@ namespace Docket.Server.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPut("Rate/{docketId}")]
-        public async Task<IActionResult> RateDocket([FromRoute] string docketId, [FromBody] int rate)
-        {
-            try
-            {
-                var existingDocket = await docketService.GetById(docketId);
+        //[Authorize]
+        //[HttpPut("Rate/{docketId}")]
+        //public async Task<IActionResult> RateDocket([FromRoute] string docketId, [FromBody] int rate)
+        //{
+        //    try
+        //    {
+        //        var existingDocket = await docketService.GetById(docketId);
 
-                existingDocket.Rate = rate;
+        //        existingDocket.Rate = (existingDocket.Rate + rate) / 2;
 
-                await docketService.Update(docketId, existingDocket);
+        //        await docketService.Update(docketId, existingDocket);
 
-                return Ok($"{existingDocket.Title} rate: {rate}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok($"{existingDocket.Title} rate: {rate}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

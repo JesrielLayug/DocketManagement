@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Docket.Shared
 {
-    public class DTODocketFeature
+    public class DTODocketWithRateAndFavorite
     {
         public string Id { get; set; }
         public string Title { get; set; }

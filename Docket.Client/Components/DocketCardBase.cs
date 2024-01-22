@@ -17,5 +17,12 @@ namespace Docket.Client.Components
 
             return char.ToUpper(fiteredName[0]);
         }
+
+        public void AddRating()
+        {
+            var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
+
+            DialogService.Show<RateDocketDialog>("RateDocket", options);
+        }
     }
 }

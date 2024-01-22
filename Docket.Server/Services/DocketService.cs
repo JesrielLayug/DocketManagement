@@ -1,6 +1,7 @@
 ﻿using Docket.Server.Data;
 using Docket.Server.Services.Contracts;
 using MongoDB.Driver;
+using System;
 
 namespace Docket.Server.Services
 {
@@ -14,9 +15,13 @@ namespace Docket.Server.Services
             dockets = database.GetCollection<Models.Docket>(settings.DocketCollectionName);
         }
 
-        public async Task Add(Models.Docket docket)
+        public async Task<string> Add(Models.Docket request)
         {
-            await dockets.InsertOneAsync(docket);
+            await dockets.InsertOneAsync(request);
+
+            var docketId = request.Id.ToString();
+
+            return docketId;
         }
 
         public async Task Delete(string id)
