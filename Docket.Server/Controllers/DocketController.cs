@@ -15,12 +15,20 @@ namespace Docket.Server.Controllers
     {
         private readonly IDocketService docketService;
         private readonly IUserService userService;
+        private readonly IDocketFeatureService featureService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public DocketController(IDocketService docketService, IUserService userService, IHttpContextAccessor httpContextAccessor)
+        public DocketController
+            (
+                IDocketService docketService, 
+                IUserService userService, 
+                IDocketFeatureService featureService,
+                IHttpContextAccessor httpContextAccessor
+            )
         {
             this.docketService = docketService;
             this.userService = userService;
+            this.featureService = featureService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -34,7 +42,9 @@ namespace Docket.Server.Controllers
 
                 var users = await userService.GetAll();
 
-                var dto_dockets = dockets.Convert(users);
+                var rates = await featureService.GetDocketRates();
+
+                var dto_dockets = dockets.Convert(users, rates);
 
 
                 return Ok(dto_dockets);
@@ -55,7 +65,9 @@ namespace Docket.Server.Controllers
 
                 var users = await userService.GetAll();
 
-                var dto_public_dockets = public_dockets.Convert(users);
+                var rates = await featureService.GetDocketRates();
+
+                var dto_public_dockets = public_dockets.Convert(users, rates);
 
                 return Ok(dto_public_dockets);
             }
@@ -105,7 +117,9 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var dto_dockets = dockets.Convert(users);
+                    var rates = await featureService.GetDocketRates();
+
+                    var dto_dockets = dockets.Convert(users, rates);
 
                     return Ok(dto_dockets);
                 }

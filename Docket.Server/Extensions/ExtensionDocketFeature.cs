@@ -3,19 +3,21 @@ using Docket.Shared;
 
 namespace Docket.Server.Extensions
 {
-    public static class ExtensionDocket
+    public static class ExtensionDocketFeature
     {
-        public static IEnumerable<DTODocket> 
+        public static IEnumerable<DTODocketFeature>
             Convert (
-                this IEnumerable<Models.Docket> dockets,
+                this IEnumerable<Models.Docket> dockets, 
                 IEnumerable<User> users, 
-                IEnumerable<DocketRate> rates
+                IEnumerable<DocketRate> rates, 
+                IEnumerable<DocketFavorite> favorites
             )
         {
             return (from docket in dockets
                     join user in users on docket.UserId equals user.id
                     join rate in rates on docket.UserId equals rate.UserId
-                    select new DTODocket
+                    join favorite in favorites on docket.UserId equals favorite.UserId
+                    select new DTODocketFeature
                     {
                         Id = docket.Id,
                         Title = docket.Title,
@@ -24,6 +26,7 @@ namespace Docket.Server.Extensions
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,
                         Rates = (rate.Rate != null) ? rate.Rate : 0,
+                        IsFavorite = favorite.IsFavorite,
                         UserId = docket.UserId,
                         Username = user.name
                     }).ToList();
