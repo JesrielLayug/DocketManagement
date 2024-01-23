@@ -51,5 +51,10 @@ namespace Docket.Server.Services
         {
             return await _docketRate.Find(d => d.DocketId == id).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<DocketRate>> GetUserRatedDocket(string userId)
+        {
+            return await _docketRate.Find(d => d.UserId == userId).ToListAsync();
+        }
     }
 }

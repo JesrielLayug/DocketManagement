@@ -6,6 +6,7 @@ namespace Docket.Server.Services.Contracts
     {
         Task<IEnumerable<DocketFavorite>> GetAllFavorites();
         Task<IEnumerable<DocketRate>> GetAllRates();
+        Task<IEnumerable<DocketRate>> GetUserRatedDocket(string userId);
         Task<DocketFavorite> GetByDocketIdFromFavorite(string id);
         Task<DocketRate> GetByDocketIdFromRate(string id);
         Task AddDocketToFavorite(DocketFavorite favorite);

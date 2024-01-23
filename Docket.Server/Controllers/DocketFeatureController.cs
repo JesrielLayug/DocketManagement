@@ -62,6 +62,25 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [HttpGet("GetUserRatedDocket")]
+        public async Task<ActionResult<IEnumerable<DTODocketWithRate>>> GetUserRatedDocket()
+        {
+            try
+            {
+                if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
+                {
+                    var ratedDockets = await featureService.GetUserRatedDocket(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    return Ok(ratedDockets);
+                }
+                return NotFound("No rated dockets found");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost("FavoriteDocket/{docketId}")]
         public async Task<IActionResult> AddDocketToFavorite([FromRoute] string docketId, [FromBody] DTOFeatureAddFavorite featureFavorite)
