@@ -16,20 +16,19 @@ namespace Docket.Server.Services
             _docketRate = database.GetCollection<DocketRate>(settings.DocketRateCollectionName);
         }
 
-        public async Task<IEnumerable<DocketFavorite>> GetAllFavorites()
+        public async Task<IEnumerable<DocketFavorite>> GetUserFavoriteDockets(string userId)
         {
-             return await _docketFavorite.Find(d => true).ToListAsync();
+             return await _docketFavorite.Find(d => d.UserId == userId).ToListAsync();
         }
-
 
         public async Task AddDocketToFavorite(DocketFavorite favorite)
         {
             await _docketFavorite.InsertOneAsync(favorite);
         }
 
-        public async Task<DocketFavorite> GetByDocketIdFromFavorite(string id)
+        public async Task<DocketFavorite> GetExistingFavoriteDocket(string userId, string docketId)
         {
-            return await _docketFavorite.Find(docket => docket.DocketId == id).FirstOrDefaultAsync();
+            return await _docketFavorite.Find(docket => docket.UserId == userId && docket.DocketId == docketId).FirstOrDefaultAsync();
         }
 
         public async Task AddRateToDocket(DocketRate rate)

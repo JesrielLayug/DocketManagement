@@ -15,7 +15,7 @@ namespace Docket.Server.Extensions
         {
             return (from docket in dockets
                     join user in users on docket.UserId equals user.id
-                    join favorite in favorites on docket.Id equals favorite.DocketId
+                    join favorite in favorites on docket.UserId equals favorite.UserId
                     join rate in rates on docket.Id equals rate.DocketId
                     select new DTODocketWithRateAndFavorite
                     {

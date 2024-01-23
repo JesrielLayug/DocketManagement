@@ -33,16 +33,16 @@ namespace Docket.Server.Controllers
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("GetDocketFavorites")]
-        public async Task<ActionResult<IEnumerable<DTODocketWithRateAndFavorite>>> GetDocketFavorites()
+        [HttpGet("GetUserFavoriteDocket")]
+        public async Task<ActionResult<IEnumerable<DTODocketWithRateAndFavorite>>> GetUserFavoriteDocket()
         {
             try
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
                     var dockets = await docketService.GetAll();
 
-                    var favorites = await featureService.GetAllFavorites();
+                    var favorites = await featureService.GetUserFavoriteDockets(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                     var users = await userService.GetAll();
 
@@ -69,7 +69,14 @@ namespace Docket.Server.Controllers
             {
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
-                    var ratedDockets = await featureService.GetUserRatedDocket(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    var rates = await featureService.GetUserRatedDocket(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                    var dockets = await docketService.GetAll();
+
+                    var users = await userService.GetAll();
+
+                    var ratedDockets = dockets.Docket(users, rates);
+
                     return Ok(ratedDockets);
                 }
                 return NotFound("No rated dockets found");
@@ -89,15 +96,16 @@ namespace Docket.Server.Controllers
             {
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
+                    var currentUser = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var existingFavorite = await featureService.GetByDocketIdFromFavorite(docketId);
+                    var existingFavorite = await featureService.GetExistingFavoriteDocket(currentUser, docketId);
                     if (existingFavorite == null)
                     {
                         await featureService.AddDocketToFavorite(new DocketFavorite
                         {
                             IsFavorite = featureFavorite.IsFavorite,
                             DocketId = docketId,
-                            UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+                            UserId = currentUser
                         });
 
                         return Ok("Successfully added the docket to favorites");
@@ -125,7 +133,7 @@ namespace Docket.Server.Controllers
 
                     var existingRate = await featureService.GetByDocketIdFromRate(request.DocketId);
                     
-                    existingRate.Rate = request.Rate;
+                    existingRate.Rate = (existingRate.Rate + request.Rate) / 2;
                     existingRate.DocketId = request.DocketId;
 
                     await featureService.UpdateRateToDocket(request.DocketId, existingRate);

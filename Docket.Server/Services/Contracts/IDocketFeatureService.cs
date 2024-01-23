@@ -4,10 +4,11 @@ namespace Docket.Server.Services.Contracts
 {
     public interface IDocketFeatureService
     {
-        Task<IEnumerable<DocketFavorite>> GetAllFavorites();
+        Task<IEnumerable<DocketFavorite>> GetUserFavoriteDockets(string userId);
+        Task<DocketFavorite> GetExistingFavoriteDocket(string userId, string docketId);
+
         Task<IEnumerable<DocketRate>> GetAllRates();
         Task<IEnumerable<DocketRate>> GetUserRatedDocket(string userId);
-        Task<DocketFavorite> GetByDocketIdFromFavorite(string id);
         Task<DocketRate> GetByDocketIdFromRate(string id);
         Task AddDocketToFavorite(DocketFavorite favorite);
         Task AddRateToDocket(DocketRate rate);
