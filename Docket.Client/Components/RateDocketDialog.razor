@@ -7,7 +7,15 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudRating @bind-SelectedValue="Rating" Class="mt-3" />
+        @if(Rating == null)
+        {
+            <MudRating SelectedValue="0" Class="mt-3" />
+        }
+        else
+        {
+            <MudRating @bind-SelectedValue="Rating.Rate" Class="mt-3" />
+        }
+
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Submit</MudButton>

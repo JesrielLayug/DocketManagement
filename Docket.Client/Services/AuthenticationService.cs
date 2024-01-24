@@ -26,7 +26,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await this.httpClient.PostAsJsonAsync("api/Authentication/login", request);
+                var response = await httpClient.PostAsJsonAsync("api/Authentication/login", request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var token = await response.Content.ReadAsStringAsync();

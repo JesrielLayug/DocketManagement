@@ -97,12 +97,12 @@ namespace Docket.Client.Pages.MyDocketsPage
             Snackbar.Add(message, severity);
         }
 
-        public async Task ViewDocket(DTODocket docket)
+        public void ViewDocket(DTODocket docket)
         {
             var parameters = new DialogParameters<ViewDocketDialog>();
             parameters.Add(x => x.Docket, docket);
 
-            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader = true };
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader = true, FullWidth=false };
 
             DialogService.Show<ViewDocketDialog>("Docket", parameters, options);
         }

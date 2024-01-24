@@ -1,4 +1,5 @@
-﻿using Docket.Shared;
+﻿using Docket.Client.Services.Contracts;
+using Docket.Shared;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -8,6 +9,7 @@ namespace Docket.Client.Components
     {
         [Parameter] public IEnumerable<DTODocket> Dockets { get; set; }
         [Inject] IDialogService DialogService { get; set; }
+        [Inject] IDocketService DocketService { get; set; }
 
         public static char GetFirstLetterOFUser(string name)
         {
@@ -18,11 +20,27 @@ namespace Docket.Client.Components
             return char.ToUpper(fiteredName[0]);
         }
 
-        public void AddRating()
+        public async void AddRating(DTOFeatureRate rating)
         {
+            var parameters = new DialogParameters<RatedDocketDialog>();
+            parameters.Add(x => x.Rating, rating);
+
             var options = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, NoHeader = true };
 
-            DialogService.Show<RateDocketDialog>("RateDocket", options);
+            var dialog = DialogService.Show<RatedDocketDialog>("RateDocket", parameters, options);
+
+            var result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                await RefreshCard();
+            }
+        }
+
+        public async Task RefreshCard()
+        {
+            Dockets = await DocketService.GetAll();
+            StateHasChanged();
         }
     }
 }

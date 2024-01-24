@@ -10,16 +10,25 @@ namespace Docket.Server.Models
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("_id")]
         public string Id { get; set; }
+
         [BsonElement("title")]
         public string Title { get; set; } = string.Empty;
+
         [BsonElement("body")]
         public string Body { get; set; } = string.Empty;
+
+        [BsonElement("average_rating")]
+        public double AverageRating { get; set; }
+
         [BsonElement("date_created")]
         public DateTime DateCreated { get; set; }
+
         [BsonElement("date_modified")]
         public DateTime DateModified { get; set; }
+
         [BsonElement("is_public")]
         public bool IsPublic { get; set; }
+
         [BsonElement("user_id")]
         public string UserId { get; set; } = string.Empty;
     }

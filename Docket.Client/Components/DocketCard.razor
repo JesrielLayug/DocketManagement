@@ -25,7 +25,8 @@
                         <MudText Typo="Typo.caption" Style="font-weight: 500; font-size: 12px">Ratings</MudText>
                         <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="item.Rates" Class="ms-2 pt-1" />
                         <MudSpacer />
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                            <MudButton OnClick="(()=>
+                                AddRating(new Docket.Shared.DTOFeatureRate { Rate = item.Rates, DocketId = item.Id }))" Variant="Variant.Filled" Color="Color.Primary">
                             <MudText Typo="Typo.body1" Style="font-weight: 500; font-size: 12px">Add rating</MudText>
                         </MudButton>
                     </MudItem>
@@ -35,21 +36,3 @@
         
     </div>
 }
-
-@* <MudCard Elevation="3">
-    <MudCardHeader>
-        <CardHeaderContent>
-            <MudText Typo="Typo.body2">@item.Title</MudText>
-            </CardHeaderContent>
-            <CardHeaderActions>
-                <MudIconButton Icon="@Icons.Material.Filled.Bookmark" Color="Color.Default" />
-            </CardHeaderActions>
-        </MudCardHeader>
-        <MudCardContent>
-            <MudText Typo="Typo.caption">@item.Body</MudText>
-        </MudCardContent>
-        <MudCardActions Class="d-flex justify-space-between pb-3 pe-5">
-            <MudButton OnClick="ViewDocket" Variant="Variant.Text" Color="Color.Primary">View</MudButton>
-            <MudAvatar Color="Color.Primary" Size="Size.Small">@GetFirstLetterOFUser(item.Username)</MudAvatar>
-        </MudCardActions>
-    </MudCard> *@

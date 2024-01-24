@@ -48,7 +48,7 @@ else
                     <MudTd DataLabel="Modified">@context.DateModified.ToString("MM-dd-yyyy")</MudTd>
                     <MudTd DataLabel="Actions">
                         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
-                            <MudButton @onclick="async () => await ViewDocket(context)" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
+                            <MudButton OnClick="() => ViewDocket(context)" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
                             <MudButton @onclick="async () => await UpdateDocket(context)" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
                             <MudButton @onclick="async () => await DeleteDocket(context.Id)" Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
                         </MudButtonGroup>

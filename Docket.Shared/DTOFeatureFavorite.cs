@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Docket.Shared
 {
-    public class DTOFeatureAddRate
+    public class DTOFeatureFavorite
     {
-        public int Rate {  get; set; }
-        public string DocketId { get; set; }
+        public bool IsFavorite {  get; set; }
     }
 }

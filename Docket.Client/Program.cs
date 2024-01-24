@@ -15,19 +15,14 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddOptions();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7185/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44331/") });
 builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IDocketService, DocketService>();
 builder.Services.AddScoped<DTODocketUpdate>();
-
-//builder.Services.AddTransient<CustomAuthorizationMessageHandler>();
-
-//builder.Services.AddHttpClient("WebAPI",
-//    client => client.BaseAddress = new Uri("https://localhost:7185/"))
-//    .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+builder.Services.AddScoped<IDocketFeatureService, DocketFeatureService>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();

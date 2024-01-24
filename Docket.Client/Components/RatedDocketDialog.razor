@@ -1,0 +1,11 @@
+﻿@inherits RateDocketDialogBase
+
+<MudDialog Class="py-4">
+    <DialogContent>
+        <div class="d-flex flex-column justify-center align-center">
+            <MudText Typo="Typo.body1">How do you like this docket?</MudText>
+            <MudRating @bind-SelectedValue="@Rating.Rate" Class="my-3" />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="(() => Submit(Rating))" Class="px-10">Submit</MudButton>
+        </div>
+    </DialogContent>
+</MudDialog>

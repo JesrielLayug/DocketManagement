@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Docket.Client.Services.Contracts;
+﻿using Docket.Client.Services.Contracts;
 using Docket.Shared;
 using System.Net;
 using System.Net.Http.Json;
@@ -10,7 +9,7 @@ namespace Docket.Client.Services
     {
         private readonly HttpClient httpClient;
 
-        public DocketService(HttpClient httpClient, ILocalStorageService localStorageService)
+        public DocketService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
@@ -52,10 +51,12 @@ namespace Docket.Client.Services
         {
             try
             {
-                var dockets = await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
-                return dockets;
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
+
+                //var dockets = await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
+                //return dockets;
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
                 Console.WriteLine(ex.Message);
                 throw;
@@ -148,31 +149,5 @@ namespace Docket.Client.Services
             }
         }
 
-        public async Task<Response> AddRating(string docketId, int rating)
-        {
-            try
-            {
-                var response = await httpClient.PutAsJsonAsync($"api/Docket/Update/{docketId}", rating);
-                if (response.IsSuccessStatusCode)
-                {
-                    return new Response
-                    {
-                        isSuccess = true,
-                        message = "Rate successfully added."
-                    };
-                }
-
-                return new Response
-                {
-                    isSuccess = false,
-                    message = "Failed to add rating to docket."
-                };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{ex.Message}");
-                return new Response { isSuccess = false, message = ex.Message };
-            }
-        }
     }
 }

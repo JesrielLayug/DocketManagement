@@ -10,19 +10,15 @@ namespace Docket.Client.Pages.PublicPage
     public class PublicBase : ComponentBase
     {
         [Inject] IDocketService DocketService { get; set; }
-        [Inject] private IDialogService dialogService { get; set; }
 
         public IEnumerable<DTODocket> Dockets;
         public bool isLoading = true;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnInitializedAsync()
         {
-            if (firstRender)
-            {
-                Dockets = await DocketService.GetAll();
-                isLoading = false;
-                StateHasChanged();
-            }
+            Dockets = await DocketService.GetAll();
+            isLoading = false;
+            StateHasChanged();
         }
     }
 }

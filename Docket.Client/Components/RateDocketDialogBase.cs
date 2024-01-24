@@ -1,14 +1,46 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Docket.Client.Services.Contracts;
+using Docket.Shared;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Docket.Client.Components
 {
     public class RateDocketDialogBase : ComponentBase
     {
-        [Parameter] public int Rating { get; set; }
+        [Parameter] public DTOFeatureRate Rating {  get; set; }
+        [CascadingParameter] MudDialogInstance Dialog { get; set; }
+        [Inject] private IDocketFeatureService FeatureService { get; set; }
+        [Inject] private ISnackbar Snackbar { get; set; }
 
-        public void Submit()
+        protected override async Task OnInitializedAsync()
         {
-            throw new NotImplementedException();
+            Rating = await FeatureService.GetUserCurrentRateToDocket(Rating.DocketId);
+            StateHasChanged();
+        }
+
+        public async Task Submit(DTOFeatureRate rate)
+        {
+            rate.DocketId = Rating.DocketId;
+            var response = await FeatureService.AddRating(rate);
+
+            if (response.isSuccess)
+            {
+
+                Dialog.Close(DialogResult.Ok(true));
+
+                Response(response.message, Severity.Success);
+            }
+            else
+            {
+                Response(response.message, Severity.Error);
+            }
+        }
+
+        private void Response(string message, Severity severity)
+        {
+            StateHasChanged();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(message, severity);
         }
     }
 }

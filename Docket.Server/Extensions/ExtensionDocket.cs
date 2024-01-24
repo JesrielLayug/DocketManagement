@@ -14,13 +14,13 @@ namespace Docket.Server.Extensions
         {
             return (from docket in dockets
                     join user in users on docket.UserId equals user.id
-                    join rate in rates on docket.Id equals rate.DocketId
+                    join rate in rates on docket.Id equals rate.DocketId into docketRatings
                     select new DTODocket
                     {
                         Id = docket.Id,
                         Title = docket.Title,
                         Body = docket.Body,
-                        Rates = (rate != null) ? rate.Rate : 0,
+                        Ratings = docketRatings.Select(dr => dr.Rate).ToList(),
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,

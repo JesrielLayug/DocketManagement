@@ -62,22 +62,78 @@ namespace Docket.Server.Controllers
             }
         }
 
+        //[HttpGet("GetDocketRate/{docketId}")]
+        //public async Task<ActionResult<DTOFeatureRate>> GetDocketRate (string docketId)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var rates = await featureService.GetRatedDocketByDocketId(docketId);
+
+        //            return Ok(new DTOFeatureRate
+        //            {
+        //                Rate = rates.Rate,
+        //                DocketId = rates.DocketId
+        //            });
+        //        }
+
+        //        return NotFound();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+
+        [HttpGet("GetUserCurrentRateToDocket/{docketId}")]
+        public async Task<ActionResult<DTOFeatureRate>> GetUserCurrentRateToDocket(string docketId)
+        {
+            try
+            {
+                if(ModelState.IsValid && httpContextAccessor.HttpContext != null)
+                {
+                    var user = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    var rate = await featureService.GetExistingRatedOfUser(user, docketId);
+
+                    if(rate == null)
+                    {
+                        return Ok(new DTOFeatureRate
+                        {
+                            Rate = 0,
+                            DocketId = docketId
+                        });
+                    }
+
+                    return Ok(new DTOFeatureRate
+                    {
+                        Rate = rate.Rate,
+                        DocketId = rate.DocketId
+                    });
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetUserRatedDocket")]
-        public async Task<ActionResult<IEnumerable<DTODocketWithRate>>> GetUserRatedDocket()
+        public async Task<ActionResult<IEnumerable<DTOFeatureRate>>> GetUserRatedDocket()
         {
             try
             {
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
-                    var rates = await featureService.GetUserRatedDocket(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    var user = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var dockets = await docketService.GetAll();
+                    var rates = await featureService.GetUserRatedDocket(user);
 
-                    var users = await userService.GetAll();
-
-                    var ratedDockets = dockets.Docket(users, rates);
-
-                    return Ok(ratedDockets);
+                    return Ok(rates);
                 }
                 return NotFound("No rated dockets found");
             }
@@ -90,7 +146,7 @@ namespace Docket.Server.Controllers
 
 
         [HttpPost("FavoriteDocket/{docketId}")]
-        public async Task<IActionResult> AddDocketToFavorite([FromRoute] string docketId, [FromBody] DTOFeatureAddFavorite featureFavorite)
+        public async Task<IActionResult> AddDocketToFavorite([FromRoute] string docketId, [FromBody] DTOFeatureFavorite featureFavorite)
         {
             try
             {
@@ -123,20 +179,37 @@ namespace Docket.Server.Controllers
             }
         }
 
-        [HttpPost("RateDocket")]
-        public async Task<IActionResult> AddRateToDocket([FromBody] DTOFeatureAddRate request)
+        [HttpPost("AddRateToDocket")]
+        public async Task<IActionResult> AddRateToDocket([FromBody] DTOFeatureRate request)
         {
             try
             {
                 if (ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
+                    var user = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var existingRate = await featureService.GetByDocketIdFromRate(request.DocketId);
-                    
-                    existingRate.Rate = (existingRate.Rate + request.Rate) / 2;
-                    existingRate.DocketId = request.DocketId;
+                    var userRated = await featureService.ExistingUserRated(user, request.DocketId);
 
-                    await featureService.UpdateRateToDocket(request.DocketId, existingRate);
+                    if (userRated != null)
+                    {
+                        //var existingRatingOfUser = await featureService.GetExistingRatedOfUser(user, request.DocketId);
+
+                        //existingRatingOfUser.Rate = request.Rate;
+
+                        userRated.Rate = request.Rate;
+
+                        await featureService.UpdateRateToDocket(userRated);
+                    }
+                    else
+                    {
+                        await featureService.AddRateToDocket(new DocketRate
+                        {
+                            DocketId = request.DocketId,
+                            Rate = request.Rate,
+                            UserId = user
+                        });
+                    }
+
                     return Ok("Successfully rated the docket");
                 }
                 return BadRequest("Failed to rate the docket");

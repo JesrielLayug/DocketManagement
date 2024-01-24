@@ -154,25 +154,9 @@ namespace Docket.Server.Controllers
 
                 var domainDockets = await docketService.GetByUserId(userId);
 
-                var dtoDockets = domainDockets.Docket(users, rates);
+                var dtodockets = domainDockets.Docket(users, rates);
 
-                //foreach (var item in domainDockets)
-                //{
-                //    dtoDockets.Add(new DTODocket
-                //    {
-                //        Id = item.Id,
-                //        Title = item.Title,
-                //        Body = item.Body,
-                //        Rates = item.,
-                //        DateCreated = item.DateCreated,
-                //        DateModified = item.DateModified,
-                //        UserId = item.UserId,
-                //        IsPublic = item.IsPublic,
-                //        Username = httpContextAccessor.HttpContext.User.Identity.Name
-                //    });
-                //}
-
-                return Ok(dtoDockets);
+                return Ok(dtodockets);
             }
             catch(HttpRequestException ex)
             {
@@ -207,13 +191,14 @@ namespace Docket.Server.Controllers
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     UserId = userId,
+                    AverageRating = 0,
                     IsPublic = request.IsPublic
                 });
 
                 await featureService.AddRateToDocket(new DocketRate
                 {
-                    Rate = 0,
                     DocketId = docketId,
+                    Rate = 0,
                     UserId = userId
                 });
 
@@ -278,26 +263,5 @@ namespace Docket.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        //[Authorize]
-        //[HttpPut("Rate/{docketId}")]
-        //public async Task<IActionResult> RateDocket([FromRoute] string docketId, [FromBody] int rate)
-        //{
-        //    try
-        //    {
-        //        var existingDocket = await docketService.GetById(docketId);
-
-        //        existingDocket.Rate = (existingDocket.Rate + rate) / 2;
-
-        //        await docketService.Update(docketId, existingDocket);
-
-        //        return Ok($"{existingDocket.Title} rate: {rate}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
     }
 }

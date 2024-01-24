@@ -31,17 +31,6 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\Image\" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Components\RateDocketDialog.razor" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="Components\RateDocketDialog.razor" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Include="Components\RateDocketDialog.razor" />
-	</ItemGroup>
+
 
 </Project>

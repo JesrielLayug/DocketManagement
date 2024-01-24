@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
-@attribute [AllowAnonymous]
 
 <MudThemeProvider Theme="MyCustomTheme" IsDarkMode="true"/>
 <MudDialogProvider />
@@ -35,7 +34,7 @@
         </MudLayout>
     </Authorized>
     <NotAuthorized>
-        <MudLayout>
+        @* <MudLayout>
             <MudAppBar Elevation="1">
                 <MudIconButton Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Edge="Edge.Start" />
                 <MudText Typo="Typo.h6">Dockets</MudText>
@@ -49,12 +48,16 @@
                     @Body
                 </MudContainer>
             </MudMainContent>
-        </MudLayout>
+        </MudLayout> *@
+        <Docket.Client.Pages.LoginPage.Login />
     </NotAuthorized>
 </AuthorizeView>
 
 
 @code {
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+
     bool _drawerOpen = true;
 
     void DrawerToggle()
