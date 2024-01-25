@@ -16,20 +16,23 @@ namespace Docket.Server.Controllers
     {
         private readonly IDocketService docketService;
         private readonly IUserService userService;
-        private readonly IDocketFeatureService featureService;
+        private readonly IDocketRateService rateService;
+        private readonly IDocketFavoriteService favoriteService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public DocketController
             (
                 IDocketService docketService, 
                 IUserService userService, 
-                IDocketFeatureService featureService,
+                IDocketRateService rateService,
+                IDocketFavoriteService favoriteService,
                 IHttpContextAccessor httpContextAccessor
             )
         {
             this.docketService = docketService;
             this.userService = userService;
-            this.featureService = featureService;
+            this.rateService = rateService;
+            this.favoriteService = favoriteService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -39,14 +42,17 @@ namespace Docket.Server.Controllers
         {
             try
             {
+                var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 var dockets = await docketService.GetAll();
 
                 var users = await userService.GetAll();
 
-                var rates = await featureService.GetAllRates();
+                var rates = await rateService.GetAll();
 
-                var dtodockets = dockets.Docket(users, rates);
+                var favorites = await favoriteService.GetAll();
 
+                var dtodockets = dockets.Convert(users, rates, favorites, userId);
 
                 return Ok(dtodockets);
             }
@@ -56,20 +62,23 @@ namespace Docket.Server.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetAllPublic")]
-        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<DTODocket>>> GetAllPublics()
         {
             try
             {
-                var dockets = await docketService.GetAllPublic();
+                var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var dockets = await docketService.GetAll();
 
                 var users = await userService.GetAll();
 
-                var rates = await featureService.GetAllRates();
+                var rates = await rateService.GetAll();
 
-                var dtodockets = dockets.Docket(users, rates);
+                var favorites = await favoriteService.GetAll();
 
+                var dtodockets = dockets.Convert(users, rates, favorites, userId);
 
                 return Ok(dtodockets);
             }
@@ -78,6 +87,7 @@ namespace Docket.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [Authorize]
         [HttpGet("GetById/{docketId}")]
@@ -119,10 +129,11 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var rates = await featureService.GetAllRates();
+                    var rates = await rateService.GetAll();
 
-                    var dtodockets = dockets.Docket(users, rates);
+                    var favorites = await favoriteService.GetAll();
 
+                    var dtodockets = dockets.Convert(users, rates, favorites, userId);
 
                     return Ok(dtodockets);
                 }
@@ -141,20 +152,18 @@ namespace Docket.Server.Controllers
         {
             try
             {
-                var userId = string.Empty;
-                if (httpContextAccessor.HttpContext != null)
-                {
-                    userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                }
 
-                //var dtoDockets = new List<DTODocket>();
+                var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var dockets = await docketService.GetByUserId(userId);
+
                 var users = await userService.GetAll();
 
-                var rates = await featureService.GetAllRates(); 
+                var rates = await rateService.GetAll();
 
-                var domainDockets = await docketService.GetByUserId(userId);
+                var favorites = await favoriteService.GetAll();
 
-                var dtodockets = domainDockets.Docket(users, rates);
+                var dtodockets = dockets.Convert(users, rates, favorites, userId);
 
                 return Ok(dtodockets);
             }
@@ -191,16 +200,16 @@ namespace Docket.Server.Controllers
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     UserId = userId,
-                    AverageRating = 0,
                     IsPublic = request.IsPublic
                 });
 
-                await featureService.AddRateToDocket(new DocketRate
+                await rateService.Add(new Rate
                 {
                     DocketId = docketId,
-                    Rate = 0,
+                    Rating = 0,
                     UserId = userId
                 });
+
 
                 return Ok();
             }

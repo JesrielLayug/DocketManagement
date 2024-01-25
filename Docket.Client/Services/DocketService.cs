@@ -47,21 +47,6 @@ namespace Docket.Client.Services
             }
         }
 
-        public async Task<IEnumerable<DTODocket>> GetAll()
-        {
-            try
-            {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
-
-                //var dockets = await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
-                //return dockets;
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
 
         public async Task<IEnumerable<DTODocket>> GetUserDocket()
         {
@@ -149,5 +134,16 @@ namespace Docket.Client.Services
             }
         }
 
+        public async Task<IEnumerable<DTODocket>> GetAll()
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

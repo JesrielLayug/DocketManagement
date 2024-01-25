@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Docket.Server.Models
 {
-    public class DocketFavorite
+    public class Favorite
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

@@ -36,11 +36,6 @@ namespace Docket.Server.Services
             return await users.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<string> GetId()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Remove(string id)
         {
             await users.DeleteOneAsync(user => user.id == id);

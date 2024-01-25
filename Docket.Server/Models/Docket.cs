@@ -17,9 +17,6 @@ namespace Docket.Server.Models
         [BsonElement("body")]
         public string Body { get; set; } = string.Empty;
 
-        [BsonElement("average_rating")]
-        public double AverageRating { get; set; }
-
         [BsonElement("date_created")]
         public DateTime DateCreated { get; set; }
 

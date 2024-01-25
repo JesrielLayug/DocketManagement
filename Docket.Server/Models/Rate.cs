@@ -3,13 +3,13 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Docket.Server.Models
 {
-    public class DocketRate
+    public class Rate
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         [BsonElement("rating")]
-        public int Rate { get; set; }
+        public int Rating { get; set; }
         [BsonElement("docket_id")]
         public string DocketId { get; set; }
         [BsonElement("user_id")]

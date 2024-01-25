@@ -9,19 +9,19 @@ namespace Docket.Client.Components
     {
         [Parameter] public DTOFeatureRate Rating {  get; set; }
         [CascadingParameter] MudDialogInstance Dialog { get; set; }
-        [Inject] private IDocketFeatureService FeatureService { get; set; }
+        [Inject] private IDocketRateService FeatureService { get; set; }
         [Inject] private ISnackbar Snackbar { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Rating = await FeatureService.GetUserCurrentRateToDocket(Rating.DocketId);
+            Rating = await FeatureService.GetExisting(Rating.DocketId);
             StateHasChanged();
         }
 
         public async Task Submit(DTOFeatureRate rate)
         {
             rate.DocketId = Rating.DocketId;
-            var response = await FeatureService.AddRating(rate);
+            var response = await FeatureService.Add(rate);
 
             if (response.isSuccess)
             {

@@ -11,10 +11,10 @@ namespace Docket.Client.Components
         [Inject] ISnackbar Snackbar { get; set; }
         [Inject] IDialogService DialogService { get; set; }
         [Inject] IDocketService DocketService { get; set; }
-        [Inject] IDocketFeatureService FeatureService { get; set; }
+        [Inject] IDocketFavoriteService FavoriteService { get; set; }
 
-        public Color iconColor = Color.Inherit;
-        public bool hasAddedToFavorite = false;
+        public bool isFavorite { get; set; } = false;
+
 
         public static char GetFirstLetterOFUser(string name)
         {
@@ -24,6 +24,14 @@ namespace Docket.Client.Components
 
             return char.ToUpper(fiteredName[0]);
         }
+
+        public async Task RefreshCard()
+        {
+            Dockets = await DocketService.GetAll();
+            StateHasChanged();
+        }
+
+        #region AddRating Click
 
         public async void AddRating(DTOFeatureRate rating)
         {
@@ -42,28 +50,39 @@ namespace Docket.Client.Components
             }
         }
 
-        public async Task RefreshCard()
-        {
-            Dockets = await DocketService.GetAll();
-            StateHasChanged();
-        }
+        #endregion
+
+        #region AddFavorite Click
+
 
         public async Task AddToFavorite(DTOFeatureFavorite favorite)
         {
-            hasAddedToFavorite = true;
-            var response = await FeatureService.AddToFavorite(favorite);
+            isFavorite = !isFavorite;
+            favorite.IsFavorite = isFavorite;
+
+            Response response;
+
+            if (isFavorite)
+                response = await FavoriteService.Add(favorite);
+            else
+                response = await FavoriteService.Remove(favorite.DocketId);
+            
 
             if (response.isSuccess)
-            {
-                iconColor = Color.Warning;
                 Response(response.message, Severity.Success);
-            }
             else
-            {
-                hasAddedToFavorite = false;
                 Response(response.message, Severity.Error);
-            }
         }
+
+        public Color SetIconColor(bool isFavorite)
+        {
+            return isFavorite ? Color.Warning : Color.Inherit;
+        }
+
+
+        #endregion
+
+        #region Response
 
         private void Response(string message, Severity severity)
         {
@@ -71,5 +90,7 @@ namespace Docket.Client.Components
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
             Snackbar.Add(message, severity);
         }
+
+        #endregion
     }
 }

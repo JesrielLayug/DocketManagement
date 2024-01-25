@@ -24,7 +24,8 @@ new MongoClient(builder.Configuration.GetValue<string>("DocketDatabaseSettings:C
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IDocketService, DocketService>();
-builder.Services.AddScoped<IDocketFeatureService, DocketFeatureService>();
+builder.Services.AddScoped<IDocketRateService, DocketRateService>();
+builder.Services.AddScoped<IDocketFavoriteService, DocketFavoriteService>();
 
 builder.Services.AddHttpContextAccessor();
 
