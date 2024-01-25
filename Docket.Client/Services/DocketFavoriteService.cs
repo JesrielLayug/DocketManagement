@@ -43,19 +43,19 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.DeleteAsync($"api/Favorite/Remove{docketId}");
+                var response = await httpClient.DeleteAsync($"api/Favorite/Delete/{docketId}");
                 if (response.IsSuccessStatusCode)
                 {
                     return new Response
                     {
                         isSuccess = true,
-                        message = "Docket successfully added to favorite"
+                        message = "Docket successfully remove to favorite"
                     };
                 }
                 return new Response
                 {
                     isSuccess = false,
-                    message = "Failed adding the docket to favorite"
+                    message = "Failed removing the docket to favorite"
                 };
             }
             catch (Exception e)

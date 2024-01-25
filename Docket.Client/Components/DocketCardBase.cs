@@ -62,10 +62,16 @@ namespace Docket.Client.Components
 
             Response response;
 
-            if (isFavorite)
+            if (favorite.IsFavorite == true)
+            {
                 response = await FavoriteService.Add(favorite);
+                await RefreshCard();
+            }
             else
+            {
                 response = await FavoriteService.Remove(favorite.DocketId);
+                await RefreshCard();
+            }
             
 
             if (response.isSuccess)
