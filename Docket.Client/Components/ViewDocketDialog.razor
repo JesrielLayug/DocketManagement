@@ -11,7 +11,8 @@
                         <MudText Typo="Typo.caption" Style="font-size: 11px">@Docket.DateCreated.ToString("MM-dd-yyyy")</MudText>
                     </div>
                 <MudSpacer />
-                <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="Docket.Rates" Class="ms-2 pt-1" />
+                <MudRating Size="Size.Small" ReadOnly="true" SelectedValue="(int)Docket.AverageRating" Class="ms-2 pt-1" />
+                <MudText Typo="Typo.subtitle1" Class="ms-2 mt-1" Style="font-weight: 500; font-size: 12px; opacity: 70%">@Docket.AverageRating</MudText>
             </MudItem>
 
             <MudItem xs="12" Class="d-flex flex-column mt-0 mb-0">

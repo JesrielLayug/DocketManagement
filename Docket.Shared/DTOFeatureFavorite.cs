@@ -9,5 +9,6 @@ namespace Docket.Shared
     public class DTOFeatureFavorite
     {
         public bool IsFavorite {  get; set; }
+        public string DocketId {  get; set; }
     }
 }

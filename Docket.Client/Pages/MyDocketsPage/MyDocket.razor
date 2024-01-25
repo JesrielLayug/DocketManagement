@@ -40,7 +40,7 @@ else
             <RowTemplate>
                 <MudTd DataLabel="Title"><MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 20)</MudText></MudTd>
                     <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 25)</MudTd>
-                    <MudTd DataLabel="Rates"><MudRating ReadOnly="true" SelectedValue="context.Rates" /></MudTd>
+                    <MudTd DataLabel="Rates"><MudRating ReadOnly="true" SelectedValue="(int)context.AverageRating" /></MudTd>
                     <MudTd DataLabel="Public">
                         <MudSwitch T="bool" @bind-Value="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
                     </MudTd>

@@ -62,31 +62,6 @@ namespace Docket.Server.Controllers
             }
         }
 
-        //[HttpGet("GetDocketRate/{docketId}")]
-        //public async Task<ActionResult<DTOFeatureRate>> GetDocketRate (string docketId)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var rates = await featureService.GetRatedDocketByDocketId(docketId);
-
-        //            return Ok(new DTOFeatureRate
-        //            {
-        //                Rate = rates.Rate,
-        //                DocketId = rates.DocketId
-        //            });
-        //        }
-
-        //        return NotFound();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
         [HttpGet("GetUserCurrentRateToDocket/{docketId}")]
         public async Task<ActionResult<DTOFeatureRate>> GetUserCurrentRateToDocket(string docketId)
         {
@@ -145,8 +120,8 @@ namespace Docket.Server.Controllers
         }
 
 
-        [HttpPost("FavoriteDocket/{docketId}")]
-        public async Task<IActionResult> AddDocketToFavorite([FromRoute] string docketId, [FromBody] DTOFeatureFavorite featureFavorite)
+        [HttpPost("AddDocketToFavorite")]
+        public async Task<IActionResult> AddDocketToFavorite([FromBody] DTOFeatureFavorite featureFavorite)
         {
             try
             {
@@ -154,20 +129,14 @@ namespace Docket.Server.Controllers
                 {
                     var currentUser = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var existingFavorite = await featureService.GetExistingFavoriteDocket(currentUser, docketId);
-                    if (existingFavorite == null)
+                    await featureService.AddDocketToFavorite(new DocketFavorite
                     {
-                        await featureService.AddDocketToFavorite(new DocketFavorite
-                        {
-                            IsFavorite = featureFavorite.IsFavorite,
-                            DocketId = docketId,
-                            UserId = currentUser
-                        });
+                        IsFavorite = featureFavorite.IsFavorite,
+                        DocketId = featureFavorite.DocketId,
+                        UserId = currentUser
+                    });
 
-                        return Ok("Successfully added the docket to favorites");
-                    }
-
-                    return BadRequest("Docket is already in favorite.");
+                    return Ok("Successfully added the docket to favorites");
                 }
 
                 return BadRequest(ModelState);
@@ -192,9 +161,6 @@ namespace Docket.Server.Controllers
 
                     if (userRated != null)
                     {
-                        //var existingRatingOfUser = await featureService.GetExistingRatedOfUser(user, request.DocketId);
-
-                        //existingRatingOfUser.Rate = request.Rate;
 
                         userRated.Rate = request.Rate;
 
