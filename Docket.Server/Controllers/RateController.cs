@@ -60,23 +60,7 @@ namespace Docket.Server.Controllers
 
                     var dto_dockets = dockets.Convert(users, rates, favorites, userId);
 
-                    var userRatedDockets =
-                        from user_rate in user_rates
-                        join docket in dto_dockets on user_rate.DocketId equals docket.Id
-                        select new DTODocket
-                        {
-                            Id = docket.Id,
-                            Title = docket.Title,
-                            Body = docket.Body,
-                            Ratings = docket.Ratings,
-                            CurrentUserRate = user_rate.Rating,
-                            IsFavorite = docket.IsFavorite,
-                            DateCreated = docket.DateCreated,
-                            DateModified = docket.DateModified,
-                            IsPublic = docket.IsPublic,
-                            UserId = docket.UserId,
-                            Username = docket.Username
-                        };
+                    var userRatedDockets = dto_dockets.WithRate(user_rates);
 
                     return Ok(userRatedDockets);
                 }

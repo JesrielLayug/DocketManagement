@@ -14,15 +14,24 @@ namespace Docket.Server.Controllers
     [ApiController]
     public class FavoriteController : ControllerBase
     {
+        private readonly IDocketService docketService;
+        private readonly IUserService userService;
+        private readonly IDocketRateService rateService;
         private readonly IDocketFavoriteService favoriteService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public FavoriteController
             (
+                IDocketService docketService,
+                IUserService userService,
+                IDocketRateService rateService,
                 IDocketFavoriteService favoriteService,
                 IHttpContextAccessor httpContextAccessor
             )
         {
+            this.docketService = docketService;
+            this.userService = userService;
+            this.rateService = rateService;
             this.favoriteService = favoriteService;
             this.httpContextAccessor = httpContextAccessor;
         }
@@ -57,9 +66,24 @@ namespace Docket.Server.Controllers
                 {
                     var currentUser = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var result = await favoriteService.GetByUserId(currentUser);
+                    var user_favorites = await favoriteService.GetByUserId(currentUser);
 
-                    return Ok(result);
+                    var user_rates = await rateService.GetByUserId(currentUser);
+
+
+                    var dockets = await docketService.GetAll();
+
+                    var users = await userService.GetAll();
+
+                    var rates = await rateService.GetAll();
+
+                    var favorites = await favoriteService.GetAll();
+
+                    var dto_dockets = dockets.Convert(users, rates, favorites, currentUser);
+
+                    var userFavoriteDockets = dto_dockets.WithFavorite(user_favorites, user_rates);
+
+                    return Ok(userFavoriteDockets);
                 }
                 return NotFound();
             }
