@@ -17,7 +17,7 @@ namespace Docket.Client.Components
         public DTODocketCreate DocketCreate = new DTODocketCreate();
 
         public DTODocket Docket = new DTODocket();
-        
+
         public bool isLoading = false;
 
         protected override async Task OnInitializedAsync()
@@ -54,13 +54,6 @@ namespace Docket.Client.Components
             }
         }
 
-        private void Response(string message, Severity severity)
-        {
-            StateHasChanged();
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
-            Snackbar.Add(message, severity);
-        }
-
         private async Task Create(DTODocketCreate docket)
         {
             var response = await DocketService.Add(docket);
@@ -95,6 +88,13 @@ namespace Docket.Client.Components
             {
                 Response(response.message, Severity.Error);
             }
+        }
+
+        private void Response(string message, Severity severity)
+        {
+            StateHasChanged();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+            Snackbar.Add(message, severity);
         }
     }
 }

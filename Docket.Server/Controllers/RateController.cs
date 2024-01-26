@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Docket.Server.Extensions;
+using System.Net.Sockets;
+using System.Threading.Tasks.Dataflow;
 
 namespace Docket.Server.Controllers
 {
@@ -14,17 +16,78 @@ namespace Docket.Server.Controllers
     [ApiController]
     public class RateController : ControllerBase
     {
+        private readonly IDocketService docketService;
+        private readonly IUserService userService;
         private readonly IDocketRateService rateService;
+        private readonly IDocketFavoriteService favoriteService;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public RateController
             (
+                IDocketService docketService,
+                IUserService userService,
                 IDocketRateService rateService,
+                IDocketFavoriteService favoriteService,
                 IHttpContextAccessor httpContextAccessor
             )
         {
+            this.docketService = docketService;
+            this.userService = userService;
             this.rateService = rateService;
+            this.favoriteService = favoriteService;
             this.httpContextAccessor = httpContextAccessor;
+        }
+
+        [HttpGet("GetByUser")]
+        public async Task<ActionResult<IEnumerable<DTODocket>>> GetByUser()
+        {
+            try
+            {
+                if(ModelState.IsValid && httpContextAccessor.HttpContext != null)
+                {
+                    var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    var user_rates = await rateService.GetByUserId(userId);
+
+
+                    var dockets = await docketService.GetAll();
+
+                    var users = await userService.GetAll();
+
+                    var rates = await rateService.GetAll();
+
+                    var favorites = await favoriteService.GetAll();
+
+                    var dto_dockets = dockets.Convert(users, rates, favorites, userId);
+
+                    var userRatedDockets =
+                        from user_rate in user_rates
+                        join docket in dto_dockets on user_rate.DocketId equals docket.Id
+                        select new DTODocket
+                        {
+                            Id = docket.Id,
+                            Title = docket.Title,
+                            Body = docket.Body,
+                            Ratings = docket.Ratings,
+                            CurrentUserRate = user_rate.Rating,
+                            IsFavorite = docket.IsFavorite,
+                            DateCreated = docket.DateCreated,
+                            DateModified = docket.DateModified,
+                            IsPublic = docket.IsPublic,
+                            UserId = docket.UserId,
+                            Username = docket.Username
+                        };
+
+                    return Ok(userRatedDockets);
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine( ex.Message );
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("GetExisting/{docketId}")]

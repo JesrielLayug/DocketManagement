@@ -203,14 +203,6 @@ namespace Docket.Server.Controllers
                     IsPublic = request.IsPublic
                 });
 
-                await rateService.Add(new Rate
-                {
-                    DocketId = docketId,
-                    Rating = 0,
-                    UserId = userId
-                });
-
-
                 return Ok();
             }
             catch (Exception ex)

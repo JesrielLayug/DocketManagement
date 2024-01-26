@@ -26,6 +26,7 @@ namespace Docket.Shared
                 return Ratings.Average();
             }
         }
+        public int CurrentUserRate { get; set; }
         public bool IsFavorite {  get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified {  get; set; }

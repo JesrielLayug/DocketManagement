@@ -24,6 +24,16 @@ namespace Docket.Client.Pages.MyDocketsPage
             StateHasChanged();
         }
 
+        public void ViewDocket(DTODocket docket)
+        {
+            var parameters = new DialogParameters<ViewDocketDialog>();
+            parameters.Add(x => x.Docket, docket);
+
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader = true, FullWidth = false };
+
+            DialogService.Show<ViewDocketDialog>("Docket", parameters, options);
+        }
+
         public async Task AddDocket()
         {
             var parameters = new DialogParameters<EditDocket>();
@@ -96,14 +106,5 @@ namespace Docket.Client.Pages.MyDocketsPage
             Snackbar.Add(message, severity);
         }
 
-        public void ViewDocket(DTODocket docket)
-        {
-            var parameters = new DialogParameters<ViewDocketDialog>();
-            parameters.Add(x => x.Docket, docket);
-
-            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, NoHeader = true, FullWidth=false };
-
-            DialogService.Show<ViewDocketDialog>("Docket", parameters, options);
-        }
     }
 }

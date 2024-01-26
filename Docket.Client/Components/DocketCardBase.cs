@@ -15,7 +15,6 @@ namespace Docket.Client.Components
 
         public bool isFavorite { get; set; } = false;
 
-
         public static char GetFirstLetterOFUser(string name)
         {
             string fiteredName = new string(name

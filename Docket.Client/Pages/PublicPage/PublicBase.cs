@@ -13,9 +13,12 @@ namespace Docket.Client.Pages.PublicPage
 
         public IEnumerable<DTODocket> Dockets;
 
+        public bool isLoading = true;
+
         protected override async Task OnInitializedAsync()
         {
             Dockets = await DocketService.GetAll();
+            isLoading = false;
             StateHasChanged();
         }
     }
