@@ -34,7 +34,7 @@
         </MudLayout>
     </Authorized>
     <NotAuthorized>
-        @* <MudLayout>
+        <MudLayout>
             <MudAppBar Elevation="1">
                 <MudIconButton Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Edge="Edge.Start" />
                 <MudText Typo="Typo.h6">Dockets</MudText>
@@ -45,11 +45,10 @@
             </MudAppBar>
             <MudMainContent>
                 <MudContainer MaxWidth="MaxWidth.Large" Class="mb-16 pb-16 mt-10">
-                    @Body
+                    <Docket.Client.Pages.LoginPage.Login />
                 </MudContainer>
             </MudMainContent>
-        </MudLayout> *@
-        <Docket.Client.Pages.LoginPage.Login />
+        </MudLayout>
     </NotAuthorized>
 </AuthorizeView>
 

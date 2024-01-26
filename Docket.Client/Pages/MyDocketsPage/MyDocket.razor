@@ -31,30 +31,36 @@ else
             <HeaderContent>
                 <MudTh>Title</MudTh>
                 <MudTh>Body</MudTh>
-                <MudTh>Rates</MudTh>
+                <MudTh>Rating</MudTh>
                 <MudTh>Public</MudTh>
                 <MudTh>Date Created</MudTh>
                 <MudTh>Date Modified</MudTh>
                 <MudTh>Actions</MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title"><MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 20)</MudText></MudTd>
-                    <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 25)</MudTd>
-                    <MudTd DataLabel="Rates"><MudRating ReadOnly="true" SelectedValue="(int)context.AverageRating" /></MudTd>
-                    <MudTd DataLabel="Public">
-                        <MudSwitch T="bool" @bind-Value="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
-                    </MudTd>
-                    <MudTd DataLabel="Created">@context.DateCreated.ToString("MM-dd-yyyy")</MudTd>
-                    <MudTd DataLabel="Modified">@context.DateModified.ToString("MM-dd-yyyy")</MudTd>
-                    <MudTd DataLabel="Actions">
-                        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
-                            <MudButton OnClick="() => ViewDocket(context)" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
-                            <MudButton @onclick="async () => await UpdateDocket(context)" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
-                            <MudButton @onclick="async () => await DeleteDocket(context.Id)" Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
-                        </MudButtonGroup>
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
+                <MudTd DataLabel="Title"> <MudText Typo="Typo.body2">@TextModification.TextLimit(context.Title, 20)</MudText></MudTd>
+                <MudTd DataLabel="Body">@TextModification.TextLimit(context.Body, 25)</MudTd>
+                <MudTd DataLabel="Rating">
+                    @* <MudRating ReadOnly="true" SelectedValue="(int)context.AverageRating" /> *@
+                    <div class="d-flex">
+                       <MudText Typo="Typo.body2" Class="mr-1" Style="margin-top: 1px">@context.AverageRating</MudText>
+                       <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Small"/>
+                    </div>
+                </MudTd>
+                <MudTd DataLabel="Public">
+                    <MudSwitch T="bool" @bind-Value="context.IsPublic" ReadOnly="true" Color="Color.Primary"></MudSwitch>
+                </MudTd>
+                <MudTd DataLabel="Created">@context.DateCreated.ToString("MM-dd-yyyy")</MudTd>
+                <MudTd DataLabel="Modified">@context.DateModified.ToString("MM-dd-yyyy")</MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
+                        <MudButton OnClick="() => ViewDocket(context)" Color="Color.Primary" Variant="Variant.Outlined">View</MudButton>
+                        <MudButton @onclick="async () => await UpdateDocket(context)" Color="Color.Warning" Variant="Variant.Outlined">Edit</MudButton>
+                        <MudButton @onclick="async () => await DeleteDocket(context.Id)" Color="Color.Secondary" Variant="Variant.Outlined">Delete</MudButton>
+                    </MudButtonGroup>
+                </MudTd>
+            </RowTemplate>
+       </MudTable>
     }
 }
 

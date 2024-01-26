@@ -22,7 +22,6 @@ namespace Docket.Client.Pages.MyDocketsPage
             Dockets = await DocketService.GetUserDocket();
             isLoading = false;
             StateHasChanged();
-            Console.WriteLine(Dockets);
         }
 
         public async Task AddDocket()

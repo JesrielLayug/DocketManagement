@@ -12,12 +12,10 @@ namespace Docket.Client.Pages.PublicPage
         [Inject] IDocketService DocketService { get; set; }
 
         public IEnumerable<DTODocket> Dockets;
-        public bool isLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
             Dockets = await DocketService.GetAll();
-            isLoading = false;
             StateHasChanged();
         }
     }

@@ -30,7 +30,7 @@ namespace Docket.Server.Services
 
         public async Task Update(Rate rate)
         {
-            await _docketRate.ReplaceOneAsync(d => d.DocketId == rate.Id, rate);
+            await _docketRate.ReplaceOneAsync(d => d.DocketId == rate.DocketId && d.UserId == rate.UserId, rate);
         }
 
         public async Task<IEnumerable<Rate>> GetByUserId(string userId)
