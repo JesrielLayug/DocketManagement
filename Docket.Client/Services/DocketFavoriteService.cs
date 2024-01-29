@@ -39,6 +39,19 @@ namespace Docket.Client.Services
             }
         }
 
+        public async Task<IEnumerable<DTODocket>> GetAllFavorites()
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Favorite/GetByCurrentUser");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
         public async Task<Response> Remove(string docketId)
         {
             try

@@ -1,10 +1,55 @@
 ﻿@page "/my-collection"
+@inherits MyCollectionBase
 
-<MudGrid>
-    <MudItem xs="12" lg="6">
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+        <MudTabPanel Text="Rated Dockets" Class="rating-container">
+            @if (RatedDockets == null || RatedDockets.Count() == 0)
+            {
+                <MudContainer Class="d-flex flex-column align-center pa-0 ma-0">
+                    <MudImage Src="/Image/No-Item.png" Width="450" Height="450" ObjectFit="ObjectFit.Cover" Elevation="0" Class="rounded" />
+                    <MudText Typo="Typo.h4" Align="Align.Center"><strong>NO DOCKETS</strong></MudText>
+                    <MudText Typo="Typo.subtitle2">Unfortunately, you don't rate any dockets yet.</MudText>
+                </MudContainer>
+            }
+            else
+            {
+                @if (RatedDockets.Count() > 0)
+                {
+                    <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
+                        <div style="min-width: 70%">
+                            <DocketCard Dockets="@RatedDockets" OnRatingChanged="HandleRatingChanged" OnFavoriteChanged="HandleFavoriteChanged" />
+                        </div>
+                    </div>
+                }
+            }
+        </MudTabPanel>
+        <MudTabPanel Text="Favorite Dockets" Class="favorite-container">
+            @if (FavoriteDockets == null || FavoriteDockets.Count() == 0)
+            {
+                <MudContainer Class="d-flex flex-column align-center pa-0 ma-0">
+                    <MudImage Src="/Image/No-Item.png" Width="450" Height="450" ObjectFit="ObjectFit.Cover" Elevation="0" Class="rounded" />
+                    <MudText Typo="Typo.h4" Align="Align.Center"><strong>NO DOCKETS</strong></MudText>
+                    <MudText Typo="Typo.subtitle2">Unfortunately, you don't add any favorite dockets yet.</MudText>
+                </MudContainer>
+            }
+            else
+            {
+                @if (FavoriteDockets.Count() > 0)
+                {
+                    <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
+                        <div style="min-width: 70%">
+                            <DocketCard Dockets="@FavoriteDockets" OnRatingChanged="HandleRatingChanged" OnFavoriteChanged="HandleFavoriteChanged" />
+                        </div>
+                    </div>
+                }
+            }
+        </MudTabPanel>
+    </MudTabs>
+}
 
-    </MudItem>
-    <MudItem xs="12" lg="6">
-
-    </MudItem>
-</MudGrid>

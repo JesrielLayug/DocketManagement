@@ -57,7 +57,7 @@ namespace Docket.Server.Controllers
             }
         }
 
-        [HttpGet("GetByUserId")]
+        [HttpGet("GetByCurrentUser")]
         public async Task<IActionResult> GetByCurrentUser()
         {
             try
@@ -66,24 +66,17 @@ namespace Docket.Server.Controllers
                 {
                     var currentUser = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                    var user_favorites = await favoriteService.GetByUserId(currentUser);
-
-                    var user_rates = await rateService.GetByUserId(currentUser);
-
+                    var favorites = await favoriteService.GetAll();
 
                     var dockets = await docketService.GetAll();
 
-                    var users = await userService.GetAll();
-
                     var rates = await rateService.GetAll();
 
-                    var favorites = await favoriteService.GetAll();
+                    var users = await userService.GetAll();
 
-                    var dto_dockets = dockets.Convert(users, rates, favorites, currentUser);
-
-                    var userFavoriteDockets = dto_dockets.WithFavorite(user_favorites, user_rates);
-
-                    return Ok(userFavoriteDockets);
+                    var userFavorites = dockets.WithFavorites(favorites, rates, users, currentUser);
+                   
+                    return Ok(userFavorites);
                 }
                 return NotFound();
             }
@@ -106,7 +99,11 @@ namespace Docket.Server.Controllers
                     var existingFavorite = await favoriteService.GetExisting(currentUser, featureFavorite.DocketId);
 
                     if (existingFavorite != null)
-                        return Conflict(existingFavorite);
+                    {
+                        existingFavorite.IsFavorite = featureFavorite.IsFavorite;
+                        await favoriteService.Update(existingFavorite);
+                        return Ok("Success");
+                    }
                     else
                     {
                         await favoriteService.Add(new Favorite

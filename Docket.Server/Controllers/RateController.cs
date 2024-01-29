@@ -45,24 +45,19 @@ namespace Docket.Server.Controllers
             {
                 if(ModelState.IsValid && httpContextAccessor.HttpContext != null)
                 {
-                    var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                    var user_rates = await rateService.GetByUserId(userId);
-
-
-                    var dockets = await docketService.GetAll();
-
-                    var users = await userService.GetAll();
-
-                    var rates = await rateService.GetAll();
+                    var currentUser = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                     var favorites = await favoriteService.GetAll();
 
-                    var dto_dockets = dockets.Convert(users, rates, favorites, userId);
+                    var dockets = await docketService.GetAll();
 
-                    var userRatedDockets = dto_dockets.WithRate(user_rates);
+                    var rates = await rateService.GetAll();
 
-                    return Ok(userRatedDockets);
+                    var users = await userService.GetAll();
+
+                    var userRates = dockets.WithRates(rates, favorites, users, currentUser);
+
+                    return Ok(userRates);
                 }
 
                 return BadRequest(ModelState);

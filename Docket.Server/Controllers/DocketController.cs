@@ -36,51 +36,29 @@ namespace Docket.Server.Controllers
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("GetAll")]
-        [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<DTODocket>>> GetAll()
-        {
-            try
-            {
-                var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                var dockets = await docketService.GetAll();
-
-                var users = await userService.GetAll();
-
-                var rates = await rateService.GetAll();
-
-                var favorites = await favoriteService.GetAll();
-
-                var dtodockets = dockets.Convert(users, rates, favorites, userId);
-
-                return Ok(dtodockets);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [Authorize]
         [HttpGet("GetAllPublic")]
         public async Task<ActionResult<IEnumerable<DTODocket>>> GetAllPublics()
         {
             try
             {
-                var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if(httpContextAccessor.HttpContext != null)
+                {
+                    var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                var dockets = await docketService.GetAll();
+                    var dockets = await docketService.GetAll();
 
-                var users = await userService.GetAll();
+                    var users = await userService.GetAll();
 
-                var rates = await rateService.GetAll();
+                    var rates = await rateService.GetAll();
 
-                var favorites = await favoriteService.GetAll();
+                    var favorites = await favoriteService.GetAll();
 
-                var dtodockets = dockets.Convert(users, rates, favorites, userId);
+                    var dtodockets = dockets.Convert(users, rates, favorites, userId);
 
-                return Ok(dtodockets);
+                    return Ok(dtodockets);
+                }
+                return BadRequest();
             }
             catch (Exception ex)
             {

@@ -6,28 +6,30 @@ namespace Docket.Server.Extensions
     public static class ExtensionFavorite
     {
         public static IEnumerable<DTODocket>
-            WithFavorite(
-                this IEnumerable<DTODocket> dto_dockets,
-                IEnumerable<Favorite> user_favorites,
-                IEnumerable<Rate> user_rates
+            WithFavorites(
+                this IEnumerable<Models.Docket> dockets,
+                IEnumerable<Favorite> favorites,
+                IEnumerable<Rate> rates,
+                IEnumerable<User> users,
+                string userId
             )
         {
-            return (from user_favorite in user_favorites
-                    join docket in dto_dockets on user_favorite.DocketId equals docket.Id
-                    join user_rate in user_rates on docket.Id equals user_rate.DocketId
+            return (from favorite in favorites.Where(f => f.UserId == userId)
+                    join docket in dockets on favorite.DocketId equals docket.Id
+                    join rate in rates on docket.Id equals rate.DocketId into docketRatings
+                    join user in users on userId equals user.id
                     select new DTODocket
                     {
                         Id = docket.Id,
                         Title = docket.Title,
                         Body = docket.Body,
-                        Ratings = docket.Ratings,
-                        CurrentUserRate = user_rate.Rating,
-                        IsFavorite = docket.IsFavorite,
+                        Ratings = docketRatings.Select(dr => dr.Rating).ToList(),
+                        IsFavorite = favorite.IsFavorite,
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,
                         UserId = docket.UserId,
-                        Username = docket.Username
+                        Username = user.name
                     }).ToList();
         }
     }

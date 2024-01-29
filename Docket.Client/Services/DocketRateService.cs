@@ -40,6 +40,19 @@ namespace Docket.Client.Services
             }
         }
 
+        public async Task<IEnumerable<DTODocket>> GetAllRated()
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Rate/GetByUser");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<DTOFeatureRate> GetExisting(string docketId)
         {
             try

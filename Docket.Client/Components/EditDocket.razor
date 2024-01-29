@@ -2,7 +2,7 @@
 @attribute [Authorize(Roles = "user")]
 
 
-<MudDialog DisableSidePadding="true">
+<MudDialog DisableSidePadding="false">
     <DialogContent>
          <EditForm Model="Docket" OnValidSubmit="SaveOnClick">
             <DataAnnotationsValidator />

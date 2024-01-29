@@ -6,26 +6,31 @@ namespace Docket.Server.Extensions
     public static class ExtensionRate
     {
         public static IEnumerable<DTODocket>
-            WithRate(
-                this IEnumerable<DTODocket> dto_dockets,
-                IEnumerable<Rate> rates
+            WithRates(
+                this IEnumerable<Models.Docket> dockets,
+                IEnumerable<Rate> rates,
+                IEnumerable<Favorite> favorites,
+                IEnumerable<User> users,
+                string userId
             )
         {
-            return (from user_rate in rates
-                    join docket in dto_dockets on user_rate.DocketId equals docket.Id
+            return (from rate in rates.Where(r => r.UserId == userId)
+                    join docket in dockets on rate.DocketId equals docket.Id 
+                    join user in users on userId equals user.id
+                    join favorite in favorites on new { DocketId = docket.Id, UserId = userId } equals new { favorite.DocketId, favorite.UserId } into docketFavorites
+                    from favorite in docketFavorites.DefaultIfEmpty()
                     select new DTODocket
                     {
                         Id = docket.Id,
                         Title = docket.Title,
                         Body = docket.Body,
-                        Ratings = docket.Ratings,
-                        CurrentUserRate = user_rate.Rating,
-                        IsFavorite = docket.IsFavorite,
+                        Ratings = rates.Where(r => r.DocketId == docket.Id).Select(r => r.Rating).Distinct().ToList(),
+                        IsFavorite = favorite != null && favorite.IsFavorite,
                         DateCreated = docket.DateCreated,
                         DateModified = docket.DateModified,
                         IsPublic = docket.IsPublic,
                         UserId = docket.UserId,
-                        Username = docket.Username
+                        Username = user.name
                     }).ToList();
         }
     }

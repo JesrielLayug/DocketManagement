@@ -14,11 +14,11 @@
                         </div>
                         <MudSpacer />
                         @{
-                            isFavorite = item.IsFavorite;
+                            var isFavorite = item.IsFavorite;
                         }
                         <MudFab Color="Color.Inherit" DisableElevation="true" Size="Size.Small" 
-                                @onclick="async () => await AddToFavorite(new Docket.Shared.DTOFeatureFavorite { DocketId = item.Id, IsFavorite = item.IsFavorite })"
-                                StartIcon="@Icons.Material.Filled.Bookmark" IconColor="SetIconColor(isFavorite)"/>
+                                @onclick="async () => await AddToFavorite(new Docket.Shared.DTOFeatureFavorite { DocketId = item.Id, IsFavorite = isFavorite })"
+                                StartIcon="@Icons.Material.Filled.Bookmark" IconColor="SetIconColor(item.IsFavorite)"/>
                     </MudItem>
 
                     <MudItem xs="12" Class="d-flex flex-column mt-0 mb-0">

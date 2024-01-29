@@ -7,13 +7,13 @@ namespace Docket.Client.Components
 {
     public class DocketCardBase : ComponentBase
     {
+        [Parameter] public EventCallback OnFavoriteChanged { get; set; }
+        [Parameter] public EventCallback OnRatingChanged { get; set; }
         [Parameter] public IEnumerable<DTODocket> Dockets { get; set; }
         [Inject] ISnackbar Snackbar { get; set; }
         [Inject] IDialogService DialogService { get; set; }
-        [Inject] IDocketService DocketService { get; set; }
         [Inject] IDocketFavoriteService FavoriteService { get; set; }
 
-        public bool isFavorite { get; set; } = false;
 
         public static char GetFirstLetterOFUser(string name)
         {
@@ -24,13 +24,6 @@ namespace Docket.Client.Components
             return char.ToUpper(fiteredName[0]);
         }
 
-        public async Task RefreshCard()
-        {
-            Dockets = await DocketService.GetAll();
-            StateHasChanged();
-        }
-
-        #region AddRating Click
 
         public async void AddRating(DTOFeatureRate rating)
         {
@@ -44,34 +37,22 @@ namespace Docket.Client.Components
             var result = await dialog.Result;
 
             if (!result.Canceled)
-            {
-                await RefreshCard();
-            }
+                await OnRatingChanged.InvokeAsync(null);
         }
-
-        #endregion
-
-        #region AddFavorite Click
 
 
         public async Task AddToFavorite(DTOFeatureFavorite favorite)
         {
-            isFavorite = !isFavorite;
-            favorite.IsFavorite = isFavorite;
+            favorite.IsFavorite = !favorite.IsFavorite;
 
             Response response;
 
-            if (favorite.IsFavorite == true)
-            {
+            if (favorite.IsFavorite)
                 response = await FavoriteService.Add(favorite);
-                await RefreshCard();
-            }
             else
-            {
                 response = await FavoriteService.Remove(favorite.DocketId);
-                await RefreshCard();
-            }
-            
+
+            await OnFavoriteChanged.InvokeAsync(null);
 
             if (response.isSuccess)
                 Response(response.message, Severity.Success);
@@ -84,11 +65,6 @@ namespace Docket.Client.Components
             return isFavorite ? Color.Warning : Color.Inherit;
         }
 
-
-        #endregion
-
-        #region Response
-
         private void Response(string message, Severity severity)
         {
             StateHasChanged();
@@ -96,6 +72,5 @@ namespace Docket.Client.Components
             Snackbar.Add(message, severity);
         }
 
-        #endregion
     }
 }

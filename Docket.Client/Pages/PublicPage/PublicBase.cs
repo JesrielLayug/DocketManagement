@@ -21,5 +21,15 @@ namespace Docket.Client.Pages.PublicPage
             isLoading = false;
             StateHasChanged();
         }
+
+        public async Task HandleFavoriteChanged()
+        {
+            Dockets = await DocketService.GetAll();
+        }
+
+        public async Task HandleRatingChanged()
+        {
+            Dockets = await DocketService.GetAll();
+        }
     }
 }

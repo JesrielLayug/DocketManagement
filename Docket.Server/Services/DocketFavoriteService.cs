@@ -38,5 +38,10 @@ namespace Docket.Server.Services
         {
             await _docketFavorite.DeleteOneAsync(f => f.DocketId == docketId && f.UserId == userId);
         }
+
+        public async Task Update(Favorite favorite)
+        {
+            await _docketFavorite.ReplaceOneAsync(fav => fav.Id == favorite.Id, favorite);
+        }
     }
 }

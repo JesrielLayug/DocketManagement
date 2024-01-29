@@ -9,7 +9,7 @@ namespace Docket.Server.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id {  get; set; }
         [BsonElement("is_favorite")]
-        public bool IsFavorite { get; set; }
+        public bool IsFavorite { get; set; } = false;
         [BsonElement("docket_id")]
         public string DocketId { get; set; }
         [BsonElement("user_id")]
