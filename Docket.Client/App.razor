@@ -3,7 +3,7 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" >
                 <NotAuthorized>
-                    Sorry, but you're not allowed to see this. 
+                    <Docket.Client.Pages.LoginPage.Login />
                 </NotAuthorized>
             </AuthorizeRouteView>
         </Found>

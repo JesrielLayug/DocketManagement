@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider Theme="MyCustomTheme" IsDarkMode="true"/>
 <MudDialogProvider />
@@ -53,8 +54,6 @@
 
 
 @code {
-
-    [Inject] NavigationManager NavigationManager { get; set; }
 
     bool _drawerOpen = true;
 

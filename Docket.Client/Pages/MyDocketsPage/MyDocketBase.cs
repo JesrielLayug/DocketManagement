@@ -84,14 +84,18 @@ namespace Docket.Client.Pages.MyDocketsPage
                 yesText: "Delete", cancelText: "Cancel"
                 );
 
-            if(result.Value == true)
+            if(result == true)
             {
                 await DocketService.Delete(docketId);
 
                 await RefreshTable();
 
                 Response("Docket Deleted", Severity.Error);
+
             }
+
+
+            StateHasChanged();
         }
 
         private async Task RefreshTable()
