@@ -15,5 +15,6 @@ namespace Docket.Shared
         public string gender { get; set; } = string.Empty;
         public int age { get; set; }
         public string password { get; set; } = string.Empty;
+        public DateTime DateJoined { get; set; }
     }
 }

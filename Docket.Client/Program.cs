@@ -24,6 +24,7 @@ builder.Services.AddScoped<IDocketService, DocketService>();
 builder.Services.AddScoped<DTODocketUpdate>();
 builder.Services.AddScoped<IDocketRateService, DocketRateService>();
 builder.Services.AddScoped<IDocketFavoriteService, DocketFavoriteService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();

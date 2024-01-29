@@ -1,0 +1,26 @@
+﻿@page "/users"
+@using Docket.Client.Utilities
+@using Docket.Shared
+@inherits UserBase
+@attribute [Authorize(Roles = "user")]
+
+
+
+<h3 class="heading" style="font-size: 30px">All Users</h3>
+<MudText Typo="Typo.body1" Class="mt-2 mb-8" Style="font-size: 14px; color: #8f8f8fff;">
+    Meet the stellar lineup of individuals who've navigated the virtual realms of our web app!
+</MudText>
+<MudTable Items="Users" Hover="true" Striped="false" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false">
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Age</MudTh>
+        <MudTh>Gender</MudTh>
+        <MudTh>Date Joined</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.name</MudTd>
+        <MudTd DataLabel="Age">@context.age</MudTd>
+        <MudTd DataLabel="Genger">@context.gender</MudTd>
+        <MudTd DataLabel="Date Joined">@context.DateJoined.ToString("MM-dd-yyyy")</MudTd>
+    </RowTemplate>
+</MudTable>

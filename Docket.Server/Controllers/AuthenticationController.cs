@@ -34,6 +34,7 @@ namespace Docket.Server.Controllers
                         name = request.name,
                         gender = request.gender,
                         age = request.age,
+                        DateJoined = DateTime.Now,
                         PasswordHash = hash,
                         PasswordSalt = salt,
                         Role = "user"
