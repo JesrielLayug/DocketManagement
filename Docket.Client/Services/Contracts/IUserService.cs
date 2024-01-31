@@ -1,5 +1,4 @@
-﻿using Docket.Client.Pages.UserPage;
-using Docket.Shared;
+﻿using Docket.Shared;
 
 namespace Docket.Client.Services.Contracts
 {

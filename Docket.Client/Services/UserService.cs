@@ -1,5 +1,4 @@
-﻿using Docket.Client.Pages.UserPage;
-using Docket.Client.Services.Contracts;
+﻿using Docket.Client.Services.Contracts;
 using Docket.Shared;
 using System.Net.Http.Json;
 

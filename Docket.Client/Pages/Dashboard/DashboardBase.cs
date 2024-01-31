@@ -1,13 +1,11 @@
 ﻿using Docket.Client.Services.Contracts;
 using Docket.Shared;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
 using MudBlazor;
-using System.Collections;
 
-namespace Docket.Client.Pages.UserPage
+namespace Docket.Client.Pages.Dashboard
 {
-    public class UserBase : ComponentBase
+    public class DashboardBase : ComponentBase
     {
         [Inject] IUserService UserService { get; set; }
         [Inject] IDocketFavoriteService FavoriteService { get; set; }

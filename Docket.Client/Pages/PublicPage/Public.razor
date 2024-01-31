@@ -1,4 +1,4 @@
-﻿@page "/public"
+﻿@page "/"
 @using Docket.Shared;
 @inherits PublicBase
 @attribute [AllowAnonymous]
@@ -22,6 +22,8 @@ else
     {
         @if (Dockets.Count() > 0)
         {
+            <Header />
+
             <div class="row mt-3 d-flex flex-wrap docketcard-container justify-center">
                 <div style="min-width: 70%">
                     <DocketCard Dockets="@Dockets" OnFavoriteChanged="HandleFavoriteChanged" OnRatingChanged="HandleRatingChanged"/>

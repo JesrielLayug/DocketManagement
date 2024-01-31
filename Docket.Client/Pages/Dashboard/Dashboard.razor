@@ -1,7 +1,7 @@
-﻿@page "/"
+﻿@page "/dashboard"
 @using Docket.Client.Utilities
 @using Docket.Shared
-@inherits UserBase
+@inherits DashboardBase
 @attribute [Authorize(Roles = "user")]
 
 @if (isLoading)
@@ -19,16 +19,16 @@ else
         <MudPaper Class="mud-theme-primary flex-grow-1 pa-5" Height="150px" Outlined="true">
             <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Size="Size.Large" />
             <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@Dockets.Count()</MudText>
-            <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Dockets</MudText>
-        </MudPaper>
-        <MudPaper Class="mud-theme-secondary flex-grow-1 pa-5" Height="150px" Outlined="true">
-            <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.Bookmarks" Color="Color.Inherit" Size="Size.Large" />
-            <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@FavoriteDockets.Count()</MudText>
-            <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Favorites</MudText>
-        </MudPaper>
-        <MudPaper Class="mud-theme-tertiary flex-grow-1 pa-5" Height="150px" Outlined="true">
-            <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Inherit" Size="Size.Large" />
-            <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@Users.Count()</MudText>
+                <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Dockets</MudText>
+            </MudPaper>
+            <MudPaper Class="mud-theme-secondary flex-grow-1 pa-5" Height="150px" Outlined="true">
+                <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.Bookmarks" Color="Color.Inherit" Size="Size.Large" />
+                <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@FavoriteDockets.Count()</MudText>
+                <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Favorites</MudText>
+            </MudPaper>
+            <MudPaper Class="mud-theme-tertiary flex-grow-1 pa-5" Height="150px" Outlined="true">
+                <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Inherit" Size="Size.Large" />
+                <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@Users.Count()</MudText>
                 <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Total Users</MudText>
             </MudPaper>
         </MudPaper>

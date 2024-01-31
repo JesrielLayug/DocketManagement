@@ -12,11 +12,11 @@
         <MudLayout>
             <MudAppBar Elevation="1">
                 <MudIconButton Icon="@Icons.Material.Filled.Menu" Variant="Variant.Outlined" Color="Color.Inherit" Size="Size.Small" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" Class="mr-3" />
-                <MudText Typo="Typo.h6">Dockets</MudText>
+                <MudLink Href="/" Typo="Typo.h6" Underline="Underline.None">Dockets</MudLink>
                 <MudSpacer />
                 <LoginLogoutButton />
             </MudAppBar>
-            <MudDrawer @bind-Open="_drawerOpen" Color="Color.Dark" Variant="@DrawerVariant.Responsive" Class="d-flex flex-column" OpenMiniOnHover="true">
+            <MudDrawer @bind-Open="_drawerOpen" Color="Color.Dark" Variant="@DrawerVariant.Responsive" Breakpoint="Breakpoint.Lg" PreserveOpenState="false" Class="d-flex flex-column">
                 <MudCard Elevation="0" Class="ma-0 pa-0">
                     <MudText Typo="Typo.h6" Class="px-4 mt-1">@context.User.Identity.Name</MudText>
                     <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">System Management</MudText>
