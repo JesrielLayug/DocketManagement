@@ -5,6 +5,9 @@ using Docket.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
 
 namespace Docket.Server.Controllers
@@ -74,7 +77,7 @@ namespace Docket.Server.Controllers
 
                     var users = await userService.GetAll();
 
-                    var userFavorites = dockets.WithFavorites(favorites, rates, users, currentUser);
+                    var userFavorites = dockets.UserFavorites(favorites, rates, users, currentUser);
                    
                     return Ok(userFavorites);
                 }
@@ -86,6 +89,51 @@ namespace Docket.Server.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("GetAverageFavorite/{date}")]
+        public async Task<IActionResult> GetAverageFavorite(string date)
+        {
+            try
+            {
+                if(httpContextAccessor.HttpContext != null)
+                {
+
+                    var user = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    var dockets = await docketService.GetByUserId(user);
+
+                    var favorites = await favoriteService.GetAll();
+
+                    var data = dockets
+                    .Select(d =>
+                    {
+                        var decodedDate = WebUtility.UrlDecode(date);
+                        return new DTOFavoriteReport
+                        {
+                            Title = d.Title,
+                            SumOfFavoritesForDay = favorites.Count(favorite =>
+                            favorite.DocketId == d.Id &&
+                            favorite.DateAdded == decodedDate &&
+                            favorite.IsFavorite),
+                            DocketId = d.Id,
+                            DateAddedd = decodedDate,
+                            UserId = user
+                        };
+                    })
+                    .ToList();
+
+
+                    return Ok(data);
+                }
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
 
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] DTOFeatureFavorite featureFavorite)
@@ -110,7 +158,8 @@ namespace Docket.Server.Controllers
                         {
                             IsFavorite = featureFavorite.IsFavorite,
                             DocketId = featureFavorite.DocketId,
-                            UserId = currentUser
+                            UserId = currentUser,
+                            DateAdded = DateTime.Now.ToString("MM/dd/yyyy")
                         });
 
                         return Ok("Successfully added the docket to favorites");

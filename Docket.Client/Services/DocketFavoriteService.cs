@@ -1,5 +1,6 @@
 ﻿using Docket.Client.Services.Contracts;
 using Docket.Shared;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Docket.Client.Services
@@ -48,6 +49,38 @@ namespace Docket.Client.Services
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<DTOFavoriteReport>> GetAverageFavorite(string date)
+        {
+            try
+            {
+                var dateFormat = WebUtility.UrlEncode(date);
+
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFavoriteReport>>($"api/Favorite/GetAverageFavorite/{dateFormat}");
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("API endpoint not found");
+                return Enumerable.Empty<DTOFavoriteReport>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return Enumerable.Empty<DTOFavoriteReport>();
+            }
+        }
+
+        public async Task<IEnumerable<DTOFeatureFavorite>> GetByDocketId(string docketId)
+        {
+            try
+            {
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFeatureFavorite>>($"api/Favorite/GetByDocketId/{docketId}");
+            }
+            catch 
+            {
                 throw;
             }
         }

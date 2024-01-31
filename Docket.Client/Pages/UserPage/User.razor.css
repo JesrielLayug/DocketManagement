@@ -1,9 +1,18 @@
-﻿@media only screen and (max-width: 600px) {
+﻿.chartline-container {
+    width: 80%;
+    height: 300px;
+}
+
+@media only screen and (max-width: 600px) {
     .docket-header {
         justify-content: center;
     }
 
     .docketcard-container {
         justify-content: center;
+    }
+
+    .box{
+        min-width: 100% !important;
     }
 }

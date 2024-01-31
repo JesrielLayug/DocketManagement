@@ -3,10 +3,10 @@ using Docket.Shared;
 
 namespace Docket.Server.Extensions
 {
-    public static class ExtensionFavorite
+    public static class ExtensionFavorites
     {
         public static IEnumerable<DTODocket>
-            WithFavorites(
+            UserFavorites(
                 this IEnumerable<Models.Docket> dockets,
                 IEnumerable<Favorite> favorites,
                 IEnumerable<Rate> rates,

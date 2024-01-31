@@ -14,5 +14,7 @@ namespace Docket.Server.Models
         public string DocketId { get; set; }
         [BsonElement("user_id")]
         public string UserId {  get; set; }
+        [BsonElement("date_added")]
+        public string DateAdded { get; set; }
     }
 }

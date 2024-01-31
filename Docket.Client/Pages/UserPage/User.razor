@@ -1,26 +1,80 @@
-﻿@page "/users"
+﻿@page "/"
 @using Docket.Client.Utilities
 @using Docket.Shared
 @inherits UserBase
 @attribute [Authorize(Roles = "user")]
 
+@if (isLoading)
+{
+    <Loader />
+}
+else
+{
+    <div class="d-flex mb-10">
+        <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.SpaceDashboard" Color="Color.Primary" Size="Size.Large" />
+        <MudText Typo="Typo.h5" Class="pt-1" Style="font-weight: 600">Dashboard</MudText>
+    </div>
+
+    <MudPaper Class="pa-0 ma-0 d-flex flex-wrap gap-4 " Elevation="0" Style="background: inherit">
+        <MudPaper Class="mud-theme-primary flex-grow-1 pa-5" Height="150px" Outlined="true">
+            <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.AutoAwesomeMotion" Color="Color.Inherit" Size="Size.Large" />
+            <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@Dockets.Count()</MudText>
+            <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Dockets</MudText>
+        </MudPaper>
+        <MudPaper Class="mud-theme-secondary flex-grow-1 pa-5" Height="150px" Outlined="true">
+            <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.Bookmarks" Color="Color.Inherit" Size="Size.Large" />
+            <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@FavoriteDockets.Count()</MudText>
+            <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Favorites</MudText>
+        </MudPaper>
+        <MudPaper Class="mud-theme-tertiary flex-grow-1 pa-5" Height="150px" Outlined="true">
+            <MudIcon Class="me-2 pt-1" Icon="@Icons.Material.Filled.SupervisedUserCircle" Color="Color.Inherit" Size="Size.Large" />
+            <MudText Typo="Typo.h5" Class="ps-1 pt-1" Style="font-weight: 600; font-size: 20px">@Users.Count()</MudText>
+                <MudText Typo="Typo.h5" Class="ps-1 pt-1 mb-5" Style="font-weight: 400; font-size: 15px">Total Users</MudText>
+            </MudPaper>
+        </MudPaper>
+
+    <MudGrid Class="d-flex justify-center mt-2">
+        <MudItem xs="12" lg="8" md="8">
+            <MudPaper Class="pa-5" Elevation="1" Width="100%" Height="100%">
+                <MudText Typo="Typo.h5" Class="pt-1 mb-5" Style="font-weight: 500; font-size: 20px">Dockets Analytics</MudText>
+                <MudChart Class="pa-0 ma-0" ChartType="ChartType.Line" ChartSeries="@Series"
+                          XAxisLabels="@XAxisLabels" Width="inherit" Height="inherit" ChartOptions="@_options" />
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" lg="4" md="4">
+            <MudPaper Class="pa-5" Elevation="1" Width="100%" Height="100%">
+                <MudText Typo="Typo.h5" Class="pt-1 mb-5" Style="font-weight: 500; font-size: 20px">Ratings</MudText>
+                <MudDivider />
+                <MudChart ChartType="ChartType.Donut" LegendPosition="Position.Bottom" Width="inherit" Height="inherit"
+                          InputData="@data" InputLabels="@labels">
+                    <CustomGraphics>
+                        <text class="donut-inner-text" x="47%" y="35%" dominant-baseline="middle" text-anchor="middle" fill="inherit" font-family="Helvetica" font-size="2">Total Ratings</text>
+                        <text class="donut-inner-text" x="47%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="inherit" font-family="Helvetica" font-size="5">@data.Sum().ToString()</text>
+                    </CustomGraphics>
+                </MudChart>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <div class="mt-2">
+        <MudTable Items="Users" Hover="true" Striped="false" Elevation="0" Class="mt-2 px-5 pt-4 pb-4" FixedHeader="true" Dense="false">
+            <ToolBarContent>
+                <MudText Typo="Typo.h5" Style="font-weight: 600" Class="pa-0 ms-0">All Users</MudText>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Age</MudTh>
+                <MudTh>Gender</MudTh>
+                <MudTh>Date Joined</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.name</MudTd>
+                    <MudTd DataLabel="Age">@context.age</MudTd>
+                    <MudTd DataLabel="Genger">@context.gender</MudTd>
+                    <MudTd DataLabel="Date Joined">@context.DateJoined.ToString("MM-dd-yyyy")</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </div>
+}
 
 
-<h3 class="heading" style="font-size: 30px">All Users</h3>
-<MudText Typo="Typo.body1" Class="mt-2 mb-8" Style="font-size: 14px; color: #8f8f8fff;">
-    Meet the stellar lineup of individuals who've navigated the virtual realms of our web app!
-</MudText>
-<MudTable Items="Users" Hover="true" Striped="false" Class="d-flex mt-6 px-5 pt-4 pb-4" Dense="false">
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Age</MudTh>
-        <MudTh>Gender</MudTh>
-        <MudTh>Date Joined</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.name</MudTd>
-        <MudTd DataLabel="Age">@context.age</MudTd>
-        <MudTd DataLabel="Genger">@context.gender</MudTd>
-        <MudTd DataLabel="Date Joined">@context.DateJoined.ToString("MM-dd-yyyy")</MudTd>
-    </RowTemplate>
-</MudTable>

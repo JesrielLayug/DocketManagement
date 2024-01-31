@@ -43,5 +43,15 @@ namespace Docket.Server.Services
         {
             await _docketFavorite.ReplaceOneAsync(fav => fav.Id == favorite.Id, favorite);
         }
+
+        public async Task<IEnumerable<Favorite>> GetByDocketId(string docketId)
+        {
+            return await _docketFavorite.Find(docket => docket.Id == docketId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Favorite>> GetByDateAndDocketId(string date, string docketId)
+        {
+            return await _docketFavorite.Find(docket => docket.DateAdded == date && docket.DocketId == docketId).ToListAsync();
+        }
     }
 }
