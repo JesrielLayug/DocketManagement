@@ -32,7 +32,7 @@ namespace Docket.Client.Pages.Dashboard
             await InitializeLineChart();
 
             _options.YAxisTicks = 1;
-            _options.InterpolationOption = InterpolationOption.EndSlope;
+            _options.InterpolationOption = InterpolationOption.Straight;
 
             isLoading = false;
             StateHasChanged();
@@ -60,9 +60,9 @@ namespace Docket.Client.Pages.Dashboard
             // Create a dictionary to store data for each docket
             Dictionary<string, List<double>> docketDataMapping = new Dictionary<string, List<double>>();
 
-            for (int i = 6; i >= 0; i--)
+            for (int i = 0; i < 7; i++)
             {
-                previousDay = DateTime.Now.AddDays(-i);
+                previousDay = DateTime.Now.AddDays(+i);
                 XAxisLabels[i] = previousDay.ToString("MMM d");
 
                 IEnumerable<DTOFavoriteReport> docketsFrom7Days = await FavoriteService.GetAverageFavorite(previousDay.ToString("MM/dd/yyyy"));

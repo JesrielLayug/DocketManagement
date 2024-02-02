@@ -1,7 +1,7 @@
 ﻿@page "/"
 @using Docket.Shared;
 @inherits PublicBase
-@attribute [AllowAnonymous]
+@attribute [Authorize(Roles = "user")]
 
 
 @if (isLoading)

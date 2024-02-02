@@ -17,7 +17,7 @@ namespace Docket.Server.Extensions
             return (from favorite in favorites.Where(f => f.UserId == userId)
                     join docket in dockets on favorite.DocketId equals docket.Id
                     join rate in rates on docket.Id equals rate.DocketId into docketRatings
-                    join user in users on userId equals user.id
+                    join user in users on docket.UserId equals user.id
                     select new DTODocket
                     {
                         Id = docket.Id,

@@ -16,7 +16,7 @@ namespace Docket.Server.Extensions
         {
             return (from rate in rates.Where(r => r.UserId == userId)
                     join docket in dockets on rate.DocketId equals docket.Id 
-                    join user in users on userId equals user.id
+                    join user in users on docket.UserId equals user.id
                     join favorite in favorites on new { DocketId = docket.Id, UserId = userId } equals new { favorite.DocketId, favorite.UserId } into docketFavorites
                     from favorite in docketFavorites.DefaultIfEmpty()
                     select new DTODocket

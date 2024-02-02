@@ -114,7 +114,7 @@ namespace Docket.Server.Controllers
                             SumOfFavoritesForDay = favorites.Count(favorite =>
                             favorite.DocketId == d.Id &&
                             favorite.DateAdded == decodedDate &&
-                            favorite.IsFavorite),
+                            favorite.IsFavorite == true),
                             DocketId = d.Id,
                             DateAddedd = decodedDate,
                             UserId = user
