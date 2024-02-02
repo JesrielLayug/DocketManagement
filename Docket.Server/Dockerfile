@@ -2,15 +2,18 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
 
-COPY . .
+COPY . /src
 
-RUN dotnet restore "./Docket.Server.csproj" --disable-parallel
-RUN dotnet publish "./Docket.Server.csproj" -c release -o /app --no-restore
+# Restore the dependencies for both projects
+RUN dotnet restore "/src/Docket.Server/Docket.Server.csproj" --disable-parallel
+RUN dotnet restore "/src/Docket.Shared/Docket.Shared.csproj" --disable-parallel
+
+RUN dotnet publish "/src/Docket.Server/Docket.Server.csproj" -c release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
 WORKDIR /app
 COPY --from=build /app ./
 
-EXPOSE 44331
+EXPOSE 5000
 
-ENTRYPOINT ["dotnet", "DocketServer.dll"]
+ENTRYPOINT ["dotnet", "Docket.Server.dll"]

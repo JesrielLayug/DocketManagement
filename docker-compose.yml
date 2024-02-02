@@ -6,15 +6,15 @@ services:
       context: .
       dockerfile: Docket.Server/Dockerfile
     ports:
-      - "44331:80"  # Map host port 44331 to container port 80
+      - "44331:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    depends_on:
-    - docket-client
 
   docket-client:
-     build:
-       context: .
-       dockerfile: Docket.Client/Dockerfile
-     ports:
-       - "8080:44398"
+    build:
+      context: .
+      dockerfile: Docket.Client/Dockerfile
+    ports:
+      - "8080:44398"
+    depends_on:
+      - docket-server

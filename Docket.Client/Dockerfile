@@ -1,20 +1,20 @@
-# Use the official Blazor WebAssembly image as a base
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
-WORKDIR /app
-EXPOSE 44398
-
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
-COPY Docket.Client/Docket.Client.csproj Docket.Client/
-RUN dotnet restore Docket.Client/Docket.Client.csproj
-COPY . .
-WORKDIR /src/Docket.Client
-RUN dotnet build -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish -c Release -o /app/publish
+COPY . /src
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Docket.Client.dll"]
+RUN dotnet restore "/src/Docket.Client/Docket.Client.csproj" --disable-parallel
+RUN dotnet restore "/src/Docket.Shared/Docket.Shared.csproj" --disable-parallel
+
+RUN dotnet publish "/src/Docket.Client/Docket.Client.csproj" -c release -o /app --no-restore
+
+# Final stage
+FROM nginx:alpine AS final
+WORKDIR /usr/share/nginx/html
+
+# Copy the static files from the publish stage
+COPY --from=build /app/publish/wwwroot .
+
+# Copy your nginx.conf to the appropriate location
+COPY nginx.conf /etc/nginx/nginx.conf
