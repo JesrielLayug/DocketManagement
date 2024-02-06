@@ -26,7 +26,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync("api/Authentication/login", request);
+                var response = await httpClient.PostAsJsonAsync("Authentication/login", request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var token = await response.Content.ReadAsStringAsync();
@@ -61,7 +61,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await this.httpClient.PostAsJsonAsync("api/Authentication/register", request);
+                var response = await this.httpClient.PostAsJsonAsync("Authentication/register", request);
                 if(response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return new Response

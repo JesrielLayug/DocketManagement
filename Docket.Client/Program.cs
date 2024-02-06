@@ -15,7 +15,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddOptions();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7185/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://docket-api-service.onrender.com/") });
 builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();

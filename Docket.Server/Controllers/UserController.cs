@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Docket.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize(Roles = "user")]
     public class UserController : ControllerBase

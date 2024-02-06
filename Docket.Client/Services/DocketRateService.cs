@@ -17,7 +17,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync($"api/Rate/AddRate", rating);
+                var response = await httpClient.PostAsJsonAsync($"Rate/AddRate", rating);
                 if (response.IsSuccessStatusCode)
                 {
                     return new Response
@@ -44,7 +44,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Rate/GetByUser");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("Rate/GetByUser");
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<DTOFeatureRate>($"api/Rate/GetExisting/{docketId}");
+                return await httpClient.GetFromJsonAsync<DTOFeatureRate>($"Rate/GetExisting/{docketId}");
             }
             catch (Exception e)
             {

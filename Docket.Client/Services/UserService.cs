@@ -17,7 +17,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTOUser>>("api/User/GetAll");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTOUser>>("User/GetAll");
             }
             catch (Exception ex)
             {

@@ -18,7 +18,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync<DTODocketCreate>("api/Docket/Create", docket);
+                var response = await httpClient.PostAsJsonAsync<DTODocketCreate>("Docket/Create", docket);
                 if(response.StatusCode == HttpStatusCode.OK)
                 {
                     return new Response
@@ -52,7 +52,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                 return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetUserDockets");
+                 return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("Docket/GetUserDockets");
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<DTODocket>($"api/Docket/GetById/{docketId}");
+                return await httpClient.GetFromJsonAsync<DTODocket>($"Docket/GetById/{docketId}");
             }
             catch
             {
@@ -77,7 +77,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.PutAsJsonAsync<DTODocketUpdate>($"api/Docket/Update/{docket.Id}", docket);
+                var response = await httpClient.PutAsJsonAsync<DTODocketUpdate>($"Docket/Update/{docket.Id}", docket);
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     return new Response
@@ -110,7 +110,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.DeleteAsync($"api/Docket/Delete/{docketId}");
+                var response = await httpClient.DeleteAsync($"Docket/Delete/{docketId}");
                 if (response.IsSuccessStatusCode)
                 {
                     return new Response
@@ -138,7 +138,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Docket/GetAllPublic");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("Docket/GetAllPublic");
             }
             catch
             {

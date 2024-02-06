@@ -12,7 +12,7 @@ using System.Threading.Tasks.Dataflow;
 namespace Docket.Server.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RateController : ControllerBase
     {

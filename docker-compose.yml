@@ -1,20 +1,8 @@
-version: '3.9'
+version: '3.4'
 
 services:
-  docket-server:
+  docket.server:
+    image: ${DOCKER_REGISTRY-}docketserver
     build:
       context: .
       dockerfile: Docket.Server/Dockerfile
-    ports:
-      - "44331:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-
-  docket-client:
-    build:
-      context: .
-      dockerfile: Docket.Client/Dockerfile
-    ports:
-      - "8080:44398"
-    depends_on:
-      - docket-server

@@ -13,7 +13,7 @@ using System.Security.Claims;
 namespace Docket.Server.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FavoriteController : ControllerBase
     {

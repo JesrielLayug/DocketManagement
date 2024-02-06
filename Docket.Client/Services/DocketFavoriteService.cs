@@ -18,7 +18,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync($"api/Favorite/Add", favorite);
+                var response = await httpClient.PostAsJsonAsync($"Favorite/Add", favorite);
                 if (response.IsSuccessStatusCode)
                 {
                     return new Response
@@ -44,7 +44,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("api/Favorite/GetByCurrentUser");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTODocket>>("Favorite/GetByCurrentUser");
             }
             catch(Exception e)
             {
@@ -59,7 +59,7 @@ namespace Docket.Client.Services
             {
                 var dateFormat = WebUtility.UrlEncode(date);
 
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFavoriteReport>>($"api/Favorite/GetAverageFavorite/{dateFormat}");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFavoriteReport>>($"Favorite/GetAverageFavorite/{dateFormat}");
             }
             catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
             {
@@ -77,7 +77,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFeatureFavorite>>($"api/Favorite/GetByDocketId/{docketId}");
+                return await httpClient.GetFromJsonAsync<IEnumerable<DTOFeatureFavorite>>($"Favorite/GetByDocketId/{docketId}");
             }
             catch 
             {
@@ -89,7 +89,7 @@ namespace Docket.Client.Services
         {
             try
             {
-                var response = await httpClient.DeleteAsync($"api/Favorite/Delete/{docketId}");
+                var response = await httpClient.DeleteAsync($"Favorite/Delete/{docketId}");
                 if (response.IsSuccessStatusCode)
                 {
                     return new Response

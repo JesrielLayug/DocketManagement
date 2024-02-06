@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Docket.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
