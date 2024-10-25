@@ -12,15 +12,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<DocketDatabaseSettings>(
-    builder.Configuration.GetSection(nameof(DocketDatabaseSettings)));
-
-builder.Services.AddSingleton<IDocketDatabaseSettings>(
-    sp => sp.GetRequiredService<IOptions<DocketDatabaseSettings>>().Value );
-
-builder.Services.AddSingleton<IMongoClient>(s =>
-new MongoClient(builder.Configuration.GetValue<string>("DocketDatabaseSettings:ConnectionString")));
-
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IDocketService, DocketService>();
@@ -46,20 +37,6 @@ builder.Services.AddSwaggerGen(options => {
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services.AddAuthentication(
-    JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
-
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
@@ -72,13 +49,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors(policy => 
-    policy.WithOrigins("http://localhost:44398", "https://localhost:44398")
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .WithHeaders(HeaderNames.ContentType)
-    );
 
 app.UseHttpsRedirection();
 
