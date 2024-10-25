@@ -15,7 +15,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddOptions();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
 builder.Services.AddMudServices();
 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
